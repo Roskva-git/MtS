@@ -21,7 +21,9 @@ This would involve:
 * Comparing models that explicitly quantify uncertainty vs. traditional approaches
 * Examining whether uncertainty estimates correlate with actual prediction errors
 
+
 1. Temporal dependencies and patterns
+
 **Cumulative sleep debt** Multiple nights of poor sleep compound
 
 **Sleep regularity** Variance in sleep timing matters as much as duration
@@ -30,10 +32,15 @@ This would involve:
 
 **Recovery patterns** How quickly someone bounces back from sleep disruption
 
+
 3. Non-linear relationships
+
 **Threshold effects** Performance might be stable until sleep drops below 6 hours, then decline sharply
+
 **Saturation effects** Extra sleep beyond 8 hours might not improve performance
+
 **Interaction effects** Poor sleep might affect Stroop performance more in people with depression symptoms
+
 **Individual differences** Some people might be more resilient to sleep loss
 
 
