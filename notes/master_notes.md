@@ -1,12 +1,16 @@
 # Contents
 
+- [Project description](#project-description)
 - [Explanations](#explanations)
 - [Executive functions](#executive-functions)
 - [Sleep](#sleep)
 - [Mood](#mood)
 - [Machine learning methods](#machine-learning-methods)
+- [Uncertainty quantification](#uncertainty-quantification)
 - [Reflections](#reflections)
 - [Bibliography](#bibliography)
+
+## Project description
 
 ## Explanations
 
@@ -16,11 +20,31 @@ Read up on this
 **Insert keyword** 
 - This is for short explainations
 
+**MINI**
+Short description of the tool and what it measures
+
+**MADRS**
+Short description of the tool and what it measures
+
+**Stop signal task**
+Short description of the task and what it measures
+
+**Task switching task**
+Short description of the task and what it measures
+
+**Stoop test**
+Short description of the task and what it measures
+
+**N-back**
+Short description of the task and what it measures
+
+**Actigraphy**
+How do we use it and why
 
 
 ## Executive functions
 
-**What is the definition of hate speech?** Is there a difference between hate speech and offensive language?
+**What are executive functions?** Is there a difference between hate speech and offensive language?
 
 There is no single, consistent hate speech definition across the board. Article 20, paragraph 2 of the International Covenant on Civil and Political Rights (ICCPR) states that “any advocacy of national, racial or religious hatred that constitutes incitement to discrimination, hostility or violence shall be prohibited by law. When we are working with hate speech detection, it is important to discriminate between what is hate speech and what is simply offensive language. Offensive language can refer to any expression, such as profanity, insults, or vulgarity, that is likely to cause offense or discomfort, regardless of intent or target. Unlike hate speech, it does not necessarily involve attacks on individuals or groups based on intrinsic characteristics, nor does it inherently aim to incite hatred or discrimination. 
 
@@ -45,6 +69,9 @@ What is attended in BERT? Which tokens are attended, 61,7% attention on CLS. BER
 
 
 ## Machine learning methods
+
+
+## Uncertainty quantification
 
 
 ## Reflections
