@@ -177,7 +177,7 @@ https://ml-science-book.com/uncertainty.html
 
 ## Literature search
 
-Search conducted on Web of Science and Oria:
+Search conducted on Web of Science (33 results), PsychInfo (8 results), PubMed (25 results) and Oria (58 results):
 ("sleep" OR "actigraphy") AND ("executive function*" OR "cognitive performance")  AND ("machine learning" OR "deep learning").
 
 Looked through the references in the MtS proposal to ExtraStiftelsen
