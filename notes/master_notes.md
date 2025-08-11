@@ -47,53 +47,61 @@ This would involve:
 **Methods for deep learning**
 
 1. LSTM/GRU networks with uncertainty
+
 Pseudo-architecture:
+
 Input: 35 days of [sleep_duration, sleep_quality, mood_scores, actigraphy_features]
+
 ↓
+
 LSTM layers (capture temporal dependencies)
+
 ↓
+
 Dropout layers (for uncertainty via Monte Carlo dropout)
+
 ↓
+
 Output: Predicted cognitive scores + uncertainty estimates
 
-2. Temporal convolutional networks (TCNs)
-Can capture patterns at multiple timescales simultaneously
-Often outperform RNNs for time series
-Add Bayesian layers for uncertainty quantification
+3. Temporal convolutional networks (TCNs).
+Can capture patterns at multiple timescales simultaneously.
+Often outperform RNNs for time series.
+Add Bayesian layers for uncertainty quantification.
 
-3. Transformer-based models
-Self-attention mechanisms could identify which specific days/patterns most influence cognitive performance
-Can handle irregular sampling and missing data naturally
+4. Transformer-based models.
+Self-attention mechanisms could identify which specific days/patterns most influence cognitive performance.
+Can handle irregular sampling and missing data naturally.
 
 **Uncertainty quantification approaches**
-1. Bayesian neural networks
-Instead of point estimates, learn distributions over weights
-Naturally provides uncertainty in predictions
-Can distinguish between epistemic uncertainty (model uncertainty) and aleatoric uncertainty (data noise)
+1. Bayesian neural networks.
+Instead of point estimates, learn distributions over weights.
+Naturally provides uncertainty in predictions.
+Can distinguish between epistemic uncertainty (model uncertainty) and aleatoric uncertainty (data noise).
 
-2. Deep ensembles
-Train multiple models with different initializations
-Disagreement between models indicates uncertainty
-Often more practical than full Bayesian approaches
+2. Deep ensembles.
+Train multiple models with different initializations.
+Disagreement between models indicates uncertainty.
+Often more practical than full Bayesian approaches.
 
-3. Monte Carlo dropout
-Keep dropout active during inference
-Run multiple forward passes
-Variance in predictions estimates uncertainty
+3. Monte Carlo dropout.
+Keep dropout active during inference.
+Run multiple forward passes.
+Variance in predictions estimates uncertainty.
 
 **Which cognitive functions are most predictable from sleep?**
-Maybe working memory (N-back) is highly sleep-dependent while task-switching is more robust
+Maybe working memory (N-back) is highly sleep-dependent while task-switching is more robust?
 
 **When does the model become uncertain?**
-High uncertainty might indicate critical missing data or unusual sleep patterns
-Could identify which participants need closer monitoring
+High uncertainty might indicate critical missing data or unusual sleep patterns.
+Could identify which participants need closer monitoring.
 
 **What temporal patterns matter most?**
-Use attention weights or SHAP values to identify if it's last night's sleep, weekly average, or variability that matters
+Use attention weights or SHAP values to identify if it's last night's sleep, weekly average, or variability that matters.
 
 **How much missing data is too much?**
-Quantify at what point uncertainty becomes too high for reliable predictions
-This has direct implications for clinical deployment
+Quantify at what point uncertainty becomes too high for reliable predictions.
+This has direct implications for clinical deployment.
 
 
 ## Explanations
