@@ -154,6 +154,9 @@ What is it. Why is it. When is it?
 
 
 ## Machine learning methods
+Maybe explanations should be in the sections they belong to, rather than having a big chunk of them in the beginning. 
+
+Could Masked Rationale Prediction be used in uncertainty quantification (Kim, Lee and Sohn, 2022)? In the instances where we actually have all the data, we could still train as if it was missing.
 
 
 ## Uncertainty quantification
