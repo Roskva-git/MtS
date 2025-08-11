@@ -152,6 +152,11 @@ What is it. Why is it. When is it?
 
 ## Uncertainty quantification
 
+A Python Toolbox for Machine Learning on Partially-Observed Time Series:
+https://pypots.com/
+
+Supervised Machine Learning for Science, chapter 13 Uncertainty
+https://ml-science-book.com/uncertainty.html 
 
 ## Reflections
 
