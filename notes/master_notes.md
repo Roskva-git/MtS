@@ -109,6 +109,12 @@ Use attention weights or SHAP values to identify if it's last night's sleep, wee
 Quantify at what point uncertainty becomes too high for reliable predictions.
 This has direct implications for clinical deployment.
 
+## Finding literature
+
+Search conducted on Web of Science and Oria:
+("sleep" OR "actigraphy") AND ("executive function*" OR "cognitive performance")  AND ("machine learning" OR "deep learning").
+
+Looked through the references in the MtS proposal to ExtraStiftelsen
 
 ## Explanations
 
