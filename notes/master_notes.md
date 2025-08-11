@@ -11,6 +11,80 @@
 - [Bibliography](#bibliography)
 
 ## Project description
+This is currently more like brainstorming than an actual description.
+
+Topic: Temporal dynamics with missing data
+"Development and validation of uncertainty-aware deep learning models for predicting cognitive performance from incomplete sleep and mood time series data"
+This would involve:
+* Using the daily questionnaires and actigraphy as inputs
+* Predicting SST, Stroop, N-back performance at the two EEG timepoints
+* Comparing models that explicitly quantify uncertainty vs. traditional approaches
+* Examining whether uncertainty estimates correlate with actual prediction errors
+
+1. Temporal dependencies and patterns
+**Cumulative sleep debt** Multiple nights of poor sleep compound
+**Sleep regularity** Variance in sleep timing matters as much as duration
+**Circadian rhythms** When someone sleeps relative to their chronotype
+**Recovery patterns** How quickly someone bounces back from sleep disruption
+
+2. Non-linear relationships
+**Threshold effects** Performance might be stable until sleep drops below 6 hours, then decline sharply
+**Saturation effects** Extra sleep beyond 8 hours might not improve performance
+**Interaction effects** Poor sleep might affect Stroop performance more in people with depression symptoms
+**Individual differences** Some people might be more resilient to sleep loss
+
+
+**Methods for deep learning**
+
+1. LSTM/GRU networks with uncertainty
+Pseudo-architecture:
+Input: 35 days of [sleep_duration, sleep_quality, mood_scores, actigraphy_features]
+↓
+LSTM layers (capture temporal dependencies)
+↓
+Dropout layers (for uncertainty via Monte Carlo dropout)
+↓
+Output: Predicted cognitive scores + uncertainty estimates
+
+2. Temporal convolutional networks (TCNs)
+Can capture patterns at multiple timescales simultaneously
+Often outperform RNNs for time series
+Add Bayesian layers for uncertainty quantification
+
+3. Transformer-based models
+Self-attention mechanisms could identify which specific days/patterns most influence cognitive performance
+Can handle irregular sampling and missing data naturally
+
+**Uncertainty quantification approaches**
+1. Bayesian neural networks
+Instead of point estimates, learn distributions over weights
+Naturally provides uncertainty in predictions
+Can distinguish between epistemic uncertainty (model uncertainty) and aleatoric uncertainty (data noise)
+
+2. Deep ensembles
+Train multiple models with different initializations
+Disagreement between models indicates uncertainty
+Often more practical than full Bayesian approaches
+
+3. Monte Carlo dropout
+Keep dropout active during inference
+Run multiple forward passes
+Variance in predictions estimates uncertainty
+
+**Which cognitive functions are most predictable from sleep?**
+Maybe working memory (N-back) is highly sleep-dependent while task-switching is more robust
+
+**When does the model become uncertain?**
+High uncertainty might indicate critical missing data or unusual sleep patterns
+Could identify which participants need closer monitoring
+
+**What temporal patterns matter most?**
+Use attention weights or SHAP values to identify if it's last night's sleep, weekly average, or variability that matters
+
+**How much missing data is too much?**
+Quantify at what point uncertainty becomes too high for reliable predictions
+This has direct implications for clinical deployment
+
 
 ## Explanations
 
