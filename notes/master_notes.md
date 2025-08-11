@@ -1,5 +1,6 @@
 # Contents
 
+- [Mind the Sleep](#mind-the-sleep)
 - [Project description](#project-description)
 - [Explanations](#explanations)
 - [Executive functions](#executive-functions)
@@ -10,7 +11,12 @@
 - [Reflections](#reflections)
 - [Bibliography](#bibliography)
 
-## Project description
+## Mind the Sleep
+Sleep plays a vital role in daily functioning and helps protect against both physical and psychological health issues. We want to learn more about how everyday sleep habits influence mood and cognition, and how these patterns may be linked to symptoms of depression.
+
+Sleep is important for optimal cognitive functioning and can further act as a protective factor against developing physical and psychological health problems. In this project, we investigate how sleep influences and interacts with cognitive and mood-related symptoms of depression. We have a particular focus on executive functions, which is a group of cognitive processes contributing to regulating behavior and feelings.
+
+## Project ideas
 This is currently more like brainstorming than an actual description.
 
 Topic: Temporal dynamics with missing data
@@ -155,7 +161,7 @@ What is it. Why is it. When is it?
 A Python Toolbox for Machine Learning on Partially-Observed Time Series:
 https://pypots.com/
 
-Supervised Machine Learning for Science, chapter 13 Uncertainty
+Supervised Machine Learning for Science, chapter 13 Uncertainty:
 https://ml-science-book.com/uncertainty.html 
 
 ## Reflections
