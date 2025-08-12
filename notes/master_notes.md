@@ -18,6 +18,13 @@ Sleep plays a vital role in daily functioning and helps protect against both phy
 Sleep is important for optimal cognitive functioning and can further act as a protective factor against developing physical and psychological health problems. In this project, we investigate how sleep influences and interacts with cognitive and mood-related symptoms of depression. We have a particular focus on executive functions, which is a group of cognitive processes contributing to regulating behavior and feelings.
 
 ## Project ideas
+
+How about this:
+"On the (un)reliability of common behavioral and electrophysiological measures from the stop signal task: Measures of inhibition lack stability over time"
+x
+uncertainty quantification 
+
+
 This is currently more like brainstorming than an actual description.
 
 Topic: Temporal dynamics with missing data
