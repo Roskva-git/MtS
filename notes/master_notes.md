@@ -24,6 +24,10 @@ How about this:
 x
 uncertainty quantification 
 
+That is, if response inhibition has mostly state-like situational determinants, and common inhibition measures do not reflect stable traits, could SST be sensitive to sleep measures? We can use machine learning to predict cognitive functioning from sleep patterns, and uncertainty quantification to test if it's more stable or more situational. 
+Low prediction uncertainty for SST: If inhibition is truly state-dependent, then current sleep state should reliably predict SST performance
+Higher uncertainty for more trait-like measures: Measures that reflect stable individual differences should be harder to predict from recent sleep patterns.
+
 
 This is currently more like brainstorming than an actual description.
 
