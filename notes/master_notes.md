@@ -28,6 +28,9 @@ That is, if response inhibition has mostly state-like situational determinants, 
 Low prediction uncertainty for SST: If inhibition is truly state-dependent, then current sleep state should reliably predict SST performance
 Higher uncertainty for more trait-like measures: Measures that reflect stable individual differences should be harder to predict from recent sleep patterns.
 
+- Trait = high uncertainty when predicting EF from sleep
+- State = low uncertainty when predicting EF from sleep
+
 
 This is currently more like brainstorming than an actual description.
 
