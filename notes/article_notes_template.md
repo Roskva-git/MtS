@@ -4,6 +4,7 @@ by Author A, Author B and Author C
 Journal [number] (year) page-page
 
 - [Key concepts](#key-concepts)
+- [Abstract](#abstract)
 - [Research question](#research-question)
 - [Method](#method)
 - [Main findings](#executive-functions)
@@ -14,6 +15,9 @@ Journal [number] (year) page-page
 ## Key concepts
 - 5-10 items go here
   
+
+## Abstract
+
 
 ## Research question
 
