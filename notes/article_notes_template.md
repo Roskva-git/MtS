@@ -1,5 +1,6 @@
 # Title of the article
 by Author A, Author B and Author C
+
 Journal [number] (year) page-page
 
 - [Key concepts](#key-concepts)
