@@ -1,6 +1,4 @@
-# On the (un)reliability of common behavioral and
- electrophysiological measures from the stop signal
- task: Measures of inhibition lack stability over time
+# On the (un)reliability of common behavioral and electrophysiological measures from the stop signal task: Measures of inhibition lack stability over time
 
 - [Mind the Sleep](#mind-the-sleep)
 - [Project description](#project-description)
