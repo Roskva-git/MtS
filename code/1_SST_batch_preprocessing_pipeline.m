@@ -19,13 +19,13 @@
 
 
 %% 0. Initialize EEGLAB and Set Paths
-addpath('\\hume.uio.no\student-u87\roskvatb\pc\Dokumenter\MATLAB\eeglab2025.0.0\eeglab2025.0.0', ...
-    '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\MtS_internship\', ...
-    '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\MtS_internship\Code\func\');
+addpath('\\hume.uio.no\student-u87\....matlab-link', ...
+    '\\hypatia.uio.no\lh-sv-psi\project-folder', ...
+    '\\hypatia.uio.no\lh-sv-psi\project-code-folder');
 eeglab;  % Start EEGLAB
 % Define folders
-raw_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\MtS_internship\Data\EEG_SST\raw\';
-out_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\MtS_internship\Data\EEG_SST\1_preproc\';
+raw_folder = '\\hypatia.uio.no\raw-folder';
+out_folder = '\\hypatia.uio.no\out-folder';
 % Get all .vhdr files in the raw folder
 vhdr_files = dir(fullfile(raw_folder, '*.vhdr'));
 % Loop over each file
