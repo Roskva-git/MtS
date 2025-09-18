@@ -12,8 +12,6 @@ A fundamental challenge in cognitive neuroscience concerns whether cognitive mea
 
 Sleep represents a state variable that could explain observed instability in cognitive measures. Sleep disturbances differentially affect cognitive subcomponents, with sleep deprivation primarily impairing top-down control processes while leaving automatic processes intact (Kusztor et al., 2019). This selective vulnerability suggests that some cognitive measures may be more state-dependent than others, with their reliability tied to recent sleep patterns rather than reflecting measurement error or inherent trait instability.
 
-Unity and diversity? 
-
 To address these issues, my project will use latent state–trait modelling, a structural equation modelling framework that partitions observed variance into stable trait-like components and occasion-specific fluctuations (Steyer, Schmitt, & Eid, 1999). This approach allows me to quantify how much of executive function performance reflects enduring individual differences versus temporary variation, and to test whether sleep measures at different timescales help explain variation in performance. 
 Possible research questions:
 1.	How much of the variance in EF performance is accounted for by individual differences, and how much is between-session variance (state + residual error)?
