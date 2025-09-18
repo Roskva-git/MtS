@@ -31,19 +31,22 @@ The sleep variables derived from actigraphy (e.g., sleep duration, efficiency, f
 This project is a part of an ongoing study. We have already had two rounds of data collection, and we plan to have two more rounds before Christmas. One of them is ongoing now in September, and the next will start in early November. Each round has a maximum of 15 participants because of the number of actigraphs we have available. Data collection for each participant takes 5 weeks.
  
 During the data collection period I also plan to read articles, and to start cleaning the data we have already collected. I can also make preprocessing pipelines before all the data is gathered. In December I will start preliminary analyses, and in January I will have the dataset ready for further analysis. In January I plan to start writing the thesis. In the beginning of April I will have the first draft ready and will continue editing and writing until the deadline in May. 
+
+
 **Milestones**
-October 1st: First draft of methods section finished
-October 15th: First draft of introduction finished
-November 1st: Preprocessing pipelines ready 
-December 15th: Finished data collection
-January 15th: All data is preprocessed, cleaned and ready for analysis
-February 15th: Analyses finished
-March 1st: Results section draft
-March 15th: Discussion section draft 
-April 1st: Complete first draft with abstract
-April 15th: Revised draft 
-May 1st: Final draft
-May 15th: Final thesis submission
+
+- October 1st: First draft of methods section finished
+- October 15th: First draft of introduction finished
+- November 1st: Preprocessing pipelines ready 
+- December 15th: Finished data collection
+- January 15th: All data is preprocessed, cleaned and ready for analysis
+- February 15th: Analyses finished
+- March 1st: Results section draft
+- March 15th: Discussion section draft 
+- April 1st: Complete first draft with abstract
+- April 15th: Revised draft 
+- May 1st: Final draft
+- May 15th: Final thesis submission
 
 ## Data management plan
 Same as the parent project (“Mind the sleep”) on ForskPro.
@@ -52,7 +55,7 @@ Same as the parent project (“Mind the sleep”) on ForskPro.
 The project was approved by the Regional Committees for Medical and Health Research Ethics (REK #197760).
 
 ## References
-Hox, J.J. & Bechger, T.M. (1998). An Introduction to Structural Equation Modeling. Family Science Review, 11, 354-373. 
-Kusztor, A., Raud, L., Juel, B. E., Nilsen, A. S., Storm, J. F., & Huster, R. J. (2019). Sleep deprivation differentially affects subcomponents of cognitive control. Sleep, 42(4), zsz016. https://doi.org/10.1093/sleep/zsz016
-Steyer, R., Schmitt, M. & Eid, M. (1999). Latent State-Trait Theory and Research in Personality and Individual Differences. European Journal of Personality, 13, 389-408.
-Thunberg, C., Wiker, T., Bundt, C., & Huster, R. J. (2024). On the (un)reliability of common behavioral and electrophysiological measures from the stop signal task: Measures of inhibition lack stability over time. Cortex, 175, 81-105. https://doi.org/10.1016/j.cortex.2024.02.008
+- Hox, J.J. & Bechger, T.M. (1998). An Introduction to Structural Equation Modeling. Family Science Review, 11, 354-373. 
+- Kusztor, A., Raud, L., Juel, B. E., Nilsen, A. S., Storm, J. F., & Huster, R. J. (2019). Sleep deprivation differentially affects subcomponents of cognitive control. Sleep, 42(4), zsz016. https://doi.org/10.1093/sleep/zsz016
+- Steyer, R., Schmitt, M. & Eid, M. (1999). Latent State-Trait Theory and Research in Personality and Individual Differences. European Journal of Personality, 13, 389-408.
+- Thunberg, C., Wiker, T., Bundt, C., & Huster, R. J. (2024). On the (un)reliability of common behavioral and electrophysiological measures from the stop signal task: Measures of inhibition lack stability over time. Cortex, 175, 81-105. https://doi.org/10.1016/j.cortex.2024.02.008
