@@ -19,7 +19,11 @@ Possible research questions:
 
 ## Methods
 Participants (N = ~50) are recruited through online advertisements and screened for depression via phone using the MADRS depression screening tool. Eligible participants attend an initial 1.5-hour session including clinical interview (MINI) and baseline questionnaires. Participants are then equipped with actigraphy devices and instructed in daily sleep diary completion. They are also given daily questionnaires through e-mail. At two-week intervals, participants complete EEG sessions with executive function assessments (stop signal, task-switching, Stroop, and n-back tasks) and repeated questionnaire measures.
+
+
 **Analysis**
+
+
 I will apply latent state-trait modelling (LST-SEM) to repeated executive function tasks (stop signal, Stroop, n-back, task-switching) across the study sessions. For each EF measure, the repeated task scores will be modelled as indicators of latent trait and state factors. A trait component captures stable individual differences in EF performance across sessions. Since we only measure executive functions at two timepoints, the second component will encompass both state variance and residual error. 
 The sleep variables derived from actigraphy (e.g., sleep duration, efficiency, fragmentation, variability) will be included as predictors of the state component to assess whether sleep quality and timing explain within-person fluctuations in EF performance. Average sleep across the recording period (or a two-week baseline) will be used as a trait-like indicator of sleep and related to the EF trait component. Short-term predictors, like sleep quality the night before a session or resting-state EEG at the beginning of a session, will also be included. They can be modelled in relation to the state component of EF, to test whether deviations from normal sleep patterns influence performance on the tasks (after accounting for trait variance and residual error). Model estimation will be conducted within a structural equation modelling framework, and I will evaluate model fit and variance decomposition.
 
