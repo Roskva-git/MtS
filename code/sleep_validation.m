@@ -188,7 +188,7 @@ merged.loc[too_large_diff, "error_code"] = "difference_above_threshold"
 # -----------------------------
 # 9. OPTIONAL: TIDY COLUMNS
 # -----------------------------
-# Keep things that are likely useful; you can drop any later in MATLAB if not needed.
+# Keep things that are likely useful; can be dropped later in MATLAB if not needed.
 
 # For clarity, rename the actigraphy date column used for merging
 merged.rename(columns={"Date_parsed": "ActigraphyDate"}, inplace=True)
