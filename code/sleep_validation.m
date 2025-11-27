@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 os.chdir(r"C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Code")
+os.getcwd()
 
 # -----------------------------
 # 1. FILE PATHS (EDIT THESE)
@@ -135,42 +136,7 @@ merged = act_clean.merge(
 )
 
 # -----------------------------
-# 7. FORMAT OUTPUT COLUMNS
-# -----------------------------
-
-# A) Format ActigraphyDate to YYYY-MM-DD only
-merged["ActigraphyDate"] = merged["ActigraphyDate"].dt.strftime("%Y-%m-%d")
-
-# B) Format In_bed and Out_bed (keep only HH:MM, remove seconds)
-def extract_hhmm(x):
-    t = pd.to_datetime(str(x), errors="coerce")
-    return t.strftime("%H:%M") if pd.notnull(t) else np.nan
-
-merged["In_bed"] = merged["In_bed"].apply(extract_hhmm)
-merged["Out_bed"] = merged["Out_bed"].apply(extract_hhmm)
-
-# C) Format Time_in_bed and Total_sleep_time to HH:MM
-def minutes_to_hhmm(minutes):
-    if pd.isna(minutes):
-        return np.nan
-    minutes = int(minutes)
-    h = minutes // 60
-    m = minutes % 60
-    return f"{h:02d}:{m:02d}"
-
-merged["Time_in_bed"] = merged["Time_in_bed"].apply(minutes_to_hhmm)
-merged["Total_sleep_time"] = merged["Total_sleep_time"].apply(minutes_to_hhmm)
-
-# D) Round sleep efficiency to 2 decimals
-merged["Sleep_efficiency_pct"] = merged["Sleep_efficiency_pct"].round(2)
-
-# E) Replace DiaryStartDate columns with a single clean version
-merged["DiaryStartDate"] = merged["DiaryStartDate_parsed"].dt.strftime("%Y-%m-%d")
-merged.drop(columns=["DiaryStartDate_parsed"], inplace=True)
-
-
-# -----------------------------
-# 8. COMPUTE TIME DIFFERENCES
+# 7. COMPUTE TIME DIFFERENCES
 # -----------------------------
 
 # Bedtime: actigraphy In_bed vs diary tryToSleepTime
@@ -184,7 +150,7 @@ merged["wake_diff_min"] = circular_minutes_diff(
 )
 
 # -----------------------------
-# 9. VALIDITY & ERROR CODES
+# 8. VALIDITY & ERROR CODES
 # -----------------------------
 merged["valid_day"] = False
 merged["error_code"] = ""
@@ -223,7 +189,7 @@ too_large_diff = no_missing_time & ~valid_mask
 merged.loc[too_large_diff, "error_code"] = "difference_above_threshold"
 
 # -----------------------------
-# 10. OPTIONAL: TIDY COLUMNS
+# 9. OPTIONAL: TIDY COLUMNS
 # -----------------------------
 # Keep things that are likely useful; you can drop any later in MATLAB if not needed.
 
@@ -231,7 +197,7 @@ merged.loc[too_large_diff, "error_code"] = "difference_above_threshold"
 merged.rename(columns={"Date_parsed": "ActigraphyDate"}, inplace=True)
 
 # -----------------------------
-# 11. SAVE TO CSV
+# 10. SAVE TO CSV
 # -----------------------------
 merged.to_csv(output_file, index=False)
 
