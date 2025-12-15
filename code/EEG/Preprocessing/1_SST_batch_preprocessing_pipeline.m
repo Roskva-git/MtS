@@ -34,6 +34,7 @@ for f = 1:length(vhdr_files)
         % Get file info
         [~, base_name, ~] = fileparts(vhdr_files(f).name); % e.g., 'SST_152_1'
         disp(['Processing: ' base_name]);
+        
         %% 1. Import Data
         EEG = pop_loadbv(raw_folder, vhdr_files(f).name);
         %% 2. Filtering
@@ -54,7 +55,7 @@ EEG = pop_chanedit(EEG, {'lookup','standard_1005.elc'},'append',1,'changefield',
         %% Re-reference to avg earlobes + add online reference
         EEG = pop_reref( EEG, find(ismember({EEG.chanlocs.labels}, {'A1','A2'})),'refloc',struct('labels',{'FCz'},'type',{''},'theta',[],'radius',[],'X',[],'Y',[],'Z',[],'sph_theta',[],'sph_phi',[],'sph_radius',[],'urchan',[],'ref',{''},'datachan',0));
 
-              %% 7. Event List Creation and Trigger Renaming
+%% 7. Event List Creation and Trigger Renaming
         % Relevant triggers
         gl = 'S  1'; % Go stimulus - left - go trial
         gr = 'S  2'; % Go stimulus - right - go trial
@@ -68,9 +69,9 @@ EEG = pop_chanedit(EEG, {'lookup','standard_1005.elc'},'append',1,'changefield',
         cr = 'Not collected';
         % Extract meaningful event names
         EEG = SST_recode(EEG, EEG.srate, gl, gr, gsl, gsr, sl, sr, rl, rr, cl, cr);
-        %% 8. Run ICA
+%% 8. Run ICA
         EEG = pop_runica(EEG, 'extended', 1, 'interrupt', 'on');
-        %% 9. Save ICA Decomposition
+%% 9. Save ICA Decomposition
         out_filename = [base_name '_ICA.set'];
         pop_saveset(EEG, 'filename', out_filename, 'filepath', out_folder);
         disp(['SUCCESS: ' base_name ' processed and saved as ' out_filename]);
