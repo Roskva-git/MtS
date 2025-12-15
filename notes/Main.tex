@@ -175,6 +175,17 @@ We sleep about a third of our lives, but why is it so important? Staying alert a
 Abnormal sleep is also tied to mental health conditions such as anxiety and depression, with studies indicating a bidirectional relationship \parencite{alvaro2013sleepdepression, sivertsen2012bidirectional}. One of the items on the depression scales we use in the study is about sleep.
 
 
+\section{Where does this go? Speed/accuracy and Egner's concept}
+
+
+Speed-accuracy trade-off: Dopamine regulation in d2 receptors in the striatum is related to speed/flexibility, and dopamine d1 regulation in PFC is related to accuracy/stability. This would suggest that they are processes that are regulated independently of each other. The fact that sleep deprivation differentially affects cognitive control (top-down control is impaired whereas bottom-up control is spared) would also support the idea that they are different. \cite{egner2023principles} Egner suggests a two-dimensional conception instead of a one dimensional view with stability and flexibility being opposite ends of a scale. 
+
+theta would fit into this picture because the brain needs to know that there is a need for control, so i guess more errors with less theta means you're simply not awake enough to do the top-down control?
+
+and less theta with more accurate answers = less need for control because the participant has got it. They don't need as much conflict monitoring because the task appears easier? But it is a very difficult task, so i would definitely guess more theta. 
+
+
+
 \section{Current Gaps in the Literature}
 Videreføring av \parencite{kusztor2019differentialsleep, thunberg2024unreliability}. We know that executive functions are differentially affected by sleep deprivation. We also know that inhibition may not be valid as a construct, and that the measures are unreliable.
 I try to build upon this knowledge by figuring out how much of variance is stable and can be ascribed to traits in participants, and how much is unstable and can be ascribed to either states or error (random noise and measurement error). 
@@ -196,6 +207,10 @@ While waiting in line he needs to keep his goal of ordering coffee active in wor
 
 Something about from everyday life to high-stakes situation, when EF fails, why we study it in this project.
 
+Here is a chapter about executive functions for inspiration:
+https://www-sciencedirect-com.ezproxy.uio.no/science/chapter/handbook/pii/B9780444641502000204?via%3Dihub 
+
+
 \section{Frameworks of cognitive control}
 Executive functions. Inhibition, shifting and updating. Present the Friedman-Miyake framework of unity and diversity. \parencite{friedman2017unity}
 
@@ -211,8 +226,9 @@ Working memory figure. Explain with the rest of the story about gating attention
     \label{fig:mylabel}
 \end{figure}
 
+The dual mechanisms of control (DMC, \cite{braver2012dualmechanisms}) framework offers a mechanistic account of executive function by distinguishing between two temporal modes of control, proactive and reactive. Proactive control refers to the sustained, anticipatory maintenance of task goals to bias perception and action before an event occurs, whereas reactive control reflects a just-in-time reactivation of goals when interference or conflict is detected. These modes differ in timing and in cognitive demands. Proactive control is more effortful and resource-dependent, and reactive control is relatively low-cost and stimulus-driven. If you look at the unity–diversity model in relation to DMC, it highlights that the same executive task can rely on multiple underlying control modes, and that individuals may differ in the extent to which they engage proactive versus reactive strategies. 
 
-Explain the \cite{braver2012dualmechanisms} dual mechanisms framework.
+This distinction could help us understand variability in executive functioning across time. Because proactive control depends on sustained goal maintenance, it is more vulnerable to fluctuations in arousal, attentional capacity, and fatigue, whereas reactive control tends to remain stable under such conditions. In this context, sleep becomes a theoretically meaningful source of variation, like we saw in the study of \cite{kusztor2019differentialsleep}. Poor or irregular sleep impaired proactive, top-down control processes more strongly than automatic, reactive ones. This could potentially reveal something about which components of a task reflect stable trait-like abilities and which reflect state-dependent fluctuations. Thus, the DMC framework can be used to clarify some of the mechanisms underlying executive performance and provide a principled basis for predicting how habitual and nightly sleep variability should differentially influence the processes engaged during tasks such as task switching.
 
 
 \subsection{Task switching and set shifting}
@@ -380,6 +396,11 @@ In the task-switching task, participants were presented with a pair of one lette
 
 In one-third of the trials, the font colour switched from the colour in the previous trial: the switch trials. In the remaining two-thirds of the trials, the font colour was the same as the previous trial: the repeat trials. The task consisted of four blocks, with each block consisting of 60 trials. Participants had 15 trials for practicing before the experiment began. In total, the task consisted of 240 trials, adding up to a total duration of approximately 15 minutes. 
 
+The trial types 
+
+congruent, incongruent. Switch, repeat. correct, error.
+
+
 
 \begin{figure}
     \centering
@@ -388,14 +409,37 @@ In one-third of the trials, the font colour switched from the colour in the prev
     \label{fig:placeholder}
 \end{figure}
 
+Spectral estimation method
 
+fmid-theta definition
+
+Electrodes and time window
 \subsection{EEG Feature Extraction}
 \begin{itemize}
-    \item Preprocessing pipeline (filter, ICA, referencing, epoching).
-    \item How do I calculate fmid-theta (method, time window)
+    \item Preprocessing pipeline (filter, ICA, referencing, epoching). We apply a low pass filter (40Hz), resample to 500Hz, high pass filter (0.1Hz) and remove EMG channels. We map electrode names and add FCz as the empty reference eletrode, then we re-reference to the average of the earlobes. We create an event list and rename the triggers for epoching (different script). We run the ICA, and remove components conservatively by manual inspection.
+    \item How do I calculate fmid-theta (method, time window). Give a definition of theta.
     \item Other features (beta? connectivity?)
     \item Why these features? State vs trait sensitivity
 \end{itemize}
+
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{} & \textbf{Left button} & \textbf{Right button} \\
+\hline
+\textbf{Letters} & A E I Y U & B C D F G \\
+\hline
+\textbf{Numbers} & 0 2 4 6 8 & 1 3 5 7 9 \\
+\hline
+\end{tabular}
+\caption{Task switching paradigm. Depending on the colour of the text, participants had to attend to either the letters or numbers. If they responded to the letters, they had to press the left button for vowels and the right button for consonants. If responding to the numbers, they had to press the left button for even numbers and the right button for odd numbers.}
+\label{tab:task_switching}
+\end{table}
+
 
 
 \subsection{Actigraphy}
