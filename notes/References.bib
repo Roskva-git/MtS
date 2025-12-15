@@ -1,487 +1,503 @@
-% main.tex - Master's Thesis Template
-% University of Oslo - Department of Psychology
-% Cognitive Neuroscience Master's Programme
-
-\documentclass[12pt,a4paper]{report}
-
-% ============= PACKAGES =============
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage{times} % Times New Roman font
-\usepackage[margin=2.5cm]{geometry} % 2.5cm margins as required
-\usepackage{setspace}
-\onehalfspacing % 1.5 line spacing as required
-
-% Graphics and figures
-\usepackage{graphicx}
-\usepackage{float}
-
-\usepackage{subfigure}
-
-% Tables
-\usepackage{booktabs}
-\usepackage{tabularx}
-\usepackage{multirow}
-
-
-% Math and algorithms
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{algorithm}
-\usepackage{algorithmic}
-
-% Citations and references (APA 7)
-\usepackage[style=apa,backend=biber]{biblatex}
-\addbibresource{references.bib}
-
-% Links and cross-references
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-    filecolor=black,      
-    urlcolor=blue,
-    citecolor=black
+@article{thunberg2024unreliability,
+  title={On the (un)reliability of common behavioral and electrophysiological measures from the stop signal task: Measures of inhibition lack stability over time},
+  author={Thunberg, Christina and Bundt, Carsten and Huster, René J.},
+  journal={Cortex},
+  volume={175},
+  pages = "81-105",
+  year={2024},
+  publisher={Elsevier},
+  doi = "https://doi.org/10.1016/j.cortex.2024.02.008",
+  abstract = {Response inhibition, the intentional stopping of planned or initiated actions, is often considered a key facet of control, impulsivity, and self-regulation. The stop signal task is argued to be the purest inhibition task we have, and it is thus central to much work investigating the role of inhibition in areas like development and psychopathology. Most of this work quantifies stopping behavior by calculating the stop signal reaction time as a measure of individual stopping latency. Individual difference studies aiming to investigate why and how stopping latencies differ between people often do this under the assumption that the stop signal reaction time indexes a stable, dispositional trait. However, empirical support for this assumption is lacking, as common measures of inhibition and control tend to show low test-retest reliability and thus appear unstable over time. The reasons for this could be methodological, where low stability is driven by measurement noise, or substantive, where low stability is driven by a larger influence of state-like and situational factors. To investigate this, we characterized the split-half and test-retest reliability of a range of common behavioral and electrophysiological measures derived from the stop signal task. Across three independent studies, different measurement modalities, and a systematic review of the literature, we found a pattern of low temporal stability for inhibition measures and higher stability for measures of manifest behavior and non-inhibitory processing. This pattern could not be explained by measurement noise and low internal consistency. Consequently, response inhibition appears to have mostly state-like and situational determinants, and there is little support for the validity of conceptualizing common inhibition measures as reflecting stable traits.},
+  keywords = {response inhibition, stop signal task, reliability, stability, trait},
 }
 
-% Code listings (for Python/MATLAB code)
-\usepackage{listings}
-\lstset{
-    basicstyle=\footnotesize\ttfamily,
-    breaklines=true,
-    frame=single,
-    numbers=left,
-    numberstyle=\tiny,
-    captionpos=b
+@article{friedman2017unity,
+  title={Unity and Diversity of Executive Functions: Individual Differences as a Window on Cognitive Structure},
+  author={Friedman, Naomi P. and Miyake, Akira},
+  journal={Cortex},
+  volume={86},
+  pages = "186-204",
+  year={2017},
+  publisher={Elsevier},
+  doi = "10.1016/j.cortex.2016.04.023",
+  abstract = "Executive functions (EFs) are high-level cognitive processes, often associated with the frontal lobes, that control lower level processes in the service of goal-directed behavior. They include abilities such as response inhibition, interference control, working memory updating, and set shifting. EFs show a general pattern of shared but distinct functions, a pattern described as “unity and diversity.” We review studies of EF unity and diversity at the behavioral and genetic levels, focusing on studies of normal individual differences and what they reveal about the functional organization of these cognitive abilities. In particular, we review evidence that across multiple ages and populations, commonly studied EFs (a) are robustly correlated but separable when measured with latent variables; (b) are not the same as general intelligence or g; (c) are highly heritable at the latent level and seemingly also highly polygenic; and (d) activate both common and specific neural areas and can be linked to individual differences in neural activation, volume, and connectivity. We highlight how considering individual differences at the behavioral and neural levels can add considerable insight to the investigation of the functional organization of the brain, and conclude with some key points about individual differences to consider when interpreting neuropsychological patterns of dissociation.",
+  keywords = {executive control, individual differences, prefrontal cortex, behavioral genetics},
 }
 
-% Appendices
-\usepackage[toc,page]{appendix}
-
-% Custom commands for consistency
-\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
-\newcommand{\note}[1]{\textcolor{blue}{[NOTE: #1]}}
-
-% Simple chapter formatting - normal size headings with reasonable spacing
-\usepackage{titlesec}
-\titleformat{\chapter}
-  {\normalfont\LARGE\bfseries}{}{ 0pt}{\LARGE}
-\titlespacing*{\chapter}{0pt}{20pt}{20pt}
-
-
-% ============= DOCUMENT =============
-\begin{document}
-
-% ============= FRONT MATTER =============
-\begin{titlepage}
-    \centering
-    \includegraphics[width=0.3\textwidth]{Master thesis/figures/uio_logo.png}
-    \vspace{2cm}
-    
-    {\LARGE\bfseries Sleeping patterns and flexible minds:
-    
-    Disentangling the effects of habitual and nightly sleep on cognitive control\par}
-    
-    \vspace{2cm}
-    
-    {\large Røskva Bjørgfinsdóttir\par}
-    
-    \vspace{3cm}
-    
-    {\large Master thesis in cognitive neuroscience\\
-    Department of Psychology\\
-    University of Oslo\par}
-    
-    \vspace{2cm}
-    
-    {\large Spring 2026\par} % Update semester/year
-    
-    \vfill
-    
-    {\large Supervisors:\\ 
-    Christina Thunberg\\
-    René Huster\par}
-\end{titlepage}
-
-% Abstract (max 500 words, on one page)
-\newpage
-\thispagestyle{empty}
-\begin{center}
-    \Large\textbf{Abstract}
-\end{center}
-
-\noindent
-\textbf{Author:} Røskva Bjørgfinsdóttir\\
-\textbf{Title:} Sleeping patterns and flexible minds: Disentangling the effects of habitual and nightly sleep on cognitive control\\
-\textbf{Supervisor:} Christina Thunberg
-
-\vspace{0.5cm}
-
-For my master thesis I'm using data from the Mind the Sleep project initiated by Margrethe Hansen and René Huster, as a part of Margrethe’s PhD project. The main aim of the study was to explore how sleep disturbances impact executive functions and affect (with a particular focus on depressive symptoms), as well as how it might relate to brain function.
-
-\paragraph{}
-Here are some title suggestions:
-
-\paragraph{Sleeping patterns and flexible minds:} Disentangling the effects of habitual and nightly sleep on cognitive control
-dynamic aspects of sleep and cognitive flexibility, shifting
-
-
-\textbf{Keywords:} sleep, executive function, depression, latent state/trait theory, structural equation modelling, actigraphy, cognitive performance
-
-% Table of Contents
-\newpage
-\tableofcontents
-
-% List of Figures and Tables (optional but recommended)
-%\newpage
-%\listoffigures
-%\listoftables
-
-% ============= MAIN CONTENT =============
-\chapter{Introduction}
-A fundamental challenge in cognitive neuroscience concerns whether cognitive measures reflect stable individual traits or state-dependent fluctuations. Recent findings from \textcite{thunberg2024unreliability} suggest that common executive function measures lack temporal stability, with test-retest reliability as low as r = .34 for the stop signal reaction time (SSRT). This instability indicates that cognitive control measures could be primarily influenced by situational factors rather than representing stable dispositional abilities. The specific factors driving this instability are unclear, which limits our understanding of when cognitive assessments provide reliable information about individual capabilities.
-
-Sleep represents a state variable that could explain observed instability in cognitive measures. Sleep disturbances differentially affect cognitive subcomponents, with sleep deprivation primarily impairing top-down control processes while leaving automatic processes intact \parencite{kusztor2019differentialsleep}. This selective vulnerability suggests that some cognitive measures may be more state-dependent than others, with their reliability tied to recent sleep patterns rather than reflecting measurement error or inherent trait instability.
-
-To address these issues, my project will use latent state–trait modelling, a structural equation modelling framework that partitions observed variance into stable trait-like components and occasion-specific fluctuations \parencite{steyer1999lst}. This approach allows me to quantify how much of executive function performance reflects enduring individual differences versus temporary variation, and to test whether sleep measures at different timescales help explain variation in performance. Possible research questions:
-
-    How much of the variance in EF performance is accounted for by individual differences, and how much is between-session variance (state + residual error)?
-    Do people with better average sleep also tend to perform better on stable, trait-like components of EF?
-    Do the short-term sleep measures (like the night before a session, or resting state EEG) account for EF performance changes from one session to the next?
-    Do the associations between sleep and EF performance look similar across tasks, or are some tasks more sensitive to sleep than others?
-
-
-\section{The Sleep-Cognition Relationship}
-
-Intro to sleep: \parencite{foster2020sleep} - Sleep, circadian rhythms and health: 
-Broad intro, gives an overview of some basic physiology and sleep regulation, and ties it to health and societal perspectives. Useful for an overall understanding of sleep, but also gives insights into how research frames the negative consequences of abnormal sleep.
-
-Function of sleep: \parencite{fjell2025sleeppatterns} - Sleep patterns and human brain health: 
-Focus on brain health, this is a good introduction to different theories about why we sleep. Look at the disussion about the relationship between sleep and brain health in general, and look at 'the way forward', what do they think we need to understand sleep better, and how does what I am doing fit into this picture?
-
-Intro to sleep physiology: \parencite{adamantidis2019oscillating} - Oscillating circuitries in the sleeping brain.
-Clear introduction to network organization during sleep. Don't get too lost in the physiology. Think about what is important for the thesis.
-
-\parencite{tai2022sleepef} - Impact of sleep duration on executive function and brain structure.
-Could be a starting point for the relationship between sleep and executive functions.
-
-\parencite{sen2023sleepef} - Sleep Duration and Executive function in Adults.
-Review article about sleep and executive functions. Tips about other relevant studies, but also contains some relevant points about subjective vs objective measurement of sleep. 
-
-\parencite{fjell2024sleep} - Individual sleep need is flexible and dynamically related to cognitive function.
-May give some food for thought when it comes to habitual sleep in general (rather than deprivation), and about dynamic views on sleep (like trait-state variations)
-
-We sleep about a third of our lives, but why is it so important? Staying alert and so on. Avoiding accidents. Sleep helps with the process of removing harmful plaques in the brain \parencite{Shokri-Kojori2018beta-amyloid}, and protects against brain atrophy \parencite{sexton2014sleepatrophy}
-Abnormal sleep is also tied to mental health conditions such as anxiety and depression, with studies indicating a bidirectional relationship \parencite{alvaro2013sleepdepression, sivertsen2012bidirectional}. One of the items on the depression scales we use in the study is about sleep.
-
-
-\section{Current Gaps in the Literature}
-Videreføring av \parencite{kusztor2019differentialsleep, thunberg2024unreliability}. We know that executive functions are differentially affected by sleep deprivation. We also know that inhibition may not be valid as a construct, and that the measures are unreliable.
-I try to build upon this knowledge by figuring out how much of variance is stable and can be ascribed to traits in participants, and how much is unstable and can be ascribed to either states or error (random noise and measurement error). 
-
-
-\section{Research Questions and Hypotheses}
-\begin{enumerate}
-    \item How much of the variance in EF performance is accounted for by individual differences, and how much is between-session variance (state + residual error)?
-    \item Do people with better average sleep also tend to perform better on stable, trait-like components of EF?
-    \item Do the short-term sleep measures (like the night before a session, or resting state EEG) account for EF performance changes from one session to the next?
-    \item Do the associations between sleep and EF performance look similar across tasks, or are some tasks more sensitive to sleep than others?
-\end{enumerate}
-
-
-\chapter{Background}
-A student walks into a busy café. He orders a cappuccino and sits down at a table to read a complicated article about cognitive control. Next to him is a family of four with two small children running around the table. On the other side is a group of friends engaged in high-spirited conversation. The man smiles to himself for having chosen such a lively place to study, but soon manages to shut the noise out and focus on the text in front of him. After a few minutes the waitress comes with his coffee, and he shifts his attention to thank her for the cup. In this everyday situation, adapted from an example in Egner’s (2023) article on cognitive control, the student engages several abilities that we refer to as \emph{cognitive control} or \emph{executive functions}.
-
-While waiting in line he needs to keep his goal of ordering coffee active in working memory while coordinating the speech necessary to communicate it. He uses selective attention to track the barista’s questions and inhibits both irrelevant thoughts and the surrounding noise until it is his turn. To respond appropriately if the barista asks something unexpected he also needs to remain flexible, rather than relying on a rehearsed script. Each of these processes can fail: he might forget what he intended to order, become distracted and miss a question, give an inappropriate answer when asked something unanticipated, or hesitate and respond awkwardly because he cannot shift quickly enough between what he planned to say and what the situation requires.
-
-Something about from everyday life to high-stakes situation, when EF fails, why we study it in this project.
-
-\section{Frameworks of cognitive control}
-Executive functions. Inhibition, shifting and updating. Present the Friedman-Miyake framework of unity and diversity. \parencite{friedman2017unity}
-
-
-
-Back to \parencite{egner2023principles} working memory stability-flexibility framework with biasing vs. gating.
-Working memory figure. Explain with the rest of the story about gating attention at a café with the figure.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Master thesis/figures/theory/Egner2023fig1WM.jpg}
-    \caption{Egner's (2023) figure of working memory.}
-    \label{fig:mylabel}
-\end{figure}
-
-
-Explain the \cite{braver2012dualmechanisms} dual mechanisms framework.
-
-
-\subsection{Task switching and set shifting}
-\cite{kiesel2010review, egner2023principles, monsell2003switching}
-
-TST - stimulus based interference. Congruent vs incongruent trials (trykke på samme knapp for de to oppgavene eller trykke på forskjellig knapp). Typically, the congruency effect is higher in switch trials than in repetition trials, which may reflect higher proactive interference in  a task switch. LES HELE AVSNITTET OM STIMULUS-BASED INTERFERENCE IGJEN. HER ER DET GULL Å HENTE.
-
-\paragraph{Neural correlates of set shifting}
-\cite{kiesel2010review}
-
-\subsection{Reliability of executive function tasks}
-Why do EF tasks often show poor reliability? (unstable across time). \parencite{thunberg2024unreliability}
-
-\paragraph{Reliability challenges in executive function measures}
-In classical test theory, an observed score ($X$) is assumed to reflect a true score ($T$) plus random measurement error ($E$), expressed as 
-
-\begin{equation}
-    X = T + E
-\end{equation}
-
-Building on classical test theory, latent state–trait (LST) modeling further decomposes the observed score into a stable trait component, a state component representing systematic occasion-specific variance, and residual error \parencite{steyer1999lst}.
-
-\begin{equation}
-    X_{it} = T_i + S_{it} + E_{it}
-\end{equation}
-
-where:
-\begin{itemize}
-    \item $T_i$ = trait component (stable individual differences between persons)
-    \item $S_{it}$ = state component (systematic but temporary within-person variation)
-    \item $E_{it}$ = residual component (unsystematic measurement error)
-\end{itemize}
-
-In LST-SEM we do not consider all instability to be noise. Rather, we split it up into 
-
-T = trait (stable differences between individuals)
-
-S = state (systematic, but temporary within-individual differences)
-
-E = residual (measurement error/noise)
-
-
-In the current paper I will focus on the EF set shifting. WILCKENS?
-
-\section{Sleep}
-Define key dimensions: duration, efficiency, continuity, and variability.
-
-How does sleep quality affect attention, working memory, and mood?
-Note 
-\begin{itemize}
-    \item age
-    \item individual variation
-    \item state-related variability
-\end{itemize}
-
-Sleep is highly variable and critical for cognitive control, we want to find out more about how fluctuations affect executive functioning.
-
-
-\section{Executive Function and Sleep}
-Sleep: \cite{adamantidis2019oscillating, fjell2024sleep, fjell2025sleeppatterns, foster2020sleep, sen2023sleepef, tai2022sleepef} 
-Sleep, cognition and emotion: \cite{wilckens2014sleeppreparation, wilckens2020sleepmddswitch}  
-
-\subsection{Neural correlates of executive function}
-Frontal midline theta as a neural marker of cognitive control.
-\cite{kusztor2019differentialsleep, wilckens2014sleeppreparation, wilckens2020sleepmddswitch}
-
-Features: 
-\cite{cavanagh2014theta, depestele2023thetadriving}
-Cavanagh \& Frank 2014, Depestele 2023, Verbeke 2021.
-\paragraph{}
-FM-theta is generated in ACC/mPFC and is associated with cognitive control demands.
-
-\paragraph{}
-FM-theta increases in response to conflict, errors, and task-switching demands.
-
-\paragraph{}
-Sleep deprivation reduces FM-theta power during control tasks.
-
-\paragraph{}
-Therefore FM-theta is expected to behave as a state-sensitive marker in this project.
-
-
-\paragraph{Sleep Deprivation Effects}
-
-\paragraph{Individual Differences}
-
-
-\chapter{Methods}
-\section{Design and procedure}
-
-\subsection{Ethical approval}
-The project was approved by the Regional Committees for Medical and Health Research Ethics (REK \#197760).
-
-\subsection{Data management}
-In the Mind the Sleep project we collected information about health which is classified as sensitive data (Norwegian: særlige kategorier av personopplysninger). All data files generated as a part of MtS (i.e. EEG, MR, task performance, questionnaires, actigraphy) are stored on TSD. 
-
-\subsection{Study design}
-The study was a within subjects-design with 3 sessions separated by 2 weeks. Session 1 comprised MINI, questionnaire A, questionnaire B and receiving overall instructions regarding the study. Participants received their actigraphy watch at this time point and sleep diary. Hence, sleep data was collected over the timespan of four weeks. Session two and three were identical and comprised an EEG recording during a resting-state, Stop-signal, Switch number-letter, Stroop, and N-back task. In addition, participants filled out questionnaire A. They had the option to either do the questionnaire A at the lab or at home depending on their schedule demands. Questionnaire B was sent out to participants on a daily basis from session one onwards, hence, over the timespan of six weeks. 
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1.0\linewidth]{Master thesis//figures//methods/MICC Study design.jpg}
-    \caption{Study design for Mind the Sleep project}
-    \label{fig:placeholder}
-\end{figure}
-\paragraph{Sample}
-Data collection is ongoing. The project includes adult participants (18-65 years), both with and without symptoms of depression. All participants are right-handed, speak Norwegian, and have normal or corrected-to-normal vision.
-Participants (N = 50) are recruited through online advertisements on Instagram and Facebook, and screened for depression via phone using the MADRS depression screening tool. Eligible participants attend an initial 1.5-hour session including clinical interview (MINI) and baseline questionnaires. Participants are then equipped with actigraphy devices and instructed in daily sleep diary completion. They are also given daily questionnaires through e-mail. At two-week intervals, participants complete EEG sessions with executive function assessments (stop signal, task-switching, Stroop, and n-back tasks) and repeated questionnaire measures.
-\paragraph{Exclusion Criteria}
-Certain psychological and neurological disorders, sleep disturbances, and particular medications were grounds for exclusion.
-Exclusion criteria: Schizophrenia, bipolar disorder or personality disorders (like borderline or dyssocial personality disorder), parkinsons, dementia, epilepsy, stroke, traumatic head injury. Psychotic disorders (current or in the past). Using medication like anticholinergic or antipsychotic medicine. Antiepileptica, tricyclic antidepressants or sleep medicine like nefazodone. Benzodiazepines. Substance abuse. 
-We screen participants with MADRS in the initial phone interview. If they have a score over 20 they are excluded unless they are in contact with health care for their mental health.
-
-\subsection{Questionnaires}
-MtS included the following questionnaires: PHQ, MADRS, MINI, GAD, BRIEF, ESS, PSQ, BIS, ASEBA, PAN, and sleep information. Sleep information was part of the questionnaires both as a stand-alone sleep diary and as separate items in the daily and bi-weekly questionnaires. Below an overview is provided on which questionnaires at what time point/session and more detail on each questionnaire itself. 
-
-\begin{table}[h!]
-\centering
-\caption{Overview of questionnaire sessions and entries}
-\label{tab:questionnaire_sessions}
-\begin{tabularx}{\textwidth}{@{} l X c @{}}
-\toprule
-\textbf{Session} & \textbf{Questionnaire} & \textbf{Number of entries} \\
-\midrule
-Telephone call recruitment session & PHQ and MADRS, both carried out verbally with the experimenter over the telephone. & 1 \\
-First session at the lab (no EEG) & MINI, carried out verbally with the experimenter in person. & 1 \\
-Bi-weekly & MADRS, GAD, BRIEF, ESS, PSQ, BIS, ASEBA, and sleep information. & 3 \\
-Daily & PAN, BRIEF, and sleep information. & 28 \\
-Sleep diary & Sleep information. & 28 \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-
-\subsection{EEG}
-Each EEG session contained a resting state recording (5 minutes with eyes open, 5 minutes with eyes closed) and four tasks in the following order: stop signal task (for 20 minutes), task-switching task (15 minutes), Stroop task (12 minutes), and the n-back task (25 minutes). The order was kept constant across participants and sessions. 
-
-Executive functions were assessed using four standard tasks: response inhibition (stop-signal task; \parencite{logan1984inhibition}), interference control (color–word Stroop task; \parencite{stroop1935interference}), working memory updating (n-back; \parencite{kirchner1958update}), and cognitive flexibility (task-switching paradigm; \parencite{rogers1995taskswitch}).
-
-\paragraph{Apparatus and acquisition}
-\\Experiment setup 
-\\Experiment computer: check
-\\Operating system: Windows X 
-\\Experiment software: PsychToolbox 3 
-\\Display screen: check
-\\Display refresh rate: check 
-\\Response device: Cedrus RB-740 (Cedrus Corporation, San Pedro, USA)
- 
-\paragraph{Electrophysiological recordings}
-\\Electrodes: X passive Ag/AgCl 
-\\Amplifier: BrainAmp 
-\\Recording software: BrainVision Recorder  
-\\EEG positions: International 10/20 
-\\EEG reference/ground: FCz/AFz 
-\\EEG offline reference: earlobes 
-\\EMG: bipolar electrode montages on the abductor pollis brevis on both hands \\Sampling rate: 5000 Hz 
-
-\paragraph{Resting state}
-Each EEG session contained 2 x 5 minutes resting state recordings, first with their eyes open and then with their eyes closed. Participants were told that we wanted to measure their brain activity during rest. To do this, they should just sit still, rest their gaze at the fixation cross on the screen, and let their thoughts wander. They were explicitly told to try to avoid movement, such as tapping their fingers or shaking their legs, and to try to avoid concrete time passing activities, such as counting.  
-
-
-\paragraph{Task-Switching Paradigm}
-In the task-switching task, participants were presented with a pair of one letter and one number on the screen for 1200 ms. The font colour of the pair was either blue or yellow. If the font colour was blue, then participants were instructed to report, by button press, if the number was even (left button) or odd (right button). If the font colour was yellow however, then participants were instructed to report, by button press, if the letter was a vowel (left button) or a consonant (right button). Prior to the presentation of the pair, a fixation cross was presented on the screen for a duration between 1300 and 1700ms.
-
-In one-third of the trials, the font colour switched from the colour in the previous trial: the switch trials. In the remaining two-thirds of the trials, the font colour was the same as the previous trial: the repeat trials. The task consisted of four blocks, with each block consisting of 60 trials. Participants had 15 trials for practicing before the experiment began. In total, the task consisted of 240 trials, adding up to a total duration of approximately 15 minutes. 
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1.0\linewidth]{Master thesis//figures//methods/switch.jpeg}
-    \caption{Task switching paradigm used in the project}
-    \label{fig:placeholder}
-\end{figure}
-
-
-\subsection{EEG Feature Extraction}
-\begin{itemize}
-    \item Preprocessing pipeline (filter, ICA, referencing, epoching).
-    \item How do I calculate fmid-theta (method, time window)
-    \item Other features (beta? connectivity?)
-    \item Why these features? State vs trait sensitivity
-\end{itemize}
-
-
-\subsection{Actigraphy}
-Include a very simple and brief explanation of the setup, the equipment and software used, duration of use and so on.
-
-The actigraphs we use measure basic accelerometry, with movement in three axes (X, Y and Z). Sleep parameters are estimated using the Cole-Kripke algorithm (COLE-KRIPKE, 1992).
-
-\paragraph{Feature Extraction from Actigraphy}
-The derived sleep parameters are:
-\begin{itemize}
-    \item \textbf{TST (Total Sleep Time)} - Estimated total duration of sleep, excluding awakenings. Greater total sleep time generally indicates better sleep quality.
-    \item \textbf{SOL (Sleep Onset Latency)} - The time taken to fall asleep. Longer latency suggests poorer sleep quality.
-    \item \textbf{WASO (Wake After Sleep Onset)} - Total time spent awake after initially falling asleep. Greater WASO reflects more fragmented sleep and thus lower sleep quality.
-    \item \textbf{SE (Sleep Efficiency)} - Calculated as TST divided by time in bed, multiplied by 100\%. Values above 85–90\% are typically considered indicative of good sleep efficiency.
-    \item \textbf{Number of awakenings} - The number of awakenings detected during the night. A higher number indicates poorer sleep continuity.
-\end{itemize}
-
-\paragraph{Limitations of actigraphy} There are some limitations related to the use of actigraphy for sleep measurement. Polysomnography (PSG) remains the gold standard for assessing sleep because it provides a direct physiological measurement of sleep stages through simultaneous recording of brain activity (EEG), eye movements (EOG), and muscle tone (EMG), allowing precise differentiation between sleep and wakefulness (ADD A REFERENCE). PSG requires an extensive set-up, which makes it more suitable for lab studies. Wrist actigraphy is a practical and validated alternative for field studies where we are interested in habitual sleep. In the present study, only the accelerometer function of the ActiGraph devices was used, with all other sensors disabled to preserve battery life and participants’ privacy. Because actigraphy infers sleep and wake from movement alone, it may misclassify periods of quiet wakefulness as sleep, and can underestimate wake after sleep onset (WASO) compared with PSG (SOURCES, FOR GOD'S SAKE!!!). To ensure accuracy, actigraphy data were cross-checked against participants’ sleep diaries. Any apparent sleep periods not confirmed in the diary were excluded from analyses. Sources of errors here could be when participants take the actigraph off and leave it on the counter for periods of the day. The stillness will sometimes be registered as sleep.
-
-\section{Statistical Analysis}
-
-\subsection{Data Preprocessing}
-
-\subsection{Latent state-trait modelling}
-\paragraph{LST}
-I will apply latent state-trait modelling (LST-SEM) to repeated executive function tasks (stop signal, Stroop, n-back, task-switching) across the study sessions. For each EF measure, the repeated task scores will be modelled as indicators of latent trait and state factors. A trait component captures stable individual differences in EF performance across sessions. Since we only measure executive functions at two timepoints, the second component will encompass both state variance and residual error.
-
-Traditional reliability estimates treat all instability as error, but latent state–trait modeling allows us to distinguish stable, trait-like variance from occasion-specific variance.
-Even when only two measurement occasions are available, the model enables estimation of trait consistency and residual variance. The latter may reflect both state fluctuations and measurement error.
-By introducing sleep-related variables as predictors of this residual variance, we can examine whether part of the apparent unreliability in executive-function measures reflects systematic, state-dependent influences rather than random noise.
-\paragraph{SEM}
-\paragraph{Neural predictors}
-Frontal midline theta (and other features) can be added as
-
-\begin{itemize}
-    \item \textbf{State predictor:} resting-state theta before each session predicts the state component in EF
-    \item \textbf{Trait predictor:} average across sessions predicts the trait component in EF
-    \item \textbf{Session specific covariate:} residual/state variance. Probably cannot get this?
-\end{itemize}
-
-Important to tie the EEG directly to the model in an explicit manner
-
-
-\paragraph{Model Development}
-The sleep variables derived from actigraphy (e.g., sleep duration, efficiency, fragmentation, variability) will be included as predictors of the state component to assess whether sleep quality and timing explain within-person fluctuations in EF performance. Average sleep across the recording period (or a two-week baseline) will be used as a trait-like indicator of sleep and related to the EF trait component. Short-term predictors, like sleep quality the night before a session or resting-state EEG at the beginning of a session, will also be included. They can be modelled in relation to the state component of EF, to test whether deviations from normal sleep patterns influence performance on the tasks (after accounting for trait variance and residual error). Model estimation will be conducted within a structural equation modelling framework, and I will evaluate model fit and variance decomposition.
-
-
-\chapter{Results}
-\section{Descriptive Statistics}
-\paragraph{Data Completeness}
-\paragraph{Sleep Patterns}
-\paragraph{Cognitive Performance}
-
-
-\chapter{Discussion}
-\section{Main Findings}
-
-\section{Theoretical Implications}
-\paragraph{Sleep-Cognition Mechanisms}
-\paragraph{Methodological Contributions}
-
-\section{Limitations}
-\paragraph{Sample Size and Generalizability}
-\paragraph{Measurement Limitations}
-\paragraph{Model Constraints}
-
-\section{Future Research}
-\paragraph{Good ideas}
-\paragraph{Come in buckets}
-
-\chapter{Conclusion}
-What did we learn from all of this
-
-% ============= REFERENCES =============
-\printbibliography[heading=bibintoc,title={References}]
-
-% ============= APPENDICES =============
-\begin{appendices}
-\chapter{Supplementary Tables and Figures}
-\section{Additional Statistical Analyses}
-\section{Model Architecture Details}
-
-\chapter{Code and Implementation}
-\section{Data Preprocessing Pipeline}
-\section{Model Training Scripts}
-\section{Evaluation Functions}
-\end{appendices}
-
-\end{document}
+@article{steyer1999lst,
+  title={Latent state-trait theory and research in personality and individual differences},
+  author={Steyer, Rolf and Schmitt, Manfred and Eid, Michael},
+  journal={European journal of personality},
+  volume={13},
+  pages = "389-408",
+  year={1999},
+  publisher={Wiley},
+  doi = "https://doi-org.ezproxy.uio.no/10.1002",
+  abstract = {Latent state–trait (LST) theory is a generalization of classical test theory designed to take into account that psychological measurement does not take place in a situational vacuum. The basic concepts of LST are introduced. The core of LST theory consists of 2 decompositions; the decomposition of any observed score into latent state and measurement error, and the decomposition of any latent state into latent trait and latent state residual representing situational and/or interaction effects. Latent states and latent traits are defined as special conditional expectations. A score on a latent state variable is defined as the expectation of an observable variable Yik given a person in a situation whereas a score on a latent trait variable is the expectation of Yik given a person. The theory also comprises the definition of consistency, occasion specificity, reliability, and stability coefficients. An overview of different models of LST theory is given. The authors present how different research questions of personality psychology can and have been analyzed within the LST framework and why research in personality and individual differences can profit from LST theory and methodology. (PsycInfo Database Record (c) 2021 APA, all rights reserved)},
+  keywords = {LST, personality psychology, test theory},
+}
+
+@article{hox1998sem,
+  title={An introduction to structural equation modeling},
+  author={Hox, J.J. and Bechger, T.M.},
+  journal={Family science review},
+  volume={11},
+  pages = "354-373",
+  year={1998},
+  abstract = {This article presents a short and non-technical introduction to Structural Equation Modeling or SEM. SEM is a powerful technique that can combine complex path models with latent variables (factors). Using SEM, researchers can specify confirmatory factor analysis models, regression models, and complex path models. We present the basic elements of a structural equation model, introduce the estimation technique, which is most often Maximum Likelihood (ML), and discuss some problems concerning the assessment and improvements of the model fit, and model extensions to multigroup problems including factor means. Finally, we discuss some of the software, and list useful handbooks and Internet sites.},
+  keywords = {SEM, latent variables, maximum likelihood},
+}
+
+@article{kusztor2019differentialsleep,
+  title={Sleep deprivation differentially affects subcomponents of cognitive control},
+  author={Kusztor, Anikó and Raud, Liisa and Juel, Bjørn E. and Nilsen, André and Storm, Johan F. and Huster, René J.},
+  journal={Sleep},
+  volume={42},
+  number = {4},
+  year={2019},
+  publisher={Oxford University Press},
+  doi = "https://doi.org/10.1093/sleep/zsz016",
+  abstract = {Study Objectives
+
+Although sleep deprivation has long been known to negatively affect cognitive performance, the exact mechanisms through which it acts and what cognitive domains are affected most is still disputed. The current study provides a theory-driven approach to examine and explain the detrimental effects of sleep loss with a focus on attention and cognitive control.
+Methods
+
+Twenty-four participants (12 females; age: 24 ± 3 years) completed the experiment that involved laboratory-controlled over-night sleep deprivation and two control conditions, namely, a normally rested night at home and a night of sleep in the laboratory. Using a stop signal task in combination with electroencephalographic recordings, we dissociated different processes contributing to task performance such as sustained attention, automatic or bottom-up processing, and strategic or top-down control. At the behavioral level, we extracted reaction times, response accuracy, and markers of behavioral adjustments (post-error and post-stop slowing), whereas at the neural level event-related potentials (ERP) found in context of response inhibition (N2/P3) and error monitoring (ERN/Pe) were obtained.
+Results
+
+It was found that 24 hr of sleep deprivation resulted in declined sustained attention and reduced P300 and Pe amplitudes, demonstrating a gradual breakdown of top-down control. In contrast, N200 and ERN as well as the stop-signal reaction time showed higher resilience to sleep loss signifying the role of automatic processing.
+Conclusions
+
+These results support the notion that sleep deprivation is more detrimental to cognitive functions that are relatively more dependent on mental effort and/or cognitive capacity, as opposed to more automatic control processes.},
+  keywords = {sleep deprivation, cognitive control, stop signal task, ERP, response inhibition, error monitoring, electroencephalography, mental processes reaction time, sleep, sustained attention},
+}
+
+@article{fassbender2023lst,
+  title={Latent state-trait and latent growth curve modeling of inhibitory control },
+  author={Faßbender, Kaja and Meyhöfer, Inga and Ettinger, Ulrich},
+  journal={Journal of Experimental Psychology: General},
+  volume={152},
+  number = {5},
+  pages = "1396-1419",
+  year={2023},
+  publisher={American Psychological Association},
+  doi = "10.1037/xge0001344 ",
+  abstract = {The reliability of inhibitory control task performance as well as the existence of an underlying unitary inhibitory construct have been questioned. The present study is the first to use a trait and state decomposition approach to formally quantify the reliability of inhibitory control and to examine its hierarchical structure. N = 150 participants carried out antisaccade, Eriksen flanker, go/nogo, Simon, stop-signal, and Stroop tasks on three occasions. By applying latent state-trait modeling and latent growth-curve modeling, reliability was estimated and divided into the amount of variance explained by trait effects and trait changes (consistency) and the amount of variance explained by situational effects and effects of Situation × Person interaction (occasion specificity). Mean reaction times for all tasks revealed excellent reliabilities (.89-.99). Importantly, on average, 82\% of variance was accounted for by consistency while specificity was rather small. Although primary inhibitory variables revealed lower reliabilities (.51-.85), the majority of explained variance was again trait determined. Trait changes were observed for most variables and were strongest when comparing the first occasion to later ones. In addition, in some variables, those improvements were particularly high in initially underperforming subjects. An analysis of the construct of inhibition on trait level showed that communality between tasks was low. We conclude that most variables in inhibitory control tasks are mainly affected by stable trait effects, but there is only little evidence of a common, underlying inhibitory control construct at trait level. (PsycInfo Database Record (c) 2023 APA, all rights reserved). },
+  keywords = {response inhibition, interference control, latent state–trait, latent growth curve, reliability},
+}
+
+@article{verbruggen2019consensus,
+  title={A consensus guide to capturing the ability to inhibit actions and impulsive behaviors in the stop-signal task},
+  author={Verbruggen, Frederick and Aron, Adam R. and Band, Guido P.H and Beste, Christian and Bissett, Patrick G. and Brockett, Adam T. and Brown, Joshua W. and Chamberlain, Samuel R. and Chambers, Christopher D. and Colonius, Hans and Colzato, Lorenza S. and Corneil, Brian D. and Coxon, James P., and Depuis, Annie and Eagle, Dawn M. and Garavan, Hugh and Greenhouse, Ian and Heathcote, Andrew and Huster, René J. and Jahfari, Sara and Kenemans, J. Leon and Leunissen, Inge and Li, Chiang-Shan R. and Logan, Gordon D. and Matzke, Dora and Morein-Zamir, Sharon and Murthy, Aditya and Paré, Martin and Poldrack, Russell A. and Ridderinkhof, K. Richard and Robbins, Trevor W. and Roesch, Matthew, and Rubia, Katya and Schachar, Russell J. and Schall, Jeffrey D. and Stock, Ann-Kathrin and Swann, Nicole C. and Thakkar, Katharine N. and van der Molen, Maurits W. and Vermey, Luc and Vink, Matthijs and Wessel, Jan R. and Whelan, Robert and Zandbelt, Bram B. and Boehler, C. Nico},
+  journal={eLife},
+  volume={8},
+  year={2019},
+  doi = "https://doi.org/10.7554/eLife.46323.001",
+  abstract = {Response inhibition is essential for navigating everyday life. Its derailment is considered integral to numerous neurological and psychiatric disorders, and more generally, to a wide range of behavioral and health problems. Response-inhibition efficiency furthermore correlates with treatment outcome in some of these conditions. The stop-signal task is an essential tool to determine how quickly response inhibition is implemented. Despite its apparent simplicity, there are many features (ranging from task design to data analysis) that vary across studies in ways that can easily compromise the validity of the obtained results. Our goal is to facilitate a more accurate use of the stop-signal task. To this end, we provide 12 easy-to-implement consensus recommendations and point out the problems that can arise when they are not followed. Furthermore, we provide user-friendly open-source resources intended to inform statistical-power considerations, facilitate the correct implementation of the task, and assist in proper data analysis.},
+  keywords = {SST},
+}
+
+
+@article{rock2014impairment,
+  title={Cognitive impairment in depression: a systematic review and meta-analysis},
+  author={Rock, P.L. and Roiser, J.P. and Riedel, W.J. and Blackwell, A.D.},
+  journal={Psychological medicine},
+  volume={44},
+  pages = "2029-2040",
+  year={2014},
+  publisher={Cambridge University Press},
+  doi = "10.1017/S0033291713002535",
+  abstract = {Background: This review aimed to address the question of whether cognitive impairment should be considered a core feature of depression that may be a valuable target for treatment.
+
+Method: We conducted a systematic review and meta-analysis of cognitive function, assessed with a single neuropsychological test battery, the Cambridge Neuropsychological Test Automated Battery (CANTAB), in patients with depression during symptomatic and remitted states. Inclusion of studies comparing patients remitted from depression and controls enabled us to investigate whether cognitive impairment persists beyond episodes of low mood in depression.
+
+Results: Our meta-analysis revealed significant moderate cognitive deficits in executive function, memory and attention in patients with depression relative to controls (Cohen's d effect sizes ranging from -0.34 to -0.65). Significant moderate deficits in executive function and attention (Cohen's d ranging from -0.52 to -0.61) and non-significant small/moderate deficits in memory (Cohen's d ranging from -0.22 to -0.54) were found to persist in patients whose depressive symptoms had remitted, indicating that cognitive impairment occurs separately from episodes of low mood in depression.
+
+Conclusions: Both low mood and cognitive impairment are associated with poor psychosocial functioning. Therefore, we argue that remediation of cognitive impairment and alleviation of depressive symptoms each play an important role in improving outcome for patients with depression. In conclusion, this systematic review and meta-analysis demonstrates that cognitive impairment represents a core feature of depression that cannot be considered an epiphenomenon that is entirely secondary to symptoms of low mood and that may be a valuable target for future interventions},
+  keywords = {attention, CANTAB, cognition, depression, executive function, memory},
+}
+
+@article{Solelhac2024sleepdisturbances,
+  title={Sleep disturbances and incident risk of major depressive disorder in a population-based cohort},
+  author={Solelhac, Geoffroy and Imler, Théo and Strippoli, Marie-Pierre F. and Marchi, Nicola Andrea and Berger, Mathieu and Haba-Rubio, Jose and Raffray, Tifenn and Bayon, Virginie and Lombardi, Anne Sophie and Ranjbar, Setareh and Siclari, Francesca and Vollenweider, Peter and Marques-Vidal, Pedro and Geoffroy, Pierre-Alexis and Léger, Damien and Stephan, Aurélie and Preisig, Martin and Heinzer, Raphaël},
+  journal={Psychiatry research},
+  volume={338},
+  pages = "",
+  year={2024},
+  publisher={Elsevier},
+  doi = "10.1016/j.psychres.2024.115934",
+  abstract = {Sleep disturbances are well-known symptoms of major depressive disorder (MDD). However, the prospective risk of MDD in the presence of sleep disturbances in a general population-based cohort is not well known. This study investigated associations between both polysomnography (PSG)-based or subjective sleep features and incident MDD. Participants representative of the general population who had never had MDD completed sleep questionnaires (n = 2000) and/or underwent PSG (n = 717). Over 8 years' follow-up, participants completed psychiatric interviews enabling the diagnosis of MDD. Survival Cox models were used to analyze associations between sleep features and MDD incidence. A higher Epworth Sleepiness Scale and presence of insomnia symptoms were significantly associated with a higher incidence of MDD (hazard ratio [HR] [95 \% confidence interval (CI)]: 1.062 [1.022-1.103], p = 0.002 and 1.437 [1.064-1.940], p = 0.018, respectively). Higher density of rapid eye movements in rapid eye movement (REM) sleep was associated with a higher incidence of MDD in men (HR 1.270 [95 \% CI 1.064-1.516], p = 0.008). In women, higher delta power spectral density was associated with a lower MDD incidence (HR 0.674 [95 \% CI 0.463-0.981], p = 0.039). This study confirmed the associations between subjective and objective sleep features and the incidence of MDD in a large community dwelling cohort.},
+  keywords = {delta power, depression, EEG, hypersomnia, insomnia, major depressive disorder, REM sleep, sleep, sleepiness, slow wave sleep},
+}
+
+@article{logan1984inhibition,
+  title={On the ability to inhibit thought and action: A theory of an act of control},
+  author={Logan, Gordon D. and Cowan, William B.},
+  journal={Psychological review},
+  volume={91},
+  pages = "295–327",
+  year={1984},
+  publisher={American Psychological Association},
+  doi = "https://doi-org.ezproxy.uio.no/10.1037/0033-295X.91.3.295",
+  abstract = {Presents a theory of the inhibition of thought and action to account for people's performance in situations that require them to stop or change their current thoughts and actions. The theory proposes that a control signal, such as an external stop signal or an error during performance, starts a stopping process that races against the processes underlying ongoing thought and action. If the stopping process wins, thought and action are inhibited; if the ongoing process wins, thought and action run on to completion. The theory is formally developed to account for many aspects of performance in situations with explicit stop signals, and it is applied to data obtained from 3 adult observers in a series of RT tasks. The relation between response inhibition and other acts of control in motor performance and in cognition is discussed, and the implications of the theory are considered in terms of current thinking about attentional control and automaticity.},
+  keywords = {SST, RT, inhibition, executive functions, attention, self-control},
+}
+
+@article{stroop1935interference,
+  title={Studies of interference in serial verbal reactions},
+  author={Stroop, John Ridley},
+  journal={Journal of experimental psychology},
+  volume={18(6)},
+  pages = "643-662",
+  year={1935},
+  publisher={Psychological Review Company},
+  doi = "https://doi-org.ezproxy.uio.no/10.1037/h0054651",
+  abstract = {In this study pairs of conflicting stimuli, both being inherent aspects of the same symbols, were presented simultaneously (a name of one color printed in the ink of another color, a word stimulus and a color stimulus). The difference in time for reading the words printed in colors and the same words printed in black is the measure of the interference of color stimuli upon reading words. The difference in the time for naming the colors in which the words are printed and the same colors printed in squares (or swastikas) is the measure of the interference of conflicting word stimuli upon naming colors. The interference of conflicting color stimuli upon the time for reading 100 words (each word naming a color unlike the ink-color of its print) caused an increase of 2.3 seconds or 5.6\% over the normal time for reading the same words printed in black. This increase is not reliable. But the interference of conflicting word stimuli upon the time for naming 100 colors (each color being the print of a word which names another color) caused an increase of 47.0 seconds or 74.3\% of the normal time for naming colors printed in squares. Tests on the permanency of the interference of conflicting word stimuli are also described.},
+  keywords = {interference, serial verbal reactions, word stimulus, color stimulus, stroop, executive functions, inhibition},
+}
+
+@article{rogers1995taskswitch,
+  title={Costs of a Predictable Switch Between Simple Cognitive Tasks},
+  author={Rogers, Robert D. and Monsell, Stephen},
+  journal={Journal of experimental psychology},
+  volume={124(2)},
+  pages = "207-231",
+  year={1995},
+  publisher={American Psychological Association},
+  doi = "https://doi-org.ezproxy.uio.no/10.1037/0096-3445.124.2.207",
+  abstract = {In an investigation of task-set reconfiguration, participants switched between 2 tasks on every 2nd trial in 5 experiments and on every 4th trial in a final experiment. The tasks were to classify either the digit member of a pair of characters as even/odd or the letter member as consonant/vowel. As the response–stimulus interval increased up to 0.6 s, the substantial cost to performance of this predictable task-switch fell: Participants could partially reconfigure in advance of the stimulus. However, even with 1.2 s available for preparation, a large asymptotic reaction time (RT) cost remained, but only on the 1st trial of the new task. This is attributed to a component of reconfiguration triggered exogenously, i.e., only by a task-relevant stimulus. That stimuli evoke associated task-sets also explains why RT and switch costs increased when the stimulus included a character associated with the currently irrelevant task. },
+  keywords = {response stimulus interval, RT, task switching, executive functions, response set},
+}
+
+@article{kirchner1958update,
+  title={Age differences in short-term retention of rapidly changing information},
+  author={Kirchner, Wayne K.},
+  journal={Journal of Experimental Psychology},
+  volume={55(4)},
+  pages = "352–358",
+  year={1958},
+  publisher={American Psychological Association},
+  doi = "https://doi.org/10.1037/h0043688 ",
+  abstract = {An experiment was conducted to measure very short-term retention in younger and older Ss by means of a visual display involving a rapidly moving light… . Results indicated that older Ss slumped in performance much sooner than younger Ss, in both relative and absolute terms. Older Ss also tended to make more errors of omission and more random responses, indicating a lack of ability to 'keep up.' " Concluded that the inability to organize incoming and outgoing information as rapidly as the younger Ss caused the older Ss' poorer performance},
+  keywords = {age differences, retention, visual display, omission, errors, updating, n-back, executive functions},
+}
+
+@book{gioia2015brief,
+  title = {BRIEF: Atferdsvurdering av eksekutive funksjoner – norsk manual},
+  author = {Gioia, Gerard A. and Isquith, Peter K. and Guy, Stephen C. and Kenworthy, Lauren},
+  year = {2015},
+  publisher = {Hogrefe Psykologiforlag},
+  address = {Oslo},
+  note = {Norsk versjon},
+  keywords = {executive function, assessment, BRIEF, Norwegian version}
+}
+
+@article{egner2023principles,
+  title={Principles of cognitive control over task focus and task switching},
+  author={Egner, Tobias},
+  journal={Nature reviews psychology},
+  volume={2},
+  pages = "702–714",
+  year={2023},
+  publisher={Springer nature},
+  doi = " https://doi.org/10.1038/s44159-023-00234-4",
+  abstract = {Adaptive behaviour requires the ability to focus on a task and protect it from distraction (cognitive stability) and to rapidly switch tasks when circumstances change (cognitive flexibility). Burgeoning research literatures have aimed to understand how people achieve task focus and task switch readiness. In this Perspective, I integrate these literatures to derive a cognitive architecture and functional rules underlying the regulation of cognitive stability and flexibility. I propose that task focus and task switch readiness are supported by independent mechanisms. However, I also suggest that the strategic regulation of both mechanisms is governed by shared learning principles: an incremental, online learner that nudges control up or down based on the recent history of task demands (a recency heuristic) and episodic reinstatement when the current context matches a past experience (a recognition heuristic). Finally, I discuss algorithmic and neural implementations of these processes, as well as clinical implications.},
+  keywords = {cognitive control, working memory, psychology},
+}
+
+@article{braver2012dualmechanisms,
+  title={The variable nature of cognitive control: a dual mechanisms framework},
+  author={Braver, Todd S.},
+  journal={Trends in Cognitive Sciences},
+  volume={16(2)},
+  pages = "106-113",
+  year={2012},
+  publisher={Elsevier},
+  doi = "https://doi.org/10.1016/j.tics.2011.12.010",
+  abstract = {A core component of cognitive control – the ability to regulate thoughts and actions in accordance with internally represented behavioral goals – might be its intrinsic variability. In this article, I describe the dual mechanisms of control (DMC) framework, which postulates that this variability might arise from qualitative distinctions in temporal dynamics between proactive and reactive modes of control. Proactive control reflects the sustained and anticipatory maintenance of goal-relevant information within lateral prefrontal cortex (PFC) to enable optimal cognitive performance, whereas reactive control reflects transient stimulus-driven goal reactivation that recruits lateral PFC (plus a wider brain network) based on interference demands or episodic associations. I summarize recent research that demonstrates how the DMC framework provides a coherent explanation of three sources of cognitive control variation – intra-individual, inter-individual and between-groups – in terms of proactive versus reactive control biases.},
+  keywords = {cognitive control, executive functions},
+}
+
+@article{Shokri-Kojori2018beta-amyloid,
+  title={β-Amyloid accumulation in the human brain after onenight of sleep deprivation},
+  author={Shokri-Kojori, Ehsan and Wang, Gene-Jack and Wiers, Corinde E. and Demiral, Sukru B. and Guo, Min and Kim, Sung Won and Lindgren, Elsa and Ramirez, Veronica and Zehra, Amna and Freeman, Clara and Miller, Gregg and Manza, Peter and Srivastava, Tansha and De Santi, Susan and Tomasi, Dardo and Benveniste, Helene and Volkow, Nora D.},
+  journal={Proceedings of the National Academy of Sciences of the United States of America},
+  volume={115},
+  pages = "4483–4488NEUROSCIENCE",
+  year={2018},
+  publisher={National Academy of Sciences},
+  doi = "https://10.1073/pnas.1721694115",
+  abstract = {The effects of acute sleep deprivation on β-amyloid (Aβ) clearancein the human brain have not been documented. Here we used PETand 18 F-florbetaben to measure brain Aβ burden (ABB) in20 healthy controls tested after a night of rested sleep (baseline)and after a night of sleep deprivation. We show that one night ofsleep deprivation, relative to baseline, resulted in a significant in-crease in Aβ burden in the right hippocampus and thalamus. Theseincreases were associated with mood worsening following sleepdeprivation, but were not related to the genetic risk (APOE geno-type) for Alzheimer’s disease. Additionally, baseline ABB in arange of subcortical regions and the precuneus was inversely as-sociated with reported night sleep hours. APOE genotyping wasalso linked to subcortical ABB, suggesting that different Alz-heimer’s disease risk factors might independently affect ABB innearby brain regions. In summary, our findings show adverse ef-fects of one-night sleep deprivation on brain ABB and expand onprior findings of higher Aβ accumulation with chronic less sleep.},
+  keywords = {Alzheimer’s disease, beta amyloid, glymphatic system, hippocampus, sleep},
+}
+
+
+@article{sexton2014sleepatrophy,
+  title={Poor sleep quality is associated with increased cortical atrophy in community-dwelling adults},
+  author={Sexton, Claire E. and Storsve, Andreas B. and Walhovd, Kristine B. and Johansen-Berg, Heidi and Fjell, Anders M.},
+  journal={Neurology},
+  volume={83(11)},
+  pages = "967-973",
+  year={2014},
+  publisher={American academy of neurology},
+  doi = "https://10.1212/WNL.0000000000000774",
+  abstract = {Objective: To examine the relationship between sleep quality and cortical and hippocampal volume and atrophy within a community-based sample, explore the influence of age on results, and assess the possible confounding effects of physical activity levels, body mass index (BMI), and blood pressure.
+    Methods: In 147 community-dwelling adults (92 female; age 53.9 +/- 15.5 years), sleep quality was measured using the Pittsburgh Sleep Quality Index and correlated with cross-sectional measures of volume and longitudinal measures of atrophy derived from MRI scans separated by an average of 3.5 years. Exploratory post hoc analysis compared correlations between different age groups and included physical activity, BMI, and blood pressure as additional covariates.
+    Results: Poor sleep quality was associated with reduced volume within the right superior frontal cortex in cross-sectional analyses, and an increased rate of atrophy within widespread frontal, temporal, and parietal regions in longitudinal analyses. Results were largely driven by correlations within adults over the age of 60, and could not be explained by variation in physical activity, BMI, or blood pressure. Sleep quality was not associated with hippocampal volume or atrophy.
+    Conclusions: We found that longitudinal measures of cortical atrophy were widely correlated with sleep quality. Poor sleep quality may be a cause or a consequence of brain atrophy, and future studies examining the effect of interventions that improve sleep quality on rates of atrophy may hold key insights into the direction of this relationship.},
+  keywords = {SURFACE-BASED ANALYSIS, CEREBRAL-CORTEX THICKNESS, INSOMNIA, BRAIN INDEX, EXERCISE, OBESITY, VOLUME},
+}
+
+@article{alvaro2013sleepdepression,
+  title={A Systematic Review Assessing Bidirectionality between Sleep Disturbances, Anxiety, and Depression},
+  author={Alvaro, Pasquale K. and Roberts, Rachel M. and Harris, Jodie K.},
+  journal={Sleep},
+  volume={36(7)},
+  pages = "1059-1068",
+  year={2013},
+  publisher={OXFORD UNIV PRESS INC},
+  doi = "https://10.5665/sleep.2810",
+  abstract = {Study Objectives:
+To investigate whether sleep disturbances are bidirectionally related to anxiety and depression, and thus identify potential risk factors for each problem.
+
+Design:
+A systematic review was conducted on 9 studies (8 longitudinal, 1 retrospective) that assessed bidirectionality between a sleep disturbance, and anxiety or depression. Treatment studies were excluded, along with those solely based on clinical samples or cohorts at high risk of suffering from a sleep disturbance, anxiety and depression. Eligible studies were identified by searching PubMed, PsychINFO, Embase, and Scopus databases, and reference lists of eligible studies. Publication dates ranged from the beginning of each database to December 2011.
+
+Measurements and Results:
+Syntheses of longitudinal studies suggested insomnia and sleep quality were bidirectionally related to anxiety and depression, and depression/anxiety, respectively. Childhood sleep problems significantly predicted higher levels of depression and a combined depression/anxiety variable, but not vice-versa. A one-way relationship was found where anxiety predicted excessive daytime sleepiness, but excessive daytime sleepiness was not associated with depression.
+
+Conclusions:
+Definitive conclusions regarding bidirectionality cannot be made for most sleep disturbances due to the small number and heterogeneity of cohort samples used across studies. Nevertheless, best available evidence suggests insomnia is bidirectionally related to anxiety and depression. Clinical and theoretical implications are discussed.},
+  keywords = {anxiety, depression, insomnia, sleep disturbances, systematic review},
+}
+
+@article{sivertsen2012bidirectional,
+  title={The Bidirectional Association Between Depression and Insomnia},
+  author={Sivertsen, Børge and Salo, Paula and Mykletun, Arnstein and Hysing, Mari and Pallesen, Ståle and Krokstad, Steinar and Nordhus, Inger Hilde and Øverland, Simon},
+  journal={Psychosomatic Medicine},
+  volume={74(7)},
+  pages = "758-765",
+  year={2012},
+  publisher={American Psychosomatic Society},
+  doi = "https://10.1097/PSY.0b013e3182648619",
+  abstract = {Objective 
+Depression and insomnia are closely linked, yet our understanding of their prospective relationships remains limited. The aim of the current study was to investigate the directionality of association between depression and insomnia.
+
+Methods 
+Data were collected from a prospective population-based study comprising the most recent waves of the Nord-Trøndelag Health Study (HUNT) (the HUNT2 in 1995–1997 and the HUNT3 in 2006–2008). A total of 24,715 persons provided valid responses on the relevant questionnaires from both surveys. Study outcomes were onset of depression or insomnia at HUNT3 in persons not reporting the other disorder in HUNT2.
+
+Results 
+Both insomnia and depression significantly predicted the onset of the other disorder. Participants who did not have depression in HUNT2 but who had insomnia in both HUNT2 and HUNT3 had an odds ratio (OR) of 6.2 of developing depression at HUNT3. Participants who did not have insomnia in HUNT2 but who had depression in both HUNT2 and HUNT3 had an OR of 6.7 of developing insomnia at HUNT3. ORs were only slightly attenuated when adjusting for potential confounding factors.
+
+Conclusions 
+The results support a bidirectional relationship between insomnia and depression. This finding stands in contrast to the previous studies, which have mainly focused on insomnia as a risk factor for the onset of depression.},
+  keywords = {insomnia, depression, directionality, epidemiology, risk factors},
+}
+
+@article{foster2020sleep,
+  title={Sleep, circadian rhythms and health},
+  author={Foster, Russell G.},
+  journal={Interface focus},
+  volume={10(3)},
+  pages = "",
+  year={2020},
+  publisher={Royal Society},
+  doi = "https://doi.org/10.1098/rsfs.2019.0098",
+  abstract = {At the core of human thought, for the majority of individuals in the developed nations at least, there is the tacit assumption that as a species we are unfettered by the demands imposed by our biology and that we can do what we want, at whatever time we choose, whereas in reality every aspect of our physiology and behaviour is constrained by a 24 h beat arising from deep within our evolution. Our daily circadian rhythms and sleep/wake cycle allow us to function optimally in a dynamic world, adjusting our biology to the demands imposed by the day/night cycle. The themes developed in this review focus upon the growing realization that we ignore the circadian and sleep systems at our peril, and this paper considers the mechanisms that generate and regulate circadian and sleep systems; what happens mechanistically when these systems collapse as a result of societal pressures and disease; how sleep disruption and stress are linked; why sleep disruption and mental illness invariably occur together; and how individuals and employers can attempt to mitigate some of the problems associated with working against our internal temporal biology. While some of the health costs of sleep disruption can be reduced, in the short-term at least, there will always be significant negative consequences associated with shift work and sleep loss. With this in mind, society needs to address this issue and decide when the consequences of sleep disruption are justified in the workplace.},
+  keywords = {CBTi, circadian, health, insomnia, sleep, stress},
+}
+
+@article{fjell2025sleeppatterns,
+  title={Sleep Patterns and Human Brain Health},
+  author={Fjell, Ander M. and Walhovd, Kristine B.},
+  journal={The Neuroscientist},
+  volume={31(5)},
+  pages = "483-498",
+  year={2025},
+  publisher={Sage journals},
+  doi = "https://doi.org/10.1177/10738584241309850",
+  abstract = {It is a widely held opinion that sleep is important for human brain health. Here we examine the evidence for this view, focusing on normal variations in sleep patterns. We discuss the functions of sleep and highlight the paradoxical implications of theories seeing sleep as an adaptive capacity versus the theory that sleep benefits clearance of metabolic waste from the brain. We also evaluate the proposition that sleep plays an active role in consolidation of memories. Finally, we review research on possible effects of chronic sleep deprivation on brain health. We find that the evidence for a causal role of sleep in human brain health is surprisingly weak relative to the amount of attention to sleep in science and society. While there are well-established associations between sleep parameters and aspects of brain health, results are generally not consistent across studies and measures, and it is not clear to what extent alterations in sleep patterns represent symptoms or causes. Especially, the proposition that long sleep (>8 hours) in general is beneficial for long-term brain health in humans seems to lack empirical support. We suggest directions for future research to establish a solid foundation of knowledge about a role of sleep in brain health based on longitudinal studies with frequent sampling, attention to individual differences, and more ecologically valid intervention studies.},
+  keywords = {sleep, brain health, cognition, biomarkers, Alzheimer disease, normal aging},
+}
+
+@article{adamantidis2019oscillating,
+  title={Oscillating circuitries in the sleeping brain},
+  author={Adamantidis, Antoine R. and Gutierrez Herrera, Carolina and Gent, Thomas C.},
+  journal={Nature Reviews Neuroscience},
+  volume={20},
+  pages = "746–762",
+  year={2019},
+  publisher={Nature},
+  doi = "https://doi.org/10.1038/s41583-019-0223-4",
+  abstract = {Brain activity during sleep is characterized by circuit-specific oscillations, including slow waves, spindles and theta waves, which are nested in thalamocortical or hippocampal networks. A major challenge is to determine the relationships between these oscillatory activities and the identified networks of sleep-promoting and wake-promoting neurons distributed throughout the brain. Improved understanding of the neurobiological mechanisms that orchestrate sleep-related oscillatory activities, both in time and space, is expected to generate further insight into the delineation of sleep states and their functions.},
+  keywords = {EYE-MOVEMENT SLEEP, LESS-THAN-1 HZ OSCILLATION, PARADOXICAL REM SLEEP, SHARP-WAVE RIPPLES, HIGH-FREQUENCY OSCILLATIONS, LONG-RANGE SYNCHRONIZATIONS, LOW-WAVES, THETA-OSCILLATIONS, LOCUS-COERULEUS, MEMORY CONSOLIDATION},
+}
+
+@article{tai2022sleepef,
+  title={Impact of sleep duration on executive function and brain structure},
+  author={Tai, Xin You and Chen, Cheng and Manohar, Sanjay & Husain, Masud},
+  journal={Communications biology},
+  volume={5(1)},
+  pages = "",
+  year={2022},
+  publisher={Nature},
+  doi = "https://doi.org/10.1038/s42003-022-03123-3",
+  abstract = {Sleep is essential for life, including daily cognitive processes, yet the amount of sleep required for optimal brain health as we grow older is unclear. Poor memory and increased risk of dementia is associated with the extremes of sleep quantity and disruption of other sleep characteristics. We examined sleep and cognitive data from the UK Biobank (N = 479,420) in middle-to-late life healthy individuals (age 38–73 years) and the relationship with brain structure in a sub-group (N = 37,553). Seven hours of sleep per day was associated with the highest cognitive performance which decreased for every hour below and above this sleep duration. This quadratic relationship remained present in older individuals (>60 years, N = 212,006). Individuals who sleep between six-to-eight hours had significantly greater grey matter volume in 46 of 139 different brain regions including the orbitofrontal cortex, hippocampi, precentral gyrus, right frontal pole and cerebellar subfields. Several brain regions showed a quadratic relationship between sleep duration and volume while other regions were smaller only in individuals who slept longer. These findings highlight the important relationship between the modifiable lifestyle factor of sleep duration and cognition as well as a widespread association between sleep and structural brain health.},
+  keywords = {COGNITIVE FUNCTION, POOR SLEEP, SLOW WAVES, MEMORY, IMPAIRMENT, QUALITY, ASSOCIATION, PERFORMANCE, ATROPHY, VOLUME},
+}
+
+@article{sen2023sleepef,
+  title={Sleep Duration and Executive Function in Adults},
+  author={Sen, Aayushi and Tai, Xin You},
+  journal={Current Neurology and Neuroscience Reports},
+  volume={23},
+  pages = "801–813",
+  year={2023},
+  publisher={Springer Nature},
+  doi = "https://doi.org/10.1007/s11910-023-01309-8",
+  abstract = {Purpose of Review
+To review the literature examining the relationship between sleep and cognition, specifically examining the sub-domain of executive function. We explore the impact of sleep deprivation and the important question of how much sleep is required for optimal cognitive performance. We consider how other sleep metrics, such as sleep quality, may be a more meaningful measure of sleep. We then discuss the putative mechanisms between sleep and cognition followed by their contribution to developing dementia.
+
+Recent Findings
+Sleep duration and executive function display a quadratic relationship. This suggests an optimal amount of sleep is required for daily cognitive processes. Poor sleep efficiency and sleep fragmentation are linked with poorer executive function and increased risk of dementia during follow-up. Sleep quality may therefore be more important than absolute duration. Biological mechanisms which may underpin the relationship between sleep and cognition include brain structural and functional changes as well as disruption of the glymphatic system.
+
+Summary
+Sleep is an important modifiable lifestyle factor to improve daily cognition and, possibly, reduce the risk of developing dementia. The impact of optimal sleep duration and sleep quality may have important implications for every ageing individual.},
+  keywords = {Circadian Rhythms and Sleep, Cognition, Cognitive Neuroscience, REM sleep, Sleep Deprivation, Working Memory},
+}
+
+@article{fjell2024sleep,
+  title={Individual sleep need is flexible and dynamically related to cognitive function},
+  author={Fjell, Anders M. and Walhovd, Kristine B.},
+  journal={Nature human behaviour},
+  volume={8},
+  pages = "422–430",
+  year={2024},
+  publisher={Springer nature},
+  doi = "https://doi.org/10.1038/s41562-024-01827-6",
+  abstract = {Given that sleep deprivation studies consistently show that short sleep causes neurocognitive deficits, the effects of insufficient sleep on brain health and cognition are of great interest and concern. Here we argue that experimentally restricted sleep is not a good model for understanding the normal functions of sleep in naturalistic settings. Cross-disciplinary research suggests that human sleep is remarkably dependent on environmental conditions and social norms, thus escaping universally applicable rules. Sleep need varies over time and differs between individuals, showing a complex relationship with neurocognitive function. This aspect of sleep is rarely addressed in experimental work and is not reflected in expert recommendations about sleep duration. We recommend focusing on the role of individual and environmental factors to improve our understanding of the relationship between human sleep and cognition.},
+  keywords = {CONSENSUS STATEMENT, SEASONAL-VARIATIONS, RECOMMENDED AMOUNT, AMERICAN ACADEMY, VIGILANCE PERFORMANCE, CIRCADIAN-RHYTHMS, EXTENDED SLEEP, RESTRICTION, DEPRIVATION, EXTENSION},
+}
+
+@article{egner2023principles,
+  title={Principles of cognitive control over task focus and task switching},
+  author={Egner, Tobias},
+  journal={Nature reviews psychology},
+  volume={2},
+  pages = "702–714",
+  year={2023},
+  publisher={Springer nature},
+  doi = "https://doi.org/10.1038/s44159-023-00234-4",
+  abstract = {Adaptive behaviour requires the ability to focus on a task and protect it from distraction (cognitive stability) and to rapidly switch tasks when circumstances change (cognitive flexibility). Burgeoning research literatures have aimed to understand how people achieve task focus and task switch readiness. In this Perspective, I integrate these literatures to derive a cognitive architecture and functional rules underlying the regulation of cognitive stability and flexibility. I propose that task focus and task switch readiness are supported by independent mechanisms. However, I also suggest that the strategic regulation of both mechanisms is governed by shared learning principles: an incremental, online learner that nudges control up or down based on the recent history of task demands (a recency heuristic) and episodic reinstatement when the current context matches a past experience (a recognition heuristic). Finally, I discuss algorithmic and neural implementations of these processes, as well as clinical implications.},
+  keywords = {ANTERIOR CINGULATE CORTEX, ITEM-SPECIFIC CONTROL, WORKING-MEMORY, EXECUTIVE FUNCTIONS, PREFRONTAL CORTEX, POSITIVE AFFECT, SELECTIVE ATTENTION, CONFLICT ADAPTATION, AUTOMATIC PROCESSES, INTEGRATIVE THEORY},
+}
+
+@article{monsell2003switching,
+  title={Task switching},
+  author={Monsell, Stephen},
+  journal={Trends in cognitive sciences},
+  volume={7(3)},
+  pages = "134-140",
+  year={2003},
+  publisher={Elsevier},
+  doi = "https://10.1016/S1364-6613(03)00028-7",
+  abstract = {Everyday life requires frequent shifts between cognitive tasks. Research reviewed in this article probes the control processes that reconfigure mental resources for a change of task by requiring subjects to switch frequently among a small set of simple tasks. Subjects' responses are substantially slower and, usually, more error-prone immediately after a task switch. This ‘switch cost’ is reduced, but not eliminated, by an opportunity for preparation. It seems to result from both transient and long-term carry-over of ‘task-set’ activation and inhibition as well as time consumed by task-set reconfiguration processes. Neuroimaging studies of task switching have revealed extra activation in numerous brain regions when subjects prepare to change tasks and when they perform a changed task, but we cannot yet separate ‘controlling’ from ‘controlled’ regions},
+  keywords = {task switching, cognitive control, executive functions},
+}
+
+@article{kiesel2010review,
+  title={Control and Interference in Task Switching—A Review},
+  author={Kiesel, Andrea and Steinhauser, Marco and Wendt, Mike and Falkenstein, Michael and Jost, Kerstin and Philipp, Andrea M. and Koch, Iring},
+  journal={Psychological bulletin},
+  volume={136(5)},
+  pages = "849–874",
+  year={2010},
+  doi = "https://doi.org/10.1037/a001984",
+  abstract = {The task-switching paradigm offers enormous possibilities to study cognitive control as well as task interference. The current review provides an overview of recent research on both topics. First, we review different experimental approaches to task switching, such as comparing mixed-task blocks with single-task blocks, predictable task-switching and task-cuing paradigms, intermittent instructions, and voluntary task selection. In the 2nd part, we discuss findings on preparatory control mechanisms in task switching and theoretical accounts of task preparation. We consider preparation processes in two-stage models, consider preparation as an all-or-none process, address the question of whether preparation is switch-specific, reflect on preparation as interaction of cue encoding and memory retrieval, and discuss the impact of verbal mediation on preparation. In the 3rd part, we turn to interference phenomena in task switching. We consider proactive interference of tasks and inhibition of recently performed tasks indicated by asymmetrical switch costs and n-2 task-repetition costs. We discuss stimulus-based interference as a result of stimulus-based response activation and stimulus-based task activation, and response-based interference because of applying bivalent rather than univalent responses, response repetition effects, and carryover of response selection and execution. In the 4th and final part, we mention possible future research fields.},
+  keywords = {task switching, cognitive control, interference},
+}
+
+@article{wilckens2014sleeppreparation,
+  title={Sleep continuity and total sleep time are associated with task-switching and preparation in young and older adults},
+  author={Wilckens, Kristine A. and Woo, Sarah G. and Erickson, Kirk I. and Wheeler, Mark E.},
+  journal={Journal of sleep research},
+  volume={23(5)},
+  pages = "508-516",
+  year={2014},
+  publisher={Wiley},
+  doi = "https://10.1111/jsr.12148",
+  abstract = {Ageing is associated with changes in sleep and decline executive functions, such as task-switching and task preparation. Given that sleep affects executive function, age-related changes in executive function may be attributable to changes in sleep. The present study used a sleep detection device to examine whether or not wake time after sleep onset and total sleep time moderated age differences in task-switching performance and participants ability to reduce switch costs when given time to prepare. Participants were cognitively healthy (Mini Mental State Examination > 26) younger (n = 54; mean age = 22.9; 67.8\% female) and older (n = 45; mean age 62.8; 71.1\% female) adults. Using a task-switching paradigm, which manipulated preparation time, we found that smaller global switch costs were associated with lower wake time after sleep onset and longer total sleep time. Greater preparation effects on local switch costs and adoption of a task-set were associated with lower wake time after sleep onset, although this effect was significant only in older adults when stratified by age group. This association was independent of inhibition and working memory abilities. The lack of interactions between sleep and age group indicated that age differences in switch costs were not moderated by better sleep. Our results suggest that young and older adults may benefit similarly from lower wake time after sleep onset and longer total sleep time in overall performance, and individuals with less wake time after sleep onset are more likely to engage preparatory strategies to reduce switch costs and boost task-switching performance.},
+  keywords = {cognition, executive function, individual differences, sleep continuity, task-switching, total sleep time},
+}
+
+@article{wilckens2020sleepmddswitch,
+  title={Does objectively-assessed sleep moderate the association between history of major depressive disorder and task-switching?},
+  author={Wilckens, Kristine A. and Kline, Christopher E. and Bowman, Marissa A. and Brindle, Ryan C. and Cribbet, Matthew R. and Thayer, Julian F. and Hall, Martica H.},
+  journal={Journal of affective disorders},
+  volume={265},
+  pages = "216-223",
+  year={2020},
+  publisher={Elsevier},
+  doi = "https://10.1016/j.jad.2020.01.003",
+  abstract = {Background: Executive function and psychomotor speed are consistently impaired in patients with major depressive disorder (MDD). Persistent cognitive impairments after depression remission are thought to reflect 'scarring' from the neurotoxic effects of hypothalamic-pituitary-adrenal axis activity during a depressive episode. As sleep also deteriorates with depression and restores daytime executive functions, we examined whether adequate sleep could be protective against task-switching and psychomotor impairments associated with a history of MDD.
+
+Methods: This cross-sectional study tested task-switching associations with MDD history, sleep, and their interaction to determine whether sleep continuity and sleep duration moderate the relationship between MDD history and task-switching performance.
+
+Results: After adjusting for age, sex, education, current depressive symptoms, and use of anti-depressants, a history of MDD, particularly recurrent MDD, was associated with slower response speed and disproportionately lower accuracy on repetition trials compared to switch trials, reflecting impaired adoption of a task-set. Regardless of MDD history, higher wake after sleep onset and shorter total sleep time were associated with slower response times, but neither sleep measure moderated the association between depression history and task-switching performance.
+
+Limitations: This cross-sectional study cannot assess the causal direction of associations. One night of sleep in the laboratory was used to assess sleep and a single task-switching paradigm was used to assess executive function.
+
+Conclusions: These results suggest that longer, more continuous sleep is associated with greater psychomotor speed across healthy controls and those with a history of MDD, but MDD-task-switching associations are not mitigated by longer or more continuous sleep.},
+  keywords = {Major depressive disorder, Depression history, Sleep, Cognitive function, Executive function},
+}
+
+@article{cavanagh2014theta,
+  title={Frontal theta as a mechanism for cognitive control},
+  author={Cavanagh, James F. and Frank, Michael J.},
+  journal={Trends in cognitive sciences},
+  volume={18(8)},
+  pages = "414-421",
+  year={2014},
+  publisher={Elsevier},
+  doi = "https://10.1016/j.tics.2014.04.012",
+  abstract = {Recent advancements in cognitive neuroscience have afforded a description of neural responses in terms of latent algorithmic operations. However, the adoption of this approach to human scalp electroencephalography (EEG) has been more limited, despite the ability of this methodology to quantify canonical neuronal processes. Here, we provide evidence that theta band activities over the midfrontal cortex appear to reflect a common computation used for realizing the need for cognitive control. Moreover, by virtue of inherent properties of field oscillations, these theta band processes may be used to communicate this need and subsequently implement such control across disparate brain regions. Thus, frontal theta is a compelling candidate mechanism by which emergent processes, such as 'cognitive control', may be biophysically realized.},
+  keywords = {theta, ERP, cognitive control, frontal cortex, computational modeling, prediction error},
+}
+
+@article{depestele2023thetadriving,
+  title={The effect of Dual-Task modality on midfrontal theta power and driving performance across the adult lifespan},
+  author={Depestele, Sieland and van Dun, Kim and Verstraelen, Stefanie and Ross, Veerle and Van Hoornweder, Sybren and Brijs, Kris and Brijs, Tom and Meesen, Raf},
+  journal={Transportation Research Part F: Traffic Psychology and Behaviour},
+  volume={95},
+  pages = "188-201",
+  year={2023},
+  publisher={Elsevier},
+  doi = "https://10.1016/j.trf.2023.04.007",
+  abstract = {Driving is a complex activity, entailing concurrent preparation and execution of motor behavior, and processing of cognitive information. Dual-tasking often leads to performance decrements, especially when the subtasks require similar neural resources, e.g., controlling the steering wheel, handling the pedals and shifting gears. With higher age, the ability to simultaneously perform different tasks deteriorates, as more mental resources are required for accurate coordination of movements. Therefore, using electroencephalography, we measured the neural correlates of dual-task driving in 81 healthy younger (n = 27), middle-aged (n = 25) and older adults (n = 29). A visuocognitive and a visuomotor dual-task were combined with a simulated lane-keeping task, with the latter dual-task requiring more similar resources. As expected, steering precision decreased to a higher extent when combined with a visuomotor dual-task in all participants, compared to no deterioration in the visuocognitive dual-task. Yet, this visuomotor dual-task performance decrease was more prominent with increasing age. Remarkably, although mid-frontal theta power increased in all groups when a visuomotor dual-task was added, indicating the recruitment of additional mental resources, this increase was less prominent for middle-aged and older adults. This could signify a plateau effect of theta power in which a saturation of mental resources is reached, leading to an increased dual-task cost. Therefore, reducing driver task de-mands by limiting the need for motor control processing, e.g., by switching to automatic gear shifting, could be beneficial for driving safety.},
+  keywords = {Aging, Electroencephalography, Driving performance, Dual-tasking, Motor control},
+}
+
+@article{verbeke2021synchronize,
+  title={Learning to Synchronize: Midfrontal Theta Dynamics during Rule Switching},
+  author={Verbeke, Pieter and Ergo, Kate and De Loof, Esther and Verguts, Tom},
+  journal={Journal of neuroscience},
+  volume={41(7)},
+  pages = "1516-1528",
+  year={2021},
+  publisher={Society for Neuroscience},
+  doi = "https://10.1523/JNEUROSCI.1874-20.2020",
+  abstract = {In recent years, several hierarchical extensions of well-known learning algorithms have been proposed. For example, when stimulus-action mappings vary across time or context, the brain may learn two or more stimulus-action mappings in separate modules, and additionally (at a hierarchically higher level) learn to appropriately switch between those modules. However, how the brain mechanistically coordinates neural communication to implement such hierarchical learning remains unknown. Therefore, the current study tests a recent computational model that proposed how midfrontal theta oscillations implement such hierarchical learning via the principle of binding by synchrony (Sync model). More specifically, the Sync model uses bursts at theta frequency to flexibly bind appropriate task modules by synchrony. The 64-channel EEG signal was recorded while 27 human subjects (female: 21, male: 6) performed a probabilistic reversal learning task. In line with the Sync model, postfeedback theta power showed a linear relationship with negative prediction errors, but not with positive prediction errors. This relationship was especially pronounced for subjects with better behavioral fit (measured via Akaike information criterion) of the Sync model. Also consistent with Sync model simulations, theta phase-coupling between midfrontal electrodes and temporoparietal electrodes was stronger after negative feedback. Our data suggest that the brain uses theta power and synchronization for flexibly switching between task rule modules, as is useful, for example, when multiple stimulus action mappings must be retained and used.},
+  keywords = {cognitive control, midfrontal theta, neural synchrony, rule switching},
+}
+@article{authoryearnickname,
+  title={},
+  author={},
+  journal={},
+  volume={},
+  pages = "",
+  year={},
+  publisher={},
+  doi = "",
+  abstract = {},
+  keywords = {},
+}
