@@ -1,12 +1,12 @@
-%% Batch EEG Preprocessing Pipeline for SST Data with ICA
+%% Batch EEG Preprocessing Pipeline for TST Data with ICA
 
 % Author: Røskva
 % Date: 09.05.25
-% Last changed: 15.08.25
+% Last changed: 16.12.25
 
 % DESCRIPTION:
 % This script performs batch preprocessing of EEG data (.vhdr files) for 
-% Stop Signal Task (SST) experiments. The pipeline prepares data for 
+% Task Switching Task (TST) experiments. The pipeline prepares data for 
 % subsequent manual ICA component rejection and analysis.
 
 % Long description:
@@ -32,7 +32,7 @@ vhdr_files = dir(fullfile(raw_folder, '*.vhdr'));
 for f = 1:length(vhdr_files)
     try
         % Get file info
-        [~, base_name, ~] = fileparts(vhdr_files(f).name); % e.g., 'SST_152_1'
+        [~, base_name, ~] = fileparts(vhdr_files(f).name); % e.g., 'TST_152_1'
         disp(['Processing: ' base_name]);
         
         %% 1. Import Data
