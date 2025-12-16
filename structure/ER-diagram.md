@@ -40,15 +40,16 @@ PHO, MADRS, MINI, GAD, SST, Stroop, etc.
 
 Questionnaire X at timepoint Y / EEG task Z in session 2
 
-| Column name        | Type | Key | Description                                                   |
-|--------------------|------|-----|---------------------------------------------------------------|
-| administration_id  | TEXT | PK  | Unique administration instance                                |
-| participant_id     | TEXT | FK  | References participants(participant_id)                       |
-| timepoint_id       | TEXT | FK  | References timepoints(timepoint_id)                           |
-| instrument_id      | TEXT | FK  | References instruments(instrument_id)                         |
-| file_path          | TEXT |     | Path to raw or processed data file (if applicable)            |
-| processing_state   | TEXT |     | raw, preprocessed, cleaned, epoched, etc.                     |
-| processing_version | TEXT |     | Script or pipeline version identifier                         |
+| Column name        | Type    | Key | Description                                                   |
+|--------------------|---------|-----|---------------------------------------------------------------|
+| administration_id  | TEXT    | PK  | Unique administration instance                                |
+| participant_id     | TEXT    | FK  | References participants(participant_id)                       |
+| timepoint_id       | TEXT    | FK  | References timepoints(timepoint_id)                           |
+| instrument_id      | TEXT    | FK  | References instruments(instrument_id)                         |
+| file_path          | TEXT    |     | Path to raw or processed data file (if applicable)            |
+| processing_state   | TEXT    |     | raw, preprocessed, cleaned, epoched, etc.                     |
+| processing_version | TEXT    |     | Script or pipeline version identifier                         |
+| is_complete        | INTEGER |     | 0 = incomplete, 1 = complete                                  |
 
 
 ### measures
