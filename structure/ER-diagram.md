@@ -38,7 +38,7 @@ PHO, MADRS, MINI, GAD, SST, Stroop, etc.
 
 ### administrations
 
-Questionnaire X at timepoint Y” / “EEG task Z in session 2
+Questionnaire X at timepoint Y / EEG task Z in session 2
 
 | Column name        | Type | Key | Description                                                   |
 |--------------------|------|-----|---------------------------------------------------------------|
