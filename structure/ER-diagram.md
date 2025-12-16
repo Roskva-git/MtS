@@ -1,3 +1,8 @@
+# Entity-relationship model
+
+Based on the codebook
+
+
 ### participants
 
 Stable demographics
