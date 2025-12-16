@@ -59,14 +59,14 @@ Questionnaire X at timepoint Y / EEG task Z in session 2
 
 ### measures
 
-Item-level responses, summary scores, EEG-derived metrics
+Item-level responses, summary scores, EEG-derived metrics. The database does not encode questionnaire structure.
 
 | Column name        | Type  | Key | Description                                               |
 |--------------------|-------|-----|-----------------------------------------------------------|
 | measure_id         | TEXT  | PK  | Unique measure identifier                                 |
 | administration_id  | TEXT  | FK  | References administrations(administration_id)             |
 | measure_name       | TEXT  |     | Name of item or derived measure                           |
-| value              | REAL  |     | Numeric or coded value                                    |
+| value              | TEXT  |     | Numeric or coded value                                    |
 | unit               | TEXT  |     | Unit of measurement (if applicable)                       |
 
 
