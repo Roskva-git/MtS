@@ -1,4 +1,4 @@
-Mind the sleep is a multimodal, longitudinal study with a rich dataset.
+## Mind the sleep is a multimodal, longitudinal study with a rich dataset.
 
 By making a simple relational database we can structure our data to ease the workflow in different parts of the project.
 
