@@ -70,7 +70,7 @@ EEG = pop_chanedit(EEG, {'lookup','standard_1005.elc'},'append',1,'changefield',
         % Extract meaningful event names
         EEG = SST_recode(EEG, EEG.srate, gl, gr, gsl, gsr, sl, sr, rl, rr, cl, cr);
 
-%% 7.1 Event list creation and Trigger renaming (But I don't know the trigger names yet)
+%% 7.1 Event list creation and Trigger renaming. Event types double checked with EEG.event (not the recoding)
 
 % the event types in the EEG file are :
 % 'S  1' = newblock. Marks the time of a new block
@@ -79,6 +79,7 @@ EEG = pop_chanedit(EEG, {'lookup','standard_1005.elc'},'append',1,'changefield',
 % 'S  4' = error. Marks time of an incorrect response
 % 'S  5' = correct. Marks time of a correct response 
 % 'S254' = trigger in the beginning of block to align EEG
+% 'boundary' = ?
 
 % IMPORTANT: THERE'S 2 SPACES BETWEEN 'S' AND THE 'NUMBER' IN EEG FILE TRIGGERS. 
 
