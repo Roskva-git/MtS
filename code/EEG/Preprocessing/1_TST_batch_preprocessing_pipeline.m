@@ -69,6 +69,28 @@ EEG = pop_chanedit(EEG, {'lookup','standard_1005.elc'},'append',1,'changefield',
         cr = 'Not collected';
         % Extract meaningful event names
         EEG = SST_recode(EEG, EEG.srate, gl, gr, gsl, gsr, sl, sr, rl, rr, cl, cr);
+
+%% 7.1 Event list creation and Trigger renaming (But I don't know the trigger names yet)
+
+% the event types in the EEG file are :
+% 'S  1' = newblock. Marks the time of a new block
+% 'S  2' = stimulus one. Marks when stimulus one is displayed
+% 'S  3' = stimulus two. Marks when stimulus two is displayed
+% 'S  4' = error. Marks time of an incorrect response
+% 'S  5' = correct. Marks time of a correct response 
+% 'S254' = trigger in the beginning of block to align EEG
+
+% IMPORTANT: THERE'S 2 SPACES BETWEEN 'S' AND THE 'NUMBER' IN EEG FILE TRIGGERS. 
+
+% Logic and descriptons of recoding
+% 'R/S'             - repeat or switch trial 
+% 'cC/cE'           - current correct response or current error response
+% 'pC/pE'           - previous correct response or previous error response
+% 'Stim1/Stim2'     - marks when stimulus one/two is displayed
+% 'stim/res'        - moment of stimulus presentation or moment of response giving
+% 'Firsttrial'      - first trial of a new block 
+
+        
 %% 8. Run ICA
         EEG = pop_runica(EEG, 'extended', 1, 'interrupt', 'on');
 %% 9. Save ICA Decomposition
