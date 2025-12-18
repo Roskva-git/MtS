@@ -1,38 +1,39 @@
-%% 3. Batch EEG events mapping for TST Data using logfiles
+%% 3. Batch EEG Event Mapping for TST Data Using Logfiles
 
 % Author: Røskva
 % Date: 09.05.25
-% Last changed: 18.12.25
+% Last updated: 18.12.25
 
-% Workflow: 
-% Step 1. Run the preprocessing script with ICA
-% step 2. Reject independent components 
-% Step 3. Run the mapping script using the logfile to map events
-% Step 4. Run epoching script
+% Workflow context:
+%   1. Preprocess EEG + ICA (Script 1)
+%   2. Manually reject components (Script 2)
+%   3. Run this script to map logfiles onto EEG event markers
+%   4. Epoch & analyze (Script 4)
 
-% DESCRIPTION:
-% This script 
+% PURPOSE:
+%   The cleaned EEG files contain only basic triggers (S  1, S  2, S  3, etc.).
+%   The corresponding logfiles contain full trial metadata:
+%       - trial index
+%       - switch/repeat
+%       - stimulus identity
+%       - correctness
+%       - reaction time
+%       - response key
 
-% Long description:.
-% We create an event list and rename the triggers for epoching.
+%   This script links those two sources. For each EEG S2/S3 stimulus event,
+%   we assign new descriptive labels—e.g.:
+%       'Stim1_R_cC'  (Stim1, repeat, current correct)
+%       'Stim2_S_cE'  (Stim2, switch, current error)
 
-
-%% 7. Event List Creation and Trigger Renaming
-        % Relevant triggers
-        gl = 'S  1'; % Go stimulus - left - go trial
-        gr = 'S  2'; % Go stimulus - right - go trial
-        gsl = 'S  3'; % Go stimulus - left - stop trial
-        gsr = 'S  4'; % Go stimulus - right - stop trial
-        sl = 'S  5'; % Stop stimulus - left
-        sr = 'S  6'; % Stop stimulus - right
-        rl = 'S 65';  % Response - left
-        rr = 'S 71'; % Response - right
-        cl = 'Not collected'; % for CRT task, not collected in this data set
-        cr = 'Not collected';
-        % Extract meaningful event names
-        EEG = SST_recode(EEG, EEG.srate, gl, gr, gsl, gsr, sl, sr, rl, rr, cl, cr);
-
-%% 7.1 Event list creation and Trigger renaming. Event types double checked with EEG.event (not the recoding)
+% OUTPUT:
+%   - Saves a new dataset: <base_name>_mapped.set
+%   - Adds fields to EEG.event:
+%         .trialNr
+%         .taskSwitch
+%         .correct
+%         .key
+%         .rt
+%         .mappedType    (string label)
 
 % the event types in the EEG file are :
 % 'S  1' = newblock. Marks the time of a new block
@@ -52,3 +53,99 @@
 % 'Stim1/Stim2'     - marks when stimulus one/two is displayed
 % 'stim/res'        - moment of stimulus presentation or moment of response giving
 % 'Firsttrial'      - first trial of a new block 
+
+
+%% 0. Paths and file lists
+addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Code\tools\eeglab2025.0.0\');
+eeglab;
+
+clean_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\2_cleaned\';
+log_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\logfiles\';
+out_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\3_mapped\';
+
+clean_files = dir(fullfile(clean_folder, '*_cleaned.set'));
+
+for f = 1:length(clean_files)
+
+    %% 1. Load EEG dataset
+    filename = clean_files(f).name;
+    [~, base_name, ~] = fileparts(filename);  % e.g., 'TST_191_1_cleaned'
+
+    disp(['Mapping events for: ' base_name]);
+
+    EEG = pop_loadset('filename', filename, 'filepath', clean_folder);
+
+    % Extract subject/run number from base_name (TST_xxx_y_cleaned)
+    tokens = regexp(base_name, 'TST_(\d+)_(\d+)', 'tokens');
+    subjID = tokens{1}{1};
+    runNr  = tokens{1}{2};
+
+    %% 2. Load corresponding logfile (.mat)
+    logFile = fullfile(log_folder, [subjID '_' runNr '.mat']);
+
+    if ~exist(logFile, 'file')
+        warning(['Missing logfile for: ' base_name]);
+        continue;
+    end
+
+    logData = load(logFile);
+    trials  = logData.testData.trial;  % struct array
+
+    %% 3. Extract EEG event latencies for S2/S3
+    isStim = strcmp({EEG.event.type}, 'S  2') | strcmp({EEG.event.type}, 'S  3');
+    stimIdx = find(isStim);
+
+    % simple safety check
+    if length(stimIdx) ~= length(trials)
+        warning(['Stimulus count mismatch: EEG=' num2str(length(stimIdx)) ...
+                 ' log=' num2str(length(trials)) ' | ' base_name]);
+        % We may refine matching later, but for now assume alignment.
+    end
+
+    %% 4. Loop through stimulus events and assign metadata
+    for t = 1:min(length(stimIdx), length(trials))
+
+        e = stimIdx(t);
+        tr = trials(t);
+
+        % basic info
+        EEG.event(e).trialNr     = tr.trial;
+        EEG.event(e).taskSwitch  = tr.taskSwitch;
+        EEG.event(e).correct     = tr.correctResponse;
+        EEG.event(e).key         = tr.keyPressed;
+        EEG.event(e).rt          = tr.reactionTime;
+
+        % create a compact mapping string
+        % R/S = repeat/switch
+        if tr.taskSwitch == 1
+            rs = 'S';
+        else
+            rs = 'R';
+        end
+
+        if tr.correctResponse == 1
+            cc = 'cC';
+        else
+            cc = 'cE';
+        end
+
+        % label uses existing EEG.event.type ('S  2' or 'S  3')
+        stimType = strrep(EEG.event(e).type, ' ', ''); % remove spaces: 'S2'/'S3'
+
+        EEG.event(e).mappedType = [stimType '_' rs '_' cc];
+
+        % overwrite event.type for user-friendly epoching
+        EEG.event(e).type = EEG.event(e).mappedType;
+
+    end
+
+    %% 5. Save mapped set
+    out_name = [base_name '_mapped.set'];
+    pop_saveset(EEG, 'filename', out_name, 'filepath', out_folder);
+
+    disp(['SUCCESS: mapped & saved ' out_name]);
+
+end
+
+disp('Event mapping complete.');
+
