@@ -24,17 +24,17 @@
 
 
 %% 0. Initialize EEGLAB and Set Paths
-addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Code\tools\eeglab2025.0.0', ...
-    '\\hypatia.uio.no\lh-sv-psi\project-folder', ...
-    '\\hypatia.uio.no\lh-sv-psi\project-code-folder');
+addpath('\\hypatia.uio.no\...\eeglab2025.0.0', ...
+    '\\hypatia.uio.no\...\Projects\Røskva\', ...
+    '\\hypatia.uio.no\...\Code\func\');
 eeglab;  % Start EEGLAB
 % Define folders
-raw_folder = '\\hypatia.uio.no\raw-folder\';
-out_folder = '\\hypatia.uio.no\out-folder';
+raw_folder = '\\hypatia.uio.no\...\raw\';
+out_folder = '\\hypatia.uio.no\...\1_preproc\';
 % Get all .vhdr files in the raw folder
 vhdr_files = dir(fullfile(raw_folder, '*.vhdr'));
 % Loop over each file
-for f = 1:length(vhdr_files)
+for f = 1:length(vhdr_files) % Use for f = find(strcmp({vhdr_files.name}, 'TST_31_1.vhdr')) to test on one participant. for f = 1:length(vhdr_files)
     try
         % Get file info
         [~, base_name, ~] = fileparts(vhdr_files(f).name); % e.g., 'TST_152_1'
@@ -52,17 +52,15 @@ for f = 1:length(vhdr_files)
         EEG = pop_select(EEG, 'rmchannel', {'L_EMG', 'R_EMG'});
 
 
-        %% 5. Look up locations + append empty FCz
-        
-EEG = pop_chanedit(EEG, {'lookup','standard_1005.elc'},'append',1,'changefield',{2,'labels','FCz'});
+        %% 5. Look up locations
+EEG = pop_chanedit(EEG, 'lookup','standard_1005.elc');
 
-
-        %% 6. Re-reference to avg earlobes + add online reference
+%% 7. Re-reference to avg earlobes + add online reference
         EEG = pop_reref( EEG, find(ismember({EEG.chanlocs.labels}, {'A1','A2'})),'refloc',struct('labels',{'FCz'},'type',{''},'theta',[],'radius',[],'X',[],'Y',[],'Z',[],'sph_theta',[],'sph_phi',[],'sph_radius',[],'urchan',[],'ref',{''},'datachan',0));
-        
-%% 7. Run ICA
+
+%% 8. Run ICA
         EEG = pop_runica(EEG, 'extended', 1, 'interrupt', 'on');
-%% 8. Save ICA Decomposition
+%% 9. Save ICA Decomposition
         out_filename = [base_name '_ICA.set'];
         pop_saveset(EEG, 'filename', out_filename, 'filepath', out_folder);
         disp(['SUCCESS: ' base_name ' processed and saved as ' out_filename]);
