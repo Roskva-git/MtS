@@ -41,4 +41,4 @@ EEG = pop_loadset('filename','TST_XX_X_ICA.set','filepath','\\hypatia.uio.no\\pr
 % Mark bad components, then Tools > Remove Components
 
 % 4. Save cleaned dataset (do this manually after component removal)
-% pop_saveset(EEG, 'filename', 'TST_71_1_ICA_clean.sett', 'filepath', output_path);
+% pop_saveset(EEG, 'filename', 'TST_71_1_cleaned.set', 'filepath', output_path);
