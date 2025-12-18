@@ -10,6 +10,13 @@
 %   3. Run this script to map logfiles onto EEG event markers
 %   4. Epoch & analyze (Script 4)
 
+% TODO additions after basic mapping works:
+% - map congruent vs incongruent from `string`
+% - map repeat vs switch using `taskSwitch`
+% - map correct/error using `correctResponse`
+% - include response key (left/right/none)
+% - verify S2/S3 alignment across blocks
+
 % PURPOSE:
 %   The cleaned EEG files contain only basic triggers (S  1, S  2, S  3, etc.).
 %   The corresponding logfiles contain full trial metadata:
