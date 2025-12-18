@@ -5,7 +5,7 @@
 % Last changed: 18.12.25
 
 % Workflow: 
-% Step 1. Run this preprocessing script with ICA
+% Step 1. Run preprocessing script with ICA
 % step 2. Reject independent components 
 % Step 3. Run the mapping script using the logfile to map events
 % Step 4. Run epoching script
