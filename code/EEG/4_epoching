@@ -1,8 +1,56 @@
-%% 4. Epoching script
+%% 4. Batch Epoching for TST Data
 
+% Author: Røskva
+% Date: 18.12.25
+% Last changed: 18.12.25
 
 % Workflow: 
-% Step 1. Run this preprocessing script with ICA
+% Step 1. Run the preprocessing script with ICA
 % step 2. Reject independent components 
 % Step 3. Run the mapping script using the logfile to map events
 % Step 4. Run epoching script
+
+% DESCRIPTION:
+% This script loads cleaned EEG datasets (with mapped events) and creates
+% epochs around stimulus events for subsequent time–frequency analysis.
+
+% TODO (after mapping is finalized):
+% - define event labels for each trial type (e.g., R_C_corr, S_I_err)
+% - choose epoch window (likely -1 to 2 seconds for time–freq)
+% - baseline correction window (likely pre-stim baseline)
+% - handle omissions separately
+% - reject epochs with excessive noise if necessary
+
+%% Initialize EEGLAB and paths
+addpath('\\hypatia...\eeglab2025.0.0');
+raw_folder = '\\hypatia...\Data\TST\2_cleaned';      % cleaned files
+out_folder = '\\hypatia...\Data\TST\3_epoched';      % epoched output
+
+eeglab;
+
+%% Loop over cleaned datasets
+cleaned_files = dir(fullfile(raw_folder, '*_cleaned.set'));
+
+for f = 1:length(cleaned_files)
+
+    % Load dataset
+    EEG = pop_loadset('filename', cleaned_files(f).name, 'filepath', raw_folder);
+    [~, base_name, ~] = fileparts(cleaned_files(f).name);
+
+    % Extract event labels (placeholder)
+    % Example: eventTypes = {'Stimulus_R_C','Stimulus_S_I'};
+    % TODO: replace once mapping script finalized.
+
+    % Epoching (placeholder event name and times)
+    % Note: update 'Stimulus' to real mapped labels later.
+    EEG = pop_epoch(EEG, {'Stimulus'}, [-1 2]);  % TODO: update event types
+    EEG = pop_rmbase(EEG, [-200 0]);             % baseline correction (ms)
+
+    % Save
+    out_filename = [base_name '_epoched.set'];
+    pop_saveset(EEG, 'filename', out_filename, 'filepath', out_folder);
+
+    disp(['Epoched: ' out_filename]);
+end
+
+disp('Batch epoching complete.');
