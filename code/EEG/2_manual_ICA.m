@@ -2,7 +2,7 @@
 
 % Author: Røskva
 % Date: 09.05.25
-% Last changed: 15.08.25
+% Last changed: 18.12.25
 
 % This script sets up the process for manual ICA inspection
 % We open EEGLAB, load the file we want to inspect and find the correct
@@ -18,12 +18,12 @@ addpath('\\hume.uio.no\MATLAB-eeglab-location', ...
 eeglab;  % Start EEGLAB
 
 % 1. Load existing dataset
-EEG = pop_loadset('filename','SST_XX_X_ICA.set','filepath','\\hypatia.uio.no\\preproc-folder\\');
+EEG = pop_loadset('filename','TST_XX_X_ICA.set','filepath','\\hypatia.uio.no\\preproc-folder\\');
 [ALLEEG, EEG, CURRENTSET] = eeg_store( ALLEEG, EEG, 0 );
 
-% 2. Find correct channel locations
-EEG=pop_chanedit(EEG, {'lookup','standard_1005.elc'});
-[ALLEEG, EEG, CURRENTSET] = eeg_store(ALLEEG, EEG, CURRENTSET);
+% 2. Find correct channel locations - THIS MAY NOT BE NECESSARY
+% EEG=pop_chanedit(EEG, {'lookup','standard_1005.elc'});
+% [ALLEEG, EEG, CURRENTSET] = eeg_store(ALLEEG, EEG, CURRENTSET);
 
 % 3. Manual ICA component inspection and cleaning
 % Use EEGLAB GUI: Tools > Inspect/Label Components > By Map
@@ -35,4 +35,4 @@ EEG=pop_chanedit(EEG, {'lookup','standard_1005.elc'});
 % Mark bad components, then Tools > Remove Components
 
 % 4. Save cleaned dataset (do this manually after component removal)
-% pop_saveset(EEG, 'filename', 'SST_71_1_cleaned.set', 'filepath', output_path);
+% pop_saveset(EEG, 'filename', 'TST_71_1_ICA_clean.sett', 'filepath', output_path);
