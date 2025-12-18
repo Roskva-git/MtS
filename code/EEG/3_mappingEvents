@@ -63,12 +63,12 @@
 
 
 %% 0. Paths and file lists
-addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Code\tools\eeglab2025.0.0\');
+addpath('\\hypatia.uio.no\...\eeglab2025.0.0\');
 eeglab;
 
-clean_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\2_cleaned\';
-log_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\logfiles\';
-out_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\3_mapped\';
+clean_folder = '\\hypatia.uio.no\...\2_cleaned\';
+log_folder   = '\\hypatia.uio.no\...\logfiles\';
+out_folder   = '\\hypatia.uio.no\...\3_mapped\';
 
 clean_files = dir(fullfile(clean_folder, '*_cleaned.set'));
 
