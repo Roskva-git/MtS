@@ -1,0 +1,54 @@
+%% 3. Batch EEG events mapping for TST Data using logfiles
+
+% Author: Røskva
+% Date: 09.05.25
+% Last changed: 18.12.25
+
+% Workflow: 
+% Step 1. Run the preprocessing script with ICA
+% step 2. Reject independent components 
+% Step 3. Run the mapping script using the logfile to map events
+% Step 4. Run epoching script
+
+% DESCRIPTION:
+% This script 
+
+% Long description:.
+% We create an event list and rename the triggers for epoching.
+
+
+%% 7. Event List Creation and Trigger Renaming
+        % Relevant triggers
+        gl = 'S  1'; % Go stimulus - left - go trial
+        gr = 'S  2'; % Go stimulus - right - go trial
+        gsl = 'S  3'; % Go stimulus - left - stop trial
+        gsr = 'S  4'; % Go stimulus - right - stop trial
+        sl = 'S  5'; % Stop stimulus - left
+        sr = 'S  6'; % Stop stimulus - right
+        rl = 'S 65';  % Response - left
+        rr = 'S 71'; % Response - right
+        cl = 'Not collected'; % for CRT task, not collected in this data set
+        cr = 'Not collected';
+        % Extract meaningful event names
+        EEG = SST_recode(EEG, EEG.srate, gl, gr, gsl, gsr, sl, sr, rl, rr, cl, cr);
+
+%% 7.1 Event list creation and Trigger renaming. Event types double checked with EEG.event (not the recoding)
+
+% the event types in the EEG file are :
+% 'S  1' = newblock. Marks the time of a new block
+% 'S  2' = stimulus one. Marks when stimulus one is displayed
+% 'S  3' = stimulus two. Marks when stimulus two is displayed
+% 'S  4' = error. Marks time of an incorrect response
+% 'S  5' = correct. Marks time of a correct response 
+% 'S254' = trigger in the beginning of block to align EEG
+% 'boundary' = ?
+
+% IMPORTANT: THERE'S 2 SPACES BETWEEN 'S' AND THE 'NUMBER' IN EEG FILE TRIGGERS. 
+
+% Logic and descriptons of recoding
+% 'R/S'             - repeat or switch trial 
+% 'cC/cE'           - current correct response or current error response
+% 'pC/pE'           - previous correct response or previous error response
+% 'Stim1/Stim2'     - marks when stimulus one/two is displayed
+% 'stim/res'        - moment of stimulus presentation or moment of response giving
+% 'Firsttrial'      - first trial of a new block 
