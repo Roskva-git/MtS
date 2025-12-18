@@ -4,10 +4,16 @@
 % Date: 09.05.25
 % Last changed: 18.12.25
 
+% Workflow: 
+% Step 1. Run this preprocessing script with ICA
+% step 2. Reject independent components 
+% Step 3. Run the mapping script using the logfile to map events
+% Step 4. Run epoching script
+
+% DESCRIPTION
 % This script sets up the process for manual ICA inspection
 % We open EEGLAB, load the file we want to inspect and find the correct
 % channel location so the components are mapped correctly
-
 % Then we remove components manually and save the file
 
 
