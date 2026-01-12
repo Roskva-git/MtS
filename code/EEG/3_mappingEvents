@@ -10,13 +10,6 @@
 %   3. Run this script to map logfiles onto EEG event markers
 %   4. Epoch & analyze (Script 4)
 
-% TODO additions after basic mapping works:
-% - map congruent vs incongruent from `string`
-% - map repeat vs switch using `taskSwitch`
-% - map correct/error using `correctResponse`
-% - include response key (left/right/none)
-% - verify S2/S3 alignment across blocks
-
 % PURPOSE:
 %   The cleaned EEG files contain only basic triggers (S  1, S  2, S  3, etc.).
 %   The corresponding logfiles contain full trial metadata:
@@ -29,8 +22,8 @@
 
 %   This script links those two sources. For each EEG S2/S3 stimulus event,
 %   we assign new descriptive labels—e.g.:
-%       'Stim1_R_cC'  (Stim1, repeat, current correct)
-%       'Stim2_S_cE'  (Stim2, switch, current error)
+%       'LET_R_cC'  (Stim1, repeat, current correct)
+%       'NUM_S_cE'  (Stim2, switch, current error)
 
 % OUTPUT:
 %   - Saves a new dataset: <base_name>_mapped.set
@@ -57,7 +50,7 @@
 % 'R/S'             - repeat or switch trial 
 % 'cC/cE'           - current correct response or current error response
 % 'pC/pE'           - previous correct response or previous error response
-% 'Stim1/Stim2'     - marks when stimulus 1(LET)/2(NUM) is displayed.
+% 'LET/NUM'         - marks when stimulus 1(LET)/2(NUM) is displayed.
 % 'stim/res'        - moment of stimulus presentation or moment of response giving
 % 'Firsttrial'      - first trial of a new block 
 
@@ -71,16 +64,16 @@ log_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\R
 out_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\3_mapped\';
 
 %% Uncomment to loop over the whole set
-%% clean_files = dir(fullfile(clean_folder, '*_cleaned.set'));
-%% for f = 1:length(clean_files)
+% clean_files = dir(fullfile(clean_folder, '*_cleaned.set'));
 
+%% Test single participant
 clean_files = dir(fullfile(clean_folder, 'TST_31_1_cleaned.set'));
+
 for f = 1:length(clean_files)
 
     %% 1. Load EEG dataset
     filename = clean_files(f).name;
     [~, base_name, ~] = fileparts(filename);  % e.g., 'TST_191_1_cleaned'
-
     disp(['Mapping events for: ' base_name]);
 
     EEG = pop_loadset('filename', filename, 'filepath', clean_folder);
@@ -92,7 +85,6 @@ for f = 1:length(clean_files)
 
     %% 2. Load corresponding logfile (.mat)
     logFile = fullfile(log_folder, [subjID '_2_taskSwitch_' runNr '.mat']);
-
     if ~exist(logFile, 'file')
         warning(['Missing logfile for: ' base_name]);
         continue;
@@ -101,64 +93,149 @@ for f = 1:length(clean_files)
     logData = load(logFile);
     trials  = logData.testData.trial;  % struct array
 
-    %% 3. Extract EEG event latencies for S2/S3
-    isStim = strcmp({EEG.event.type}, 'S  2') | strcmp({EEG.event.type}, 'S  3');
-    stimIdx = find(isStim);
+    %% 3. Get indices for EEG event types
+    types = {EEG.event.type};
 
-    % simple safety check
+    stimIdx = find(strcmp(types, 'S  2') | strcmp(types, 'S  3')); % stimulus triggers
+    respIdx = find(strcmp(types, 'S  4') | strcmp(types, 'S  5')); % response triggers (error/correct)
+    blkIdx  = find(strcmp(types, 'S  1') | strcmp(types, 'S254')); % keep as-is for now
+
+    % Safety checks (not fatal)
     if length(stimIdx) ~= length(trials)
         warning(['Stimulus count mismatch: EEG=' num2str(length(stimIdx)) ...
                  ' log=' num2str(length(trials)) ' | ' base_name]);
-        % We may refine matching later, but for now assume alignment.
+    end
+    if length(respIdx) ~= sum(~strcmp({trials.keyPressed}, 'q'))
+        % Response triggers are only sent when a key was pressed (per LogData.newTrial)
+        % so omissions should reduce resp trigger count.
+        warning(['Response count mismatch (expected non-omissions): EEG=' num2str(length(respIdx)) ...
+                 ' logNonOmit=' num2str(sum(~strcmp({trials.keyPressed}, 'q'))) ' | ' base_name]);
     end
 
-    %% 4. Loop through stimulus events and assign metadata
-    for t = 1:min(length(stimIdx), length(trials))
+    %% 4. Map STIMULUS events (S2/S3) by trial index
+    nMap = min(length(stimIdx), length(trials));
 
-        e = stimIdx(t);
+    for t = 1:nMap
+        e  = stimIdx(t);
         tr = trials(t);
 
-        % basic info
-        EEG.event(e).trialNr     = tr.trial;
-        EEG.event(e).taskSwitch  = tr.taskSwitch;
-        EEG.event(e).correct     = tr.correctResponse;
-        EEG.event(e).key         = tr.keyPressed;
-        EEG.event(e).rt          = tr.reactionTime;
+        % ----- trial-level fields on this stimulus event -----
+        EEG.event(e).trialNr    = tr.trial;
+        EEG.event(e).block      = tr.block;
+        EEG.event(e).taskSwitch = tr.taskSwitch;
+        EEG.event(e).key        = tr.keyPressed;
+        EEG.event(e).rt         = tr.reactionTime;
 
-        % create a compact mapping string
-        % R/S = repeat/switch
-        if tr.taskSwitch == 1
-            rs = 'S';
-        else
-            rs = 'R';
-        end
+        % Switch/Repeat
+        if tr.taskSwitch == 1, rs = 'S'; else, rs = 'R'; end
 
-        if tr.correctResponse == 1
-            cc = 'cC';
-        else
-            cc = 'cE';
-        end
-
-        % label uses existing EEG.event.type ('S  2' or 'S  3')
+        % LET/NUM from stimulus trigger code
         if strcmp(EEG.event(e).type, 'S  2')
-                stimType = 'LET';
-            else
-                stimType = 'NUM';
+            stimType = 'LET';
+        else
+            stimType = 'NUM';
         end
 
-        EEG.event(e).mappedType = [stimType '_' rs '_' cc];
+        % Congruency from logfile: same motor response for both rules = congruent
+        % Here: targetDir vs otherDir
+        if tr.targetDir == tr.otherDir
+            con = 'Con';
+            EEG.event(e).congruency = 1; % 1=congruent
+        else
+            con = 'Inc';
+            EEG.event(e).congruency = 0; % 0=incongruent
+        end
 
-        % overwrite event.type for user-friendly epoching
-        EEG.event(e).type = EEG.event(e).mappedType;
+        % Outcome: omission vs commission (cC/cE)
+        if strcmp(tr.keyPressed, 'q')
+            out = 'OM';
+            EEG.event(e).outcome = 'OM';
+        else
+            if tr.correctResponse == 1
+                out = 'cC';
+                EEG.event(e).outcome = 'cC';
+            else
+                out = 'cE';
+                EEG.event(e).outcome = 'cE';
+            end
+        end
 
+        EEG.event(e).mappedType = [stimType '_' rs '_' con '_' out];
+        EEG.event(e).type       = EEG.event(e).mappedType; % overwrite type for epoching
     end
 
-    %% 5. Save mapped set
+    %% 5. Map RESPONSE events (S4/S5) by trial order (non-omissions only)
+    % EEG only has response triggers when a key was pressed, so we iterate trials
+    % and consume respIdx in order for non-omission trials.
+
+    respPtr = 1;
+
+    for t = 1:length(trials)
+        tr = trials(t);
+
+        if strcmp(tr.keyPressed, 'q')
+            % omission: no S4/S5 in EEG (by design), so nothing to relabel here
+            continue;
+        end
+
+        if respPtr > length(respIdx)
+            warning(['Ran out of response triggers early at trial ' num2str(t) ' | ' base_name]);
+            break;
+        end
+
+        e = respIdx(respPtr);
+        respPtr = respPtr + 1;
+
+        % Fields
+        EEG.event(e).trialNr    = tr.trial;
+        EEG.event(e).block      = tr.block;
+        EEG.event(e).taskSwitch = tr.taskSwitch;
+        EEG.event(e).key        = tr.keyPressed;
+        EEG.event(e).rt         = tr.reactionTime;
+
+        % Outcome COR/ERR from trigger type (S5=correct, S4=error)
+        if strcmp(EEG.event(e).type, 'S  5')
+            corerr = 'COR';
+        else
+            corerr = 'ERR';
+        end
+
+        % Response side from keyPressed
+        if strcmp(tr.keyPressed, 'a')
+            lr = 'L';
+        elseif strcmp(tr.keyPressed, 'g')
+            lr = 'R';
+        else
+            lr = 'OM'; % fallback (should not happen here)
+        end
+        EEG.event(e).respLR = lr;
+
+        EEG.event(e).mappedType = ['RESP_' corerr '_' lr];
+        EEG.event(e).type       = EEG.event(e).mappedType; % overwrite type for epoching
+    end
+
+    %% 6. Save mapped set
     out_name = [base_name '_mapped.set'];
     pop_saveset(EEG, 'filename', out_name, 'filepath', out_folder);
-
     disp(['SUCCESS: mapped & saved ' out_name]);
 
 end
 
 disp('Event mapping complete.');
+
+
+%% SANITY CHECKS %%
+
+% What types of events have we created? 
+% unique({EEG.event.type})
+
+% What does the stimulus look like? Is it mapped correctly?
+% stimEv = EEG.event(startsWith({EEG.event.type}, {'LET','NUM'}));
+% struct2table(stimEv(1:10))
+
+% What do the responses look like? Are they mapped as intended?
+% respEv = EEG.event(startsWith({EEG.event.type}, 'RESP'));
+% struct2table(respEv(1:10))
+
+% Plot the actual EEG to see if the markers look right
+% pop_eegplot(EEG, 1, 1, 1);
