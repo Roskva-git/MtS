@@ -63,13 +63,15 @@ clean_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\R
 log_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\logfiles\';
 out_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\3_mapped\';
 
-%% Uncomment to loop over the whole set
-% clean_files = dir(fullfile(clean_folder, '*_cleaned.set'));
+%% Uncomment to test single participant
+%%clean_files = dir(fullfile(clean_folder, 'TST_31_1_cleaned.set'));
 
-%% Test single participant
-clean_files = dir(fullfile(clean_folder, 'TST_31_1_cleaned.set'));
+%% Loop over the whole set
+ clean_files = dir(fullfile(clean_folder, '*_cleaned.set'));
 
-for f = 1:length(clean_files)
+ for f = 1:length(clean_files)
+
+    try
 
     %% 1. Load EEG dataset
     filename = clean_files(f).name;
@@ -215,16 +217,22 @@ for f = 1:length(clean_files)
     end
 
     %% 6. Save mapped set
-    out_name = [base_name '_mapped.set'];
-    pop_saveset(EEG, 'filename', out_name, 'filepath', out_folder);
-    disp(['SUCCESS: mapped & saved ' out_name]);
+        out_name = [base_name '_mapped.set'];
+        pop_saveset(EEG, 'filename', out_name, 'filepath', out_folder);
+        disp(['SUCCESS: mapped & saved ' out_name]);
+
+    catch ME
+        warning(['FAILED mapping: ' clean_files(f).name]);
+        disp(getReport(ME, 'extended'));
+        continue;   % move to next participant
+    end
 
 end
 
 disp('Event mapping complete.');
 
 
-%% SANITY CHECKS %%
+%% SANITY CHECK %%
 
 % What types of events have we created? 
 % unique({EEG.event.type})
