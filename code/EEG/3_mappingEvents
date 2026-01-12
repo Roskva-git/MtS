@@ -2,7 +2,7 @@
 
 % Author: Røskva
 % Date: 09.05.25
-% Last updated: 18.12.25
+% Last updated: 12.01.26
 
 % Workflow context:
 %   1. Preprocess EEG + ICA (Script 1)
@@ -22,7 +22,7 @@
 %   The corresponding logfiles contain full trial metadata:
 %       - trial index
 %       - switch/repeat
-%       - stimulus identity
+%       - stimulus identity (rule to follow)
 %       - correctness
 %       - reaction time
 %       - response key
@@ -44,8 +44,8 @@
 
 % the event types in the EEG file are :
 % 'S  1' = newblock. Marks the time of a new block
-% 'S  2' = stimulus one. Marks when stimulus one is displayed
-% 'S  3' = stimulus two. Marks when stimulus two is displayed
+% 'S  2' = stimulus one. Marks when stimulus one is displayed. Letter rule.
+% 'S  3' = stimulus two. Marks when stimulus two is displayed. Number rule.
 % 'S  4' = error. Marks time of an incorrect response
 % 'S  5' = correct. Marks time of a correct response 
 % 'S254' = trigger in the beginning of block to align EEG
@@ -57,21 +57,24 @@
 % 'R/S'             - repeat or switch trial 
 % 'cC/cE'           - current correct response or current error response
 % 'pC/pE'           - previous correct response or previous error response
-% 'Stim1/Stim2'     - marks when stimulus one/two is displayed
+% 'Stim1/Stim2'     - marks when stimulus 1(LET)/2(NUM) is displayed.
 % 'stim/res'        - moment of stimulus presentation or moment of response giving
 % 'Firsttrial'      - first trial of a new block 
 
 
 %% 0. Paths and file lists
-addpath('\\hypatia.uio.no\...\eeglab2025.0.0\');
+addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Code\tools\eeglab2025.0.0\');
 eeglab;
 
-clean_folder = '\\hypatia.uio.no\...\2_cleaned\';
-log_folder   = '\\hypatia.uio.no\...\logfiles\';
-out_folder   = '\\hypatia.uio.no\...\3_mapped\';
+clean_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\2_cleaned\';
+log_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\logfiles\';
+out_folder   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\3_mapped\';
 
-clean_files = dir(fullfile(clean_folder, '*_cleaned.set'));
+%% Uncomment to loop over the whole set
+%% clean_files = dir(fullfile(clean_folder, '*_cleaned.set'));
+%% for f = 1:length(clean_files)
 
+clean_files = dir(fullfile(clean_folder, 'TST_31_1_cleaned.set'));
 for f = 1:length(clean_files)
 
     %% 1. Load EEG dataset
@@ -88,7 +91,7 @@ for f = 1:length(clean_files)
     runNr  = tokens{1}{2};
 
     %% 2. Load corresponding logfile (.mat)
-    logFile = fullfile(log_folder, [subjID '_' runNr '.mat']);
+    logFile = fullfile(log_folder, [subjID '_2_taskSwitch_' runNr '.mat']);
 
     if ~exist(logFile, 'file')
         warning(['Missing logfile for: ' base_name]);
@@ -137,7 +140,11 @@ for f = 1:length(clean_files)
         end
 
         % label uses existing EEG.event.type ('S  2' or 'S  3')
-        stimType = strrep(EEG.event(e).type, ' ', ''); % remove spaces: 'S2'/'S3'
+        if strcmp(EEG.event(e).type, 'S  2')
+                stimType = 'LET';
+            else
+                stimType = 'NUM';
+        end
 
         EEG.event(e).mappedType = [stimType '_' rs '_' cc];
 
@@ -155,4 +162,3 @@ for f = 1:length(clean_files)
 end
 
 disp('Event mapping complete.');
-
