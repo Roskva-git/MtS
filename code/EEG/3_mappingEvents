@@ -2,13 +2,14 @@
 
 % Author: Røskva
 % Date: 09.05.25
-% Last updated: 12.01.26
+% Last updated: 13.01.26
 
 % Workflow context:
 %   1. Preprocess EEG + ICA (Script 1)
 %   2. Manually reject components (Script 2)
 %   3. Run this script to map logfiles onto EEG event markers
-%   4. Epoch & analyze (Script 4)
+%   4. Get behavioural data (Script 4)
+%   4. Epoch & analyze (Script 5)
 
 % PURPOSE:
 %   The cleaned EEG files contain only basic triggers (S  1, S  2, S  3, etc.).
