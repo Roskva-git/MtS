@@ -8,7 +8,8 @@
 % Step 1. Run the preprocessing script with ICA
 % step 2. Reject independent components 
 % Step 3. Run the mapping script using the logfile to map events
-% Step 4. Run epoching script
+% Step 4. Get behavioural overview
+% Step 5. Epoch & analyze
 
 % DESCRIPTION:
 % This script loads cleaned EEG datasets (with mapped events) and creates
