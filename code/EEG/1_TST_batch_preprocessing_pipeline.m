@@ -2,13 +2,14 @@
 
 % Author: Røskva
 % Date: 09.05.25
-% Last changed: 18.12.25
+% Last changed: 13.01.26
 
 % Workflow: 
 % Step 1. Run this preprocessing script with ICA
 % step 2. Reject independent components 
 % Step 3. Run the mapping script using the logfile to map events
-% Step 4. Run epoching script
+% Step 4. Get behavioural overview
+% Step 5. Epoch & analyze
 
 % DESCRIPTION:
 % This script performs batch preprocessing of EEG data (.vhdr files) for 
