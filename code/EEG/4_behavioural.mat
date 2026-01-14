@@ -24,13 +24,13 @@
 %   - behavioural_overview_master.mat
 
 %% 0. Initialize EEGLAB and Set Paths
-addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Code\tools\eeglab2025.0.0\', ...
-        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\', ...
-        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\');
+addpath('\\hypatia.uio.no\...\eeglab2025.0.0\', ...
+        '\\hypatia.uio.no\...\Røskva\', ...
+        '\\hypatia.uio.no\...\Røskva\Code\');
 eeglab;  % Start EEGLAB
 
-mapped_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\3_mapped\';
-out_folder    = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\';
+mapped_folder = '\\hypatia.uio.no\...\3_mapped\';
+out_folder    = '\\hypatia.uio.no\...\4_behavioural\';
 
 if ~exist(out_folder, 'dir')
     mkdir(out_folder);
@@ -115,34 +115,39 @@ for f = 1:length(mapped_files)
         nCorrect  = sum(isCC);
         nError    = sum(isCE);
 
-        % --- Accuracy
-        % Overall accuracy INCLUDING omissions
-        acc_overall = nCorrect / nTrialsStim;
 
-        % Response accuracy EXCLUDING omissions
+        % --- Accuracy (two definitions)
+        % Overall accuracy including omissions (correct / all trials in condition)
+        acc_overall = nCorrect / nTrialsStim;
+        
+        acc_switch_overall = NaN; acc_repeat_overall = NaN;
+        if nSwitch > 0, acc_switch_overall = sum(isSwitch & isCC) / nSwitch; end
+        if nRepeat > 0, acc_repeat_overall = sum(isRepeat & isCC) / nRepeat; end
+        
+        acc_con_overall = NaN; acc_inc_overall = NaN;
+        if nCon > 0, acc_con_overall = sum(isCon & isCC) / nCon; end
+        if nInc > 0, acc_inc_overall = sum(isInc & isCC) / nInc; end
+        
+        % Response accuracy excluding omissions (correct / (correct+error) in condition)
         denom_resp = (nCorrect + nError);
         if denom_resp > 0
             acc_response = nCorrect / denom_resp;
         else
             acc_response = NaN;
         end
-
-
-        % Accuracy by switch/repeat (exclude omissions)
+        
         denom_sw = sum(isSwitch & (isCC | isCE));
         denom_rp = sum(isRepeat & (isCC | isCE));
-
-        acc_switch = NaN; acc_repeat = NaN;
-        if denom_sw > 0, acc_switch = sum(isSwitch & isCC) / denom_sw; end
-        if denom_rp > 0, acc_repeat = sum(isRepeat & isCC) / denom_rp; end
-
-        % Accuracy by congruency (exclude omissions)
+        acc_switch_response = NaN; acc_repeat_response = NaN;
+        if denom_sw > 0, acc_switch_response = sum(isSwitch & isCC) / denom_sw; end
+        if denom_rp > 0, acc_repeat_response = sum(isRepeat & isCC) / denom_rp; end
+        
         denom_con = sum(isCon & (isCC | isCE));
         denom_inc = sum(isInc & (isCC | isCE));
+        acc_con_response = NaN; acc_inc_response = NaN;
+        if denom_con > 0, acc_con_response = sum(isCon & isCC) / denom_con; end
+        if denom_inc > 0, acc_inc_response = sum(isInc & isCC) / denom_inc; end
 
-        acc_con = NaN; acc_inc = NaN;
-        if denom_con > 0, acc_con = sum(isCon & isCC) / denom_con; end
-        if denom_inc > 0, acc_inc = sum(isInc & isCC) / denom_inc; end
 
         % --- RT helpers
         rt_all = rt(nonOM);
@@ -207,12 +212,21 @@ for f = 1:length(mapped_files)
         results(r).nError      = nError;
         results(r).nOmission   = nOmission;
 
-        results(r).acc_overall  = acc_overall;    % includes omissions
-        results(r).acc_response = acc_response;   % excludes omissions
-        results(r).acc_switch  = acc_switch;
-        results(r).acc_repeat  = acc_repeat;
-        results(r).acc_con     = acc_con;
-        results(r).acc_inc     = acc_inc;
+        results(r).acc_overall        = acc_overall;          % includes omissions
+        results(r).acc_response       = acc_response;         % excludes omissions
+        
+        results(r).acc_switch_overall = acc_switch_overall;   % includes omissions
+        results(r).acc_repeat_overall = acc_repeat_overall;
+        
+        results(r).acc_con_overall    = acc_con_overall;      % includes omissions
+        results(r).acc_inc_overall    = acc_inc_overall;
+        
+        results(r).acc_switch_response = acc_switch_response; % excludes omissions
+        results(r).acc_repeat_response = acc_repeat_response;
+        
+        results(r).acc_con_response    = acc_con_response;    % excludes omissions
+        results(r).acc_inc_response    = acc_inc_response;
+
 
         results(r).rt_mean_all   = rt_mean_all;
         results(r).rt_median_all = rt_median_all;
@@ -272,3 +286,14 @@ else
 end
 
 disp('Behavioural extraction complete.');
+
+
+
+%% Check the table for sanity %%
+
+% Navigate to the output folder
+% cd('\\hypatia.uio.no\...\4_behavioural')
+
+% Open the MAT file
+% load('behavioural_overview_master.mat')
+% T
