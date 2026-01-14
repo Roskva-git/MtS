@@ -1,0 +1,274 @@
+%% 4. Behavioural data extraction (TST)
+
+% Author: Røskva
+% Date: 13.01.26
+% Last changed: 14.01.26
+
+% Workflow:
+% Step 1. Preprocess EEG + ICA
+% Step 2. Manually reject ICs
+% Step 3. Map logfiles onto EEG events (creates *_mapped.set)
+% Step 4. Extract behavioural overview (this script)
+% Step 5. Epoching
+
+% PURPOSE:
+%   Extract trial counts, accuracies, and RT summaries from mapped EEG datasets.
+%   Uses stimulus-locked mapped event types (LET_*/NUM_*) and fields in EEG.event:
+%     .taskSwitch (0=repeat, 1=switch)
+%     .congruency (1=congruent, 0=incongruent)
+%     .outcome    ('cC','cE','OM')
+%     .rt         (reaction time)
+
+% OUTPUT:
+%   - behavioural_overview_master.csv
+%   - behavioural_overview_master.mat
+
+%% 0. Initialize EEGLAB and Set Paths
+addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Code\tools\eeglab2025.0.0\', ...
+        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\', ...
+        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\');
+eeglab;  % Start EEGLAB
+
+mapped_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\3_mapped\';
+out_folder    = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\';
+
+if ~exist(out_folder, 'dir')
+    mkdir(out_folder);
+end
+
+%% 1. File list
+mapped_files = dir(fullfile(mapped_folder, '*_mapped.set'));
+
+% Preallocate results as struct array
+results = struct([]);
+r = 0;
+
+%% 2. Loop over datasets
+for f = 1:length(mapped_files)
+
+    try
+        filename = mapped_files(f).name;
+        [~, base_name, ~] = fileparts(filename);
+        disp(['Behavioural extraction for: ' base_name]);
+
+        EEG = pop_loadset('filename', filename, 'filepath', mapped_folder);
+
+        % --- Extract participantID and session from name: TST_<ID>_<session>_...
+        tokens = regexp(base_name, '^TST_(\d+)_(\d+)', 'tokens');
+        if isempty(tokens)
+            warning(['Could not parse ID/session from: ' base_name ' (skipping)']);
+            continue;
+        end
+        participantID = str2double(tokens{1}{1});
+        session       = str2double(tokens{1}{2});
+
+        % --- Stimulus events are the trial carriers: LET_* or NUM_*
+        types = {EEG.event.type};
+        stimMask = startsWith(types, 'LET_') | startsWith(types, 'NUM_');
+        stimEv = EEG.event(stimMask);
+
+        nTrialsStim = numel(stimEv);
+
+        % --- Pull fields safely (handle missing)
+        taskSwitch = nan(1, nTrialsStim);
+        congruency = nan(1, nTrialsStim);
+        rt         = nan(1, nTrialsStim);
+        outcome    = cell(1, nTrialsStim);
+
+        for i = 1:nTrialsStim
+            if isfield(stimEv(i), 'taskSwitch') && ~isempty(stimEv(i).taskSwitch)
+                taskSwitch(i) = double(stimEv(i).taskSwitch);
+            end
+            if isfield(stimEv(i), 'congruency') && ~isempty(stimEv(i).congruency)
+                congruency(i) = double(stimEv(i).congruency);
+            end
+            if isfield(stimEv(i), 'rt') && ~isempty(stimEv(i).rt)
+                rt(i) = double(stimEv(i).rt);
+            end
+            if isfield(stimEv(i), 'outcome') && ~isempty(stimEv(i).outcome)
+                outcome{i} = stimEv(i).outcome;
+            else
+                outcome{i} = '';
+            end
+        end
+
+        % --- Masks
+        isSwitch = taskSwitch == 1;
+        isRepeat = taskSwitch == 0;
+
+        isCon = congruency == 1;
+        isInc = congruency == 0;
+
+        isOM = strcmp(outcome, 'OM');
+        isCC = strcmp(outcome, 'cC');
+        isCE = strcmp(outcome, 'cE');
+
+        nonOM = ~isOM;
+
+        % --- Counts
+        nSwitch   = sum(isSwitch);
+        nRepeat   = sum(isRepeat);
+        nCon      = sum(isCon);
+        nInc      = sum(isInc);
+
+        nOmission = sum(isOM);
+        nCorrect  = sum(isCC);
+        nError    = sum(isCE);
+
+        % --- Accuracy
+        % Overall accuracy INCLUDING omissions
+        acc_overall = nCorrect / nTrialsStim;
+
+        % Response accuracy EXCLUDING omissions
+        denom_resp = (nCorrect + nError);
+        if denom_resp > 0
+            acc_response = nCorrect / denom_resp;
+        else
+            acc_response = NaN;
+        end
+
+
+        % Accuracy by switch/repeat (exclude omissions)
+        denom_sw = sum(isSwitch & (isCC | isCE));
+        denom_rp = sum(isRepeat & (isCC | isCE));
+
+        acc_switch = NaN; acc_repeat = NaN;
+        if denom_sw > 0, acc_switch = sum(isSwitch & isCC) / denom_sw; end
+        if denom_rp > 0, acc_repeat = sum(isRepeat & isCC) / denom_rp; end
+
+        % Accuracy by congruency (exclude omissions)
+        denom_con = sum(isCon & (isCC | isCE));
+        denom_inc = sum(isInc & (isCC | isCE));
+
+        acc_con = NaN; acc_inc = NaN;
+        if denom_con > 0, acc_con = sum(isCon & isCC) / denom_con; end
+        if denom_inc > 0, acc_inc = sum(isInc & isCC) / denom_inc; end
+
+        % --- RT helpers
+        rt_all = rt(nonOM);
+        rt_cC  = rt(isCC);
+        rt_cE  = rt(isCE);
+
+        % RT overall (non-omission)
+        rt_mean_all   = mean(rt_all, 'omitnan');
+        rt_median_all = median(rt_all, 'omitnan');
+        rt_sd_all     = std(rt_all, 'omitnan');
+        rt_n_all      = sum(~isnan(rt_all));
+
+        % RT correct-only
+        rt_mean_cC   = mean(rt_cC, 'omitnan');
+        rt_median_cC = median(rt_cC, 'omitnan');
+        rt_sd_cC     = std(rt_cC, 'omitnan');
+        rt_n_cC      = sum(~isnan(rt_cC));
+
+        % RT error-only
+        rt_mean_cE   = mean(rt_cE, 'omitnan');
+        rt_median_cE = median(rt_cE, 'omitnan');
+        rt_sd_cE     = std(rt_cE, 'omitnan');
+        rt_n_cE      = sum(~isnan(rt_cE));
+
+        % RT correct-only by switch/repeat
+        rt_cC_switch = rt(isCC & isSwitch);
+        rt_cC_repeat = rt(isCC & isRepeat);
+
+        rt_mean_cC_switch = mean(rt_cC_switch, 'omitnan');
+        rt_sd_cC_switch   = std(rt_cC_switch, 'omitnan');
+        rt_n_cC_switch    = sum(~isnan(rt_cC_switch));
+
+        rt_mean_cC_repeat = mean(rt_cC_repeat, 'omitnan');
+        rt_sd_cC_repeat   = std(rt_cC_repeat, 'omitnan');
+        rt_n_cC_repeat    = sum(~isnan(rt_cC_repeat));
+
+        % RT correct-only by congruency
+        rt_cC_con = rt(isCC & isCon);
+        rt_cC_inc = rt(isCC & isInc);
+
+        rt_mean_cC_con = mean(rt_cC_con, 'omitnan');
+        rt_sd_cC_con   = std(rt_cC_con, 'omitnan');
+        rt_n_cC_con    = sum(~isnan(rt_cC_con));
+
+        rt_mean_cC_inc = mean(rt_cC_inc, 'omitnan');
+        rt_sd_cC_inc   = std(rt_cC_inc, 'omitnan');
+        rt_n_cC_inc    = sum(~isnan(rt_cC_inc));
+
+        % --- Store row
+        r = r + 1;
+        results(r).participantID = participantID;
+        results(r).session       = session;
+
+        results(r).nTrialsStim = nTrialsStim;
+
+        results(r).nSwitch     = nSwitch;
+        results(r).nRepeat     = nRepeat;
+        results(r).nCon        = nCon;
+        results(r).nInc        = nInc;
+
+        results(r).nCorrect    = nCorrect;
+        results(r).nError      = nError;
+        results(r).nOmission   = nOmission;
+
+        results(r).acc_overall  = acc_overall;    % includes omissions
+        results(r).acc_response = acc_response;   % excludes omissions
+        results(r).acc_switch  = acc_switch;
+        results(r).acc_repeat  = acc_repeat;
+        results(r).acc_con     = acc_con;
+        results(r).acc_inc     = acc_inc;
+
+        results(r).rt_mean_all   = rt_mean_all;
+        results(r).rt_median_all = rt_median_all;
+        results(r).rt_sd_all     = rt_sd_all;
+        results(r).rt_n_all      = rt_n_all;
+
+        results(r).rt_mean_cC    = rt_mean_cC;
+        results(r).rt_median_cC  = rt_median_cC;
+        results(r).rt_sd_cC      = rt_sd_cC;
+        results(r).rt_n_cC       = rt_n_cC;
+
+        results(r).rt_mean_cE    = rt_mean_cE;
+        results(r).rt_median_cE  = rt_median_cE;
+        results(r).rt_sd_cE      = rt_sd_cE;
+        results(r).rt_n_cE       = rt_n_cE;
+
+        results(r).rt_mean_cC_switch = rt_mean_cC_switch;
+        results(r).rt_sd_cC_switch   = rt_sd_cC_switch;
+        results(r).rt_n_cC_switch    = rt_n_cC_switch;
+
+        results(r).rt_mean_cC_repeat = rt_mean_cC_repeat;
+        results(r).rt_sd_cC_repeat   = rt_sd_cC_repeat;
+        results(r).rt_n_cC_repeat    = rt_n_cC_repeat;
+
+        results(r).rt_mean_cC_con = rt_mean_cC_con;
+        results(r).rt_sd_cC_con   = rt_sd_cC_con;
+        results(r).rt_n_cC_con    = rt_n_cC_con;
+
+        results(r).rt_mean_cC_inc = rt_mean_cC_inc;
+        results(r).rt_sd_cC_inc   = rt_sd_cC_inc;
+        results(r).rt_n_cC_inc    = rt_n_cC_inc;
+
+        disp(['SUCCESS: behavioural row added for participant ' num2str(participantID) ', session ' num2str(session)]);
+
+    catch ME
+        warning(['FAILED behavioural extraction: ' mapped_files(f).name]);
+        disp(getReport(ME, 'extended'));
+        continue;
+    end
+
+end
+
+%% 3. Save master table
+if isempty(results)
+    warning('No results extracted. Check input folder and mapped event fields.');
+else
+    T = struct2table(results);
+
+    out_csv = fullfile(out_folder, 'behavioural_overview_master.csv');
+    out_mat = fullfile(out_folder, 'behavioural_overview_master.mat');
+
+    writetable(T, out_csv);
+    save(out_mat, 'T');
+
+    disp(['Saved: ' out_csv]);
+    disp(['Saved: ' out_mat]);
+end
+
+disp('Behavioural extraction complete.');
