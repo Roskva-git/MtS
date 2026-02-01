@@ -126,7 +126,7 @@ Here are some title suggestions:
 dynamic aspects of sleep and cognitive flexibility, shifting
 
 
-\textbf{Keywords:} sleep, executive function, depression, latent state/trait theory, structural equation modelling, actigraphy, cognitive performance
+\textbf{Keywords:} sleep, executive function, depression, actigraphy, cognitive performance
 
 % Table of Contents
 \newpage
@@ -139,16 +139,91 @@ dynamic aspects of sleep and cognitive flexibility, shifting
 
 % ============= MAIN CONTENT =============
 \chapter{Introduction}
-A fundamental challenge in cognitive neuroscience concerns whether cognitive measures reflect stable individual traits or state-dependent fluctuations. Recent findings from \textcite{thunberg2024unreliability} suggest that common executive function measures lack temporal stability, with test-retest reliability as low as r = .34 for the stop signal reaction time (SSRT). This instability indicates that cognitive control measures could be primarily influenced by situational factors rather than representing stable dispositional abilities. The specific factors driving this instability are unclear, which limits our understanding of when cognitive assessments provide reliable information about individual capabilities.
 
-Sleep represents a state variable that could explain observed instability in cognitive measures. Sleep disturbances differentially affect cognitive subcomponents, with sleep deprivation primarily impairing top-down control processes while leaving automatic processes intact \parencite{kusztor2019differentialsleep}. This selective vulnerability suggests that some cognitive measures may be more state-dependent than others, with their reliability tied to recent sleep patterns rather than reflecting measurement error or inherent trait instability.
+Sleep is a fundamental biological process that supports cognitive and emotional functioning. Sleep is not a unitary construct, nor is it stable from night to night. Even in healthy adults, sleep duration and quality vary across individuals and across time, shaped by circadian rhythms, lifestyle factors, and environmental demands \parencite{foster2020sleep}. This variability is increasingly recognized as informative rather than merely ``noise''. Habitual sleep patterns may reflect relatively stable individual differences, whereas nightly deviations can reflect transient changes in arousal, fatigue, and regulatory capacity \parencite{fjell2024sleep}. Understanding how these different aspects of sleep relate to cognition is important because everyday performance often depends on long-term sleep habits as well as how well one slept in the days leading up to a demanding situation.
 
-To address these issues, my project will use latent state–trait modelling, a structural equation modelling framework that partitions observed variance into stable trait-like components and occasion-specific fluctuations \parencite{steyer1999lst}. This approach allows me to quantify how much of executive function performance reflects enduring individual differences versus temporary variation, and to test whether sleep measures at different timescales help explain variation in performance. Possible research questions:
+A large body of research indicates that sleep disturbances are associated with impairments in executive functions, particularly processes often described as cognitive control \parencite{sen2023sleepef,tai2022sleepef}. However, the relationship between sleep and executive functioning appears to be selective rather than global. Experimental sleep deprivation does not uniformly impair all cognitive operations. Studies show that it tends to disrupt top-down control processes more strongly than relatively automatic or stimulus-driven processes \parencite{kusztor2019differentialsleep}. This pattern suggests that sleep may be especially relevant for cognitive control demands that require maintaining and updating task goals, resolving interference, and flexibly adjusting behavior to changing task requirements.
 
-    How much of the variance in EF performance is accounted for by individual differences, and how much is between-session variance (state + residual error)?
-    Do people with better average sleep also tend to perform better on stable, trait-like components of EF?
-    Do the short-term sleep measures (like the night before a session, or resting state EEG) account for EF performance changes from one session to the next?
-    Do the associations between sleep and EF performance look similar across tasks, or are some tasks more sensitive to sleep than others?
+One central component of cognitive control is cognitive flexibility, the ability to adapt behaviour when goals or task demands change. Contemporary frameworks emphasize that flexibility is not simply the opposite of stability, but rather reflects coordinated processes that regulate when to maintain a goal and when to update it \parencite{egner2023principles}. In everyday life, cognitive flexibility supports switching between rules, adapting to new information, and shifting attention between competing task sets. When flexibility fails, behaviour becomes rigid, error-prone, or inefficient, particularly in situations that require rapid reconfiguration of task goals and response mappings.
+
+Cognitive flexibility is commonly operationalized using task-switching paradigms. In such tasks, participants alternate between two simple task rules and must respond according to the currently relevant rule. Performance is typically slower and less accurate on switch trials compared with repeat trials, reflecting the cost of reconfiguring task sets and resolving interference from the previously active rule \parencite{monsell2003switching,kiesel2010review}. Task-switching tasks can also be designed to include congruent and incongruent trials, where the same stimulus affords either compatible or competing response mappings across task rules. These congruency manipulations provide an additional window into interference control within task switching and can help distinguish between general switching costs and stimulus-based conflict effects \parencite{kiesel2010review}.
+
+In addition to behavioural measures such as reaction time and accuracy, cognitive control can be indexed using electrophysiological markers. A robust and widely studied neural correlate of cognitive control is frontal midline theta (FM-theta), a rhythmic activity in the theta band that is typically observed over midline frontal electrodes and has been linked to conflict monitoring, error processing, and the engagement of control \parencite{cavanagh2014theta}. FM-theta tends to increase when control demands are higher, including during interference and task switching, and it is often interpreted as reflecting control-related signalling within medial frontal systems \parencite{depestele2023thetadriving}. Importantly for the present thesis, sleep loss has been associated with reduced control-related neural responses, including attenuated theta activity during demanding tasks \parencite{kusztor2019differentialsleep,wilckens2014sleeppreparation}. This motivates examining whether naturally occurring variation in sleep relates to behavioural indices of flexibility and to neural indices of cognitive control engagement.
+
+Despite the substantial literature linking sleep and executive function, two conceptual gaps are particularly relevant. First, many studies treat sleep as a single predictor (e.g., ``sleep duration'') rather than a multidimensional phenomenon encompassing duration, efficiency, continuity, and variability. This can obscure meaningful differences between individuals who sleep the same number of hours but differ in sleep fragmentation or efficiency. Second, even when objective sleep measures are available, fewer studies explicitly distinguish between habitual sleep level (how a person typically sleeps over days or weeks) and sleep variability (how much a person's sleep fluctuates from night to night). These two aspects may have different cognitive correlates. Habitual sleep may capture more stable sleep-related characteristics, whereas variability may reflect dysregulation or instability in sleep timing and quality that could be relevant for cognitive control \parencite{fjell2024sleep}.
+
+The present thesis addresses these gaps by examining how objectively measured sleep patterns relate to cognitive flexibility and its neural correlates. Using data from the Mind the Sleep project, sleep is quantified over four weeks using actigraphy, allowing estimation of both habitual sleep level (e.g., mean sleep duration and efficiency) and sleep variability (e.g., night-to-night fluctuations in these measures). Cognitive flexibility is assessed with a task-switching paradigm performed during an EEG session, enabling analysis of both behavioural performance and FM-theta activity during task switching. By combining objective sleep assessment with behavioural and electrophysiological indices of cognitive control, the thesis aims to provide a nuanced account of how sleep patterns relate to flexible cognition in adults.
+
+\section{Research Question and Hypotheses}
+
+The overarching research question is:
+
+\begin{quote}
+To what extent do habitual sleep level and sleep variability predict cognitive flexibility and frontal midline theta during a task-switching paradigm?
+\end{quote}
+
+Based on prior work linking sleep disturbances to impaired top-down control and altered control-related neural responses \parencite{kusztor2019differentialsleep,wilckens2014sleeppreparation}, the following hypotheses are proposed. First, poorer habitual sleep (e.g., shorter average sleep duration and lower average sleep efficiency) is expected to be associated with reduced cognitive flexibility, reflected in larger switch costs and/or stronger interference effects. Second, greater sleep variability is expected to be associated with poorer cognitive flexibility, above and beyond habitual sleep level, reflecting less stable cognitive control capacity. Third, both poorer habitual sleep and greater sleep variability are expected to be associated with altered FM-theta during task switching, consistent with sleep-related differences in control engagement \parencite{cavanagh2014theta,depestele2023thetadriving}. Finally, if FM-theta reflects control recruitment during demanding trials, individual differences in behavioural costs (e.g., switch costs) are expected to covary with theta indices of control engagement.
+
+Together, these analyses aim to clarify how multidimensional sleep patterns relate to flexible cognition and its neural signatures, providing insight into whether both the level and the stability of sleep are relevant for cognitive control in everyday conditions.
+
+
+\chapter{Background}
+
+A student walks into a busy café, orders a cappuccino, and sits down to read a demanding article about cognitive control. Around him, conversations overlap, chairs scrape against the floor, and children move unpredictably between tables. Although he initially enjoys the lively atmosphere, he soon needs to suppress the surrounding distractions in order to focus on the text. When the waitress arrives with his coffee, he briefly shifts his attention to thank her before returning to reading. In this seemingly ordinary situation, adapted from \textcite{egner2023principles}, the student relies on a set of mental operations that allow him to maintain task goals, prioritize relevant information, inhibit competing inputs, and adjust behaviour as circumstances change. These abilities are commonly described as \emph{cognitive control} or \emph{executive functions}.
+
+Such control processes are important both for our daily functioning and for more demanding and novel situations. When they fail, the consequences can extend far beyond a minor faux pas, like neglecting to thank the waitress for her service. Lapses in attention, difficulties updating behaviour, or an inability to suppress irrelevant information can impair decision-making in contexts ranging from academic performance to clinical judgement and traffic safety. Understanding the mechanisms that support flexible, goal-directed behaviour is therefore a central aim in cognitive neuroscience.
+
+\section{Frameworks of cognitive control}
+
+Executive functions are often conceptualized as higher-order processes that enable individuals to regulate thoughts and actions in accordance with internal goals. A highly influential account is the unity and diversity framework proposed by \textcite{friedman2017unity}, which reconciles two seemingly competing views: that executive functions reflect a common control capacity, and that they consist of partially separable components. According to this model, tasks requiring inhibition, shifting, and updating share variance because they draw on a domain-general ability to actively maintain goals and bias processing toward task-relevant information. At the same time, each component captures additional processes that are not fully reducible to this shared control factor. Shifting tasks, for example, involve mechanisms related specifically to disengaging from one task set and activating another.
+
+This perspective implies that cognitive control is neither a single unified faculty nor a collection of entirely independent skills. Rather, it reflects coordinated processes that must operate together to support adaptive behaviour. This coordination becomes visible in situations that require balancing persistence with adaptability, such as maintaining a current goal (reading an article) while remaining prepared to modify it when the environment changes (saying thank you for coffee).
+
+Building on this idea, contemporary accounts emphasize that effective cognition depends on a dynamic interplay between stability and flexibility. Rather than representing opposite ends of a continuum, these properties can be understood as complementary demands that must be regulated in accordance with situational requirements \parencite{egner2023principles}. Returning to the café example, the student must sustain attention on the article despite ongoing distraction, demonstrating stability. Yet he must also remain capable of shifting attention when the waitress approaches, reflecting flexibility. Adaptive behaviour emerges from efficiently coordinating when to maintain a goal state and when to update it.
+Mechanistically, this coordination has been described in terms of biasing and gating processes within working memory. Biasing prioritizes currently relevant representations, protecting them from interference, whereas gating determines when new information is allowed to enter and update the active task set. Cognitive flexibility therefore depends on the ability to regulate control processes in a context-sensitive manner, rather than just responding quickly to every stimulus.
+
+Task-switching paradigms are a well-established way to operationalize this form of flexibility. In such paradigms, participants alternate between two task rules and must select responses according to the currently relevant rule. Performance is typically slower and less accurate on switch trials than on repeat trials. This phenomenon is known as the switch cost, and is thought to reflect the cognitive demands associated with reconfiguring task sets and overcoming interference from the previously active rule \parencite{monsell2003switching,kiesel2010review}. Many task-switching designs further manipulate stimulus congruency, such that some stimuli afford the same response across task rules whereas others activate competing responses. These congruency effects provide an additional window into interference control within shifting contexts, highlighting that flexibility involves both updating task representations and resolving conflict at the level of stimulus–response mappings.
+
+Beyond behavioural performance, cognitive control can also be examined through its neural signatures. One of the most robust electrophysiological markers associated with control demands is frontal midline theta (FM-theta), a rhythmic activity observed over medial frontal scalp regions and commonly linked to generators in the anterior cingulate and medial prefrontal cortex \parencite{cavanagh2014theta}. FM-theta reliably increases during conditions that require enhanced control, including conflict processing, error monitoring, and task switching \parencite{depestele2023thetadriving}. It is often interpreted as reflecting a control-related signal that supports the coordination of task-relevant processing when demands are high.
+
+Taken together, these frameworks characterize cognitive flexibility as the capacity to regulate the balance between maintaining and updating goal representations in the face of changing demands. Behavioural measures derived from task-switching paradigms capture the efficiency of this regulation, while FM-theta provides a complementary neural index of control engagement. This theoretical foundation is central for understanding how factors that influence cognitive state, like sleep, could shape flexible cognition.
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Master thesis/figures/theory/Egner2023fig1WM.jpg}
+    \caption{Egner's (2023) figure of working memory.}
+    \label{fig:mylabel}
+\end{figure}
+
+The dual mechanisms of control (DMC, \cite{braver2012dualmechanisms}) framework offers a mechanistic account of executive function by distinguishing between two temporal modes of control, proactive and reactive. Proactive control refers to the sustained, anticipatory maintenance of task goals to bias perception and action before an event occurs, whereas reactive control reflects a just-in-time reactivation of goals when interference or conflict is detected. These modes differ in timing and in cognitive demands. Proactive control is more effortful and resource-dependent, and reactive control is relatively low-cost and stimulus-driven. If you look at the unity–diversity model in relation to DMC, it highlights that the same executive task can rely on multiple underlying control modes, and that individuals may differ in the extent to which they engage proactive versus reactive strategies. 
+
+This distinction could help us understand variability in executive functioning across time. Because proactive control depends on sustained goal maintenance, it is more vulnerable to fluctuations in arousal, attentional capacity, and fatigue, whereas reactive control tends to remain stable under such conditions. In this context, sleep becomes a theoretically meaningful source of variation, like we saw in the study of \cite{kusztor2019differentialsleep}. Poor or irregular sleep impaired proactive, top-down control processes more strongly than automatic, reactive ones. This could potentially reveal something about which components of a task reflect stable trait-like abilities and which reflect state-dependent fluctuations. Thus, the DMC framework can be used to clarify some of the mechanisms underlying executive performance and provide a principled basis for predicting how habitual and nightly sleep variability should differentially influence the processes engaged during tasks such as task switching.
+
+Considered alongside the unity–diversity framework, the DMC account suggests that executive tasks rarely rely on a single control process. Instead, performance reflects the extent to which individuals engage proactive versus reactive strategies, as well as their ability to flexibly shift between them. Two individuals may therefore achieve similar behavioural outcomes through partially different control dynamics. Sleep variability may contribute to systematic fluctuations in how cognitive control is implemented rather than simply degrading performance overall.
+
+
+\subsection{Task switching and set shifting}
+
+Task-switching paradigms are widely used to investigate cognitive flexibility because they capture the ability to disengage from one task set and configure another in response to changing demands \parencite{monsell2003switching,kiesel2010review}. In these paradigms, participants alternate between simple classification rules, typically producing slower and less accurate responses on switch trials than on repetition trials. This switch cost is generally interpreted as reflecting the cognitive effort required to reconfigure task representations and overcome interference from the previously relevant rule.
+
+Many task-switching designs also manipulate stimulus congruency. Congruent stimuli afford the same response across task rules, whereas incongruent stimuli activate competing response mappings. Congruency effects therefore provide an additional measure of interference control within shifting contexts. Interference is often amplified on switch trials, suggesting that the need to update task sets may temporarily increase susceptibility to competing stimulus–response associations \parencite{kiesel2010review}.
+
+From the perspective of the dual mechanisms framework, successful task switching is thought to rely on the ability to maintain task goals while flexibly resolving interference when competing responses are activated. In paradigms where the upcoming rule is not explicitly cued prior to stimulus onset, opportunities for advance preparation are limited, increasing the importance of reactive control processes. Participants must therefore retrieve and implement the relevant task set at the moment the stimulus appears, placing greater demands on conflict monitoring and rapid adjustment of behaviour. Task-switching paradigms of this kind are well suited for investigating factors that may influence how effectively cognitive control is maintained and recruited when advance preparation is limited. Under such conditions, successful performance may depend on the stability of top-down control processes, which have been shown to be sensitive to sleep-related disruptions. TVINGER JEG FREM NOE SOM IKKE STEMMER HER?
+
+
+\paragraph{Neural correlates of cognitive flexibility}
+
+At the neural level, cognitive flexibility is supported by a distributed frontoparietal control network involving medial and lateral prefrontal regions as well as posterior parietal cortex \parencite{kiesel2010review}. These regions are broadly associated with goal maintenance, attentional allocation, and the resolution of interference, which is needed when behaviour must be reconfigured quickly in response to changing task demands. Successful set shifting depends on the ability to represent multiple task rules, as well as mechanisms that monitor conflict and signal the need for increased control.
+
+Electrophysiological research provides converging evidence for such mechanisms. Frontal midline theta (FM-theta) is a rhythmic activity typically observed in the 4–8 Hz range over medial frontal scalp sites. It has been suggested as a robust neural marker of cognitive control. Convergent findings from EEG and intracranial recordings suggest that FM-theta is primarily generated in the anterior cingulate cortex (ACC) and adjacent medial prefrontal cortex (mPFC), regions implicated in performance monitoring and the dynamic allocation of control \parencite{cavanagh2014theta,depestele2023thetadriving}. Rather than reflecting a single cognitive operation, FM-theta is thought to index a domain-general control signal that becomes stronger when ongoing behaviour requires adjustment.
+
+Consistent with this interpretation, FM-theta power increases during conditions that place elevated demands on control, including response conflict, error commission, and task switching. Switch trials and incongruent trials often elicit stronger theta activity than low-conflict conditions, suggesting that medial frontal systems register the need for enhanced control when competing task sets or response tendencies are activated. In this sense, FM-theta can be understood as a neural signature of control engagement during flexible behaviour.
+
+Accumulating evidence indicates that this control-related neural activity is sensitive to sleep. Experimental sleep deprivation has been associated with attenuated theta responses during cognitively demanding tasks, alongside behavioural impairments in executive functioning \parencite{kusztor2019differentialsleep,wilckens2014sleeppreparation,wilckens2020sleepmddswitch}. Such findings support the view that insufficient or disrupted sleep may compromise the neural systems responsible for monitoring performance and recruiting control.
+
+Taken together, these observations motivate the use of FM-theta as a neural outcome in the present thesis. If sleep contributes to the stability of cognitive control, individual differences in habitual sleep and sleep variability may be reflected not only in behavioural performance, but also in the magnitude of control-related theta activity. FM-theta may therefore function as a state-sensitive neural marker linking multidimensional sleep patterns to the efficiency with which control is engaged during task switching.
+
 
 
 \section{The Sleep-Cognition Relationship}
@@ -175,105 +250,7 @@ We sleep about a third of our lives, but why is it so important? Staying alert a
 Abnormal sleep is also tied to mental health conditions such as anxiety and depression, with studies indicating a bidirectional relationship \parencite{alvaro2013sleepdepression, sivertsen2012bidirectional}. One of the items on the depression scales we use in the study is about sleep.
 
 
-\section{Where does this go? Speed/accuracy and Egner's concept}
-
-
-Speed-accuracy trade-off: Dopamine regulation in d2 receptors in the striatum is related to speed/flexibility, and dopamine d1 regulation in PFC is related to accuracy/stability. This would suggest that they are processes that are regulated independently of each other. The fact that sleep deprivation differentially affects cognitive control (top-down control is impaired whereas bottom-up control is spared) would also support the idea that they are different. \cite{egner2023principles} Egner suggests a two-dimensional conception instead of a one dimensional view with stability and flexibility being opposite ends of a scale. 
-
-theta would fit into this picture because the brain needs to know that there is a need for control, so i guess more errors with less theta means you're simply not awake enough to do the top-down control?
-
-and less theta with more accurate answers = less need for control because the participant has got it. They don't need as much conflict monitoring because the task appears easier? But it is a very difficult task, so i would definitely guess more theta. 
-
-
-
-\section{Current Gaps in the Literature}
-Videreføring av \parencite{kusztor2019differentialsleep, thunberg2024unreliability}. We know that executive functions are differentially affected by sleep deprivation. We also know that inhibition may not be valid as a construct, and that the measures are unreliable.
-I try to build upon this knowledge by figuring out how much of variance is stable and can be ascribed to traits in participants, and how much is unstable and can be ascribed to either states or error (random noise and measurement error). 
-
-
-\section{Research Questions and Hypotheses}
-\begin{enumerate}
-    \item How much of the variance in EF performance is accounted for by individual differences, and how much is between-session variance (state + residual error)?
-    \item Do people with better average sleep also tend to perform better on stable, trait-like components of EF?
-    \item Do the short-term sleep measures (like the night before a session, or resting state EEG) account for EF performance changes from one session to the next?
-    \item Do the associations between sleep and EF performance look similar across tasks, or are some tasks more sensitive to sleep than others?
-\end{enumerate}
-
-
-\chapter{Background}
-A student walks into a busy café. He orders a cappuccino and sits down at a table to read a complicated article about cognitive control. Next to him is a family of four with two small children running around the table. On the other side is a group of friends engaged in high-spirited conversation. The man smiles to himself for having chosen such a lively place to study, but soon manages to shut the noise out and focus on the text in front of him. After a few minutes the waitress comes with his coffee, and he shifts his attention to thank her for the cup. In this everyday situation, adapted from an example in Egner’s (2023) article on cognitive control, the student engages several abilities that we refer to as \emph{cognitive control} or \emph{executive functions}.
-
-While waiting in line he needs to keep his goal of ordering coffee active in working memory while coordinating the speech necessary to communicate it. He uses selective attention to track the barista’s questions and inhibits both irrelevant thoughts and the surrounding noise until it is his turn. To respond appropriately if the barista asks something unexpected he also needs to remain flexible, rather than relying on a rehearsed script. Each of these processes can fail: he might forget what he intended to order, become distracted and miss a question, give an inappropriate answer when asked something unanticipated, or hesitate and respond awkwardly because he cannot shift quickly enough between what he planned to say and what the situation requires.
-
-Something about from everyday life to high-stakes situation, when EF fails, why we study it in this project.
-
-Here is a chapter about executive functions for inspiration:
-https://www-sciencedirect-com.ezproxy.uio.no/science/chapter/handbook/pii/B9780444641502000204?via%3Dihub 
-
-
-\section{Frameworks of cognitive control}
-Executive functions. Inhibition, shifting and updating. Present the Friedman-Miyake framework of unity and diversity. \parencite{friedman2017unity}
-
-
-
-Back to \parencite{egner2023principles} working memory stability-flexibility framework with biasing vs. gating.
-Working memory figure. Explain with the rest of the story about gating attention at a café with the figure.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Master thesis/figures/theory/Egner2023fig1WM.jpg}
-    \caption{Egner's (2023) figure of working memory.}
-    \label{fig:mylabel}
-\end{figure}
-
-The dual mechanisms of control (DMC, \cite{braver2012dualmechanisms}) framework offers a mechanistic account of executive function by distinguishing between two temporal modes of control, proactive and reactive. Proactive control refers to the sustained, anticipatory maintenance of task goals to bias perception and action before an event occurs, whereas reactive control reflects a just-in-time reactivation of goals when interference or conflict is detected. These modes differ in timing and in cognitive demands. Proactive control is more effortful and resource-dependent, and reactive control is relatively low-cost and stimulus-driven. If you look at the unity–diversity model in relation to DMC, it highlights that the same executive task can rely on multiple underlying control modes, and that individuals may differ in the extent to which they engage proactive versus reactive strategies. 
-
-This distinction could help us understand variability in executive functioning across time. Because proactive control depends on sustained goal maintenance, it is more vulnerable to fluctuations in arousal, attentional capacity, and fatigue, whereas reactive control tends to remain stable under such conditions. In this context, sleep becomes a theoretically meaningful source of variation, like we saw in the study of \cite{kusztor2019differentialsleep}. Poor or irregular sleep impaired proactive, top-down control processes more strongly than automatic, reactive ones. This could potentially reveal something about which components of a task reflect stable trait-like abilities and which reflect state-dependent fluctuations. Thus, the DMC framework can be used to clarify some of the mechanisms underlying executive performance and provide a principled basis for predicting how habitual and nightly sleep variability should differentially influence the processes engaged during tasks such as task switching.
-
-
-\subsection{Task switching and set shifting}
-\cite{kiesel2010review, egner2023principles, monsell2003switching}
-
-TST - stimulus based interference. Congruent vs incongruent trials (trykke på samme knapp for de to oppgavene eller trykke på forskjellig knapp). Typically, the congruency effect is higher in switch trials than in repetition trials, which may reflect higher proactive interference in  a task switch. LES HELE AVSNITTET OM STIMULUS-BASED INTERFERENCE IGJEN. HER ER DET GULL Å HENTE.
-
-\paragraph{Neural correlates of set shifting}
-\cite{kiesel2010review}
-
-\subsection{Reliability of executive function tasks}
-Why do EF tasks often show poor reliability? (unstable across time). \parencite{thunberg2024unreliability}
-
-\paragraph{Reliability challenges in executive function measures}
-In classical test theory, an observed score ($X$) is assumed to reflect a true score ($T$) plus random measurement error ($E$), expressed as 
-
-\begin{equation}
-    X = T + E
-\end{equation}
-
-Building on classical test theory, latent state–trait (LST) modeling further decomposes the observed score into a stable trait component, a state component representing systematic occasion-specific variance, and residual error \parencite{steyer1999lst}.
-
-\begin{equation}
-    X_{it} = T_i + S_{it} + E_{it}
-\end{equation}
-
-where:
-\begin{itemize}
-    \item $T_i$ = trait component (stable individual differences between persons)
-    \item $S_{it}$ = state component (systematic but temporary within-person variation)
-    \item $E_{it}$ = residual component (unsystematic measurement error)
-\end{itemize}
-
-In LST-SEM we do not consider all instability to be noise. Rather, we split it up into 
-
-T = trait (stable differences between individuals)
-
-S = state (systematic, but temporary within-individual differences)
-
-E = residual (measurement error/noise)
-
-
-In the current paper I will focus on the EF set shifting. WILCKENS?
-
-\section{Sleep}
+\paragraph{Sleep}
 Define key dimensions: duration, efficiency, continuity, and variability.
 
 How does sleep quality affect attention, working memory, and mood?
@@ -287,33 +264,26 @@ Note
 Sleep is highly variable and critical for cognitive control, we want to find out more about how fluctuations affect executive functioning.
 
 
-\section{Executive Function and Sleep}
-Sleep: \cite{adamantidis2019oscillating, fjell2024sleep, fjell2025sleeppatterns, foster2020sleep, sen2023sleepef, tai2022sleepef} 
-Sleep, cognition and emotion: \cite{wilckens2014sleeppreparation, wilckens2020sleepmddswitch}  
+\section{The Sleep-Cognition Relationship}
 
-\subsection{Neural correlates of executive function}
-Frontal midline theta as a neural marker of cognitive control.
-\cite{kusztor2019differentialsleep, wilckens2014sleeppreparation, wilckens2020sleepmddswitch}
+Sleep is a fundamental biological process that supports brain health and adaptive functioning across the lifespan. Far from representing a passive state, sleep involves highly coordinated neural activity that contributes to metabolic regulation, synaptic plasticity, memory consolidation, and emotional processing \parencite{adamantidis2019oscillating,foster2020sleep}. Disruptions to sleep is uncomfortable and is associated with subjective fatigue, but there are also measurable consequences for cognitive performance and mental health.
 
-Features: 
-\cite{cavanagh2014theta, depestele2023thetadriving}
-Cavanagh \& Frank 2014, Depestele 2023, Verbeke 2021.
-\paragraph{}
-FM-theta is generated in ACC/mPFC and is associated with cognitive control demands.
+One proposed function of sleep is the maintenance of neural integrity. During sleep, metabolic waste products accumulate more slowly and clearance mechanisms become more active, supporting the removal of neurotoxic substances such as beta-amyloid \parencite{Shokri-Kojori2018beta-amyloid}. Habitual sleep disturbances have also been linked to accelerated brain atrophy, suggesting that insufficient or fragmented sleep may have cumulative effects on neural structure \parencite{sexton2014sleepatrophy}. These findings underscore the importance of sleep for sustaining the neural systems that support higher-order cognition.
 
-\paragraph{}
-FM-theta increases in response to conflict, errors, and task-switching demands.
+Consistent with this view, a substantial body of research indicates that sleep disturbances are associated with impairments in executive functioning, including attention, working memory, and cognitive control \parencite{sen2023sleepef,tai2022sleepef}. Notably, these impairments do not appear to be uniform across cognitive domains. Experimental sleep loss tends to disproportionately affect effortful, top-down processes while leaving more automatic processes relatively preserved. This selective vulnerability aligns with theoretical accounts suggesting that cognitively demanding control operations rely on neural resources that are particularly sensitive to fatigue and reduced arousal.
 
-\paragraph{}
-Sleep deprivation reduces FM-theta power during control tasks.
+Importantly, sleep should not be conceptualized as a single dimension. Individuals who obtain similar total sleep time may nevertheless differ substantially in sleep efficiency, continuity, and fragmentation. Contemporary sleep research increasingly emphasizes this multidimensional perspective, arguing that different aspects of sleep may relate to distinct cognitive outcomes \parencite{fjell2025sleeppatterns}. For example, fragmented sleep may disrupt restorative processes even when overall duration appears sufficient, whereas highly variable sleep schedules may reflect instability in circadian regulation.
 
-\paragraph{}
-Therefore FM-theta is expected to behave as a state-sensitive marker in this project.
+In addition to being multidimensional, sleep is inherently dynamic. Night-to-night fluctuations are common even among healthy adults, shaped by environmental demands, stress, and behavioural patterns. Emerging evidence suggests that these fluctuations are not merely statistical noise but may themselves carry cognitive significance. Individuals with more irregular sleep patterns often show poorer cognitive functioning compared to those with more stable sleep, even when average sleep duration is comparable \parencite{fjell2024sleep}. This distinction highlights the importance of differentiating between habitual sleep level and sleep variability when examining sleep–cognition relationships.
+
+Sleep disturbances are also closely intertwined with emotional functioning and mental health. Bidirectional associations have been documented between sleep problems and affective symptoms such as anxiety and depression, suggesting that sleep may both influence and reflect broader regulatory processes \parencite{alvaro2013sleepdepression,sivertsen2012bidirectional}. Because executive functions play a central role in emotional regulation and goal-directed behaviour, disrupted sleep may have cascading effects across cognitive and affective domains.
+
+Taken together, these findings support the view that sleep is both biologically essential and cognitively consequential. However, an important gap remains in understanding how naturally occurring variation in sleep relates specifically to cognitive flexibility and the neural mechanisms that support control. Much of the existing literature has focused on extreme manipulations such as total sleep deprivation, which, while informative, may not capture the subtler variations that characterize everyday sleep.
+
+The present thesis adopts a multidimensional perspective on sleep by examining both habitual sleep characteristics and night-to-night variability derived from actigraphy. By relating these measures to behavioural and electrophysiological indices of cognitive flexibility, the study aims to clarify whether both the level and the stability of sleep contribute to the efficiency with which cognitive control is recruited.
 
 
-\paragraph{Sleep Deprivation Effects}
 
-\paragraph{Individual Differences}
 
 
 \chapter{Methods}
@@ -326,7 +296,7 @@ The project was approved by the Regional Committees for Medical and Health Resea
 In the Mind the Sleep project we collected information about health which is classified as sensitive data (Norwegian: særlige kategorier av personopplysninger). All data files generated as a part of MtS (i.e. EEG, MR, task performance, questionnaires, actigraphy) are stored on TSD. 
 
 \subsection{Study design}
-The study was a within subjects-design with 3 sessions separated by 2 weeks. Session 1 comprised MINI, questionnaire A, questionnaire B and receiving overall instructions regarding the study. Participants received their actigraphy watch at this time point and sleep diary. Hence, sleep data was collected over the timespan of four weeks. Session two and three were identical and comprised an EEG recording during a resting-state, Stop-signal, Switch number-letter, Stroop, and N-back task. In addition, participants filled out questionnaire A. They had the option to either do the questionnaire A at the lab or at home depending on their schedule demands. Questionnaire B was sent out to participants on a daily basis from session one onwards, hence, over the timespan of six weeks. 
+The study was a within subjects-design with 3 sessions separated by 2 weeks. Session 1 comprised MINI, questionnaire A, questionnaire B and receiving overall instructions regarding the study. Participants received their actigraphy watch at this time point and sleep diary. Hence, sleep data was collected over the timespan of four weeks. Session two and three were identical and comprised an EEG recording during a resting-state, Stop-signal, Switch number-letter, Stroop, and N-back task. In addition, participants filled out questionnaire A. They had the option to either do the questionnaire A at the lab or at home depending on their schedule demands. Questionnaire B was sent out to participants on a daily basis from session one onwards, hence, over the timespan of four weeks. 
 
 
 \begin{figure}
@@ -445,7 +415,7 @@ Electrodes and time window
 \subsection{Actigraphy}
 Include a very simple and brief explanation of the setup, the equipment and software used, duration of use and so on.
 
-The actigraphs we use measure basic accelerometry, with movement in three axes (X, Y and Z). Sleep parameters are estimated using the Cole-Kripke algorithm (COLE-KRIPKE, 1992).
+The actigraphs we use measure basic accelerometry, with movement in three axes (X, Y and Z). Sleep parameters are NOT estimated using the Cole-Kripke algorithm (COLE-KRIPKE, 1992). Get this right.
 
 \paragraph{Feature Extraction from Actigraphy}
 The derived sleep parameters are:
@@ -463,28 +433,6 @@ The derived sleep parameters are:
 
 \subsection{Data Preprocessing}
 
-\subsection{Latent state-trait modelling}
-\paragraph{LST}
-I will apply latent state-trait modelling (LST-SEM) to repeated executive function tasks (stop signal, Stroop, n-back, task-switching) across the study sessions. For each EF measure, the repeated task scores will be modelled as indicators of latent trait and state factors. A trait component captures stable individual differences in EF performance across sessions. Since we only measure executive functions at two timepoints, the second component will encompass both state variance and residual error.
-
-Traditional reliability estimates treat all instability as error, but latent state–trait modeling allows us to distinguish stable, trait-like variance from occasion-specific variance.
-Even when only two measurement occasions are available, the model enables estimation of trait consistency and residual variance. The latter may reflect both state fluctuations and measurement error.
-By introducing sleep-related variables as predictors of this residual variance, we can examine whether part of the apparent unreliability in executive-function measures reflects systematic, state-dependent influences rather than random noise.
-\paragraph{SEM}
-\paragraph{Neural predictors}
-Frontal midline theta (and other features) can be added as
-
-\begin{itemize}
-    \item \textbf{State predictor:} resting-state theta before each session predicts the state component in EF
-    \item \textbf{Trait predictor:} average across sessions predicts the trait component in EF
-    \item \textbf{Session specific covariate:} residual/state variance. Probably cannot get this?
-\end{itemize}
-
-Important to tie the EEG directly to the model in an explicit manner
-
-
-\paragraph{Model Development}
-The sleep variables derived from actigraphy (e.g., sleep duration, efficiency, fragmentation, variability) will be included as predictors of the state component to assess whether sleep quality and timing explain within-person fluctuations in EF performance. Average sleep across the recording period (or a two-week baseline) will be used as a trait-like indicator of sleep and related to the EF trait component. Short-term predictors, like sleep quality the night before a session or resting-state EEG at the beginning of a session, will also be included. They can be modelled in relation to the state component of EF, to test whether deviations from normal sleep patterns influence performance on the tasks (after accounting for trait variance and residual error). Model estimation will be conducted within a structural equation modelling framework, and I will evaluate model fit and variance decomposition.
 
 
 \chapter{Results}
