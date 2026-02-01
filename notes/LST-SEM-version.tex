@@ -1,0 +1,531 @@
+% main.tex - Master's Thesis Template
+% University of Oslo - Department of Psychology
+% Cognitive Neuroscience Master's Programme
+
+\documentclass[12pt,a4paper]{report}
+
+% ============= PACKAGES =============
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{times} % Times New Roman font
+\usepackage[margin=2.5cm]{geometry} % 2.5cm margins as required
+\usepackage{setspace}
+\onehalfspacing % 1.5 line spacing as required
+
+% Graphics and figures
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage{subfigure}
+
+% Tables
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+
+% Math and algorithms
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Citations and references (APA 7)
+\usepackage[style=apa,backend=biber]{biblatex}
+\addbibresource{references.bib}
+
+% Links and cross-references
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=blue,
+    citecolor=black
+}
+
+% Code listings (for Python/MATLAB code)
+\usepackage{listings}
+\lstset{
+    basicstyle=\footnotesize\ttfamily,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    captionpos=b
+}
+
+% Appendices
+\usepackage[toc,page]{appendix}
+
+% Custom commands for consistency
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\newcommand{\note}[1]{\textcolor{blue}{[NOTE: #1]}}
+
+% Simple chapter formatting - normal size headings with reasonable spacing
+\usepackage{titlesec}
+\titleformat{\chapter}
+  {\normalfont\LARGE\bfseries}{}{ 0pt}{\LARGE}
+\titlespacing*{\chapter}{0pt}{20pt}{20pt}
+
+
+% ============= DOCUMENT =============
+\begin{document}
+
+% ============= FRONT MATTER =============
+\begin{titlepage}
+    \centering
+    \includegraphics[width=0.3\textwidth]{Master thesis/figures/uio_logo.png}
+    \vspace{2cm}
+    
+    {\LARGE\bfseries Sleeping patterns and flexible minds:
+    
+    Disentangling the effects of habitual and nightly sleep on cognitive control\par}
+    
+    \vspace{2cm}
+    
+    {\large Røskva Bjørgfinsdóttir\par}
+    
+    \vspace{3cm}
+    
+    {\large Master thesis in cognitive neuroscience\\
+    Department of Psychology\\
+    University of Oslo\par}
+    
+    \vspace{2cm}
+    
+    {\large Spring 2026\par} % Update semester/year
+    
+    \vfill
+    
+    {\large Supervisors:\\ 
+    Christina Thunberg\\
+    René Huster\par}
+\end{titlepage}
+
+% Abstract (max 500 words, on one page)
+\newpage
+\thispagestyle{empty}
+\begin{center}
+    \Large\textbf{Abstract}
+\end{center}
+
+\noindent
+\textbf{Author:} Røskva Bjørgfinsdóttir\\
+\textbf{Title:} Sleeping patterns and flexible minds: Disentangling the effects of habitual and nightly sleep on cognitive control\\
+\textbf{Supervisor:} Christina Thunberg
+
+\vspace{0.5cm}
+
+For my master thesis I'm using data from the Mind the Sleep project initiated by Margrethe Hansen and René Huster, as a part of Margrethe’s PhD project. The main aim of the study was to explore how sleep disturbances impact executive functions and affect (with a particular focus on depressive symptoms), as well as how it might relate to brain function.
+
+\paragraph{}
+Here are some title suggestions:
+
+\paragraph{Sleeping patterns and flexible minds:} Disentangling the effects of habitual and nightly sleep on cognitive control
+dynamic aspects of sleep and cognitive flexibility, shifting
+
+
+\textbf{Keywords:} sleep, executive function, depression, latent state/trait theory, structural equation modelling, actigraphy, cognitive performance
+
+% Table of Contents
+\newpage
+\tableofcontents
+
+% List of Figures and Tables (optional but recommended)
+%\newpage
+%\listoffigures
+%\listoftables
+
+% ============= MAIN CONTENT =============
+\chapter{Introduction}
+A fundamental challenge in cognitive neuroscience concerns whether cognitive measures reflect stable individual traits or state-dependent fluctuations. Recent findings from \textcite{thunberg2024unreliability} suggest that common executive function measures lack temporal stability, with test-retest reliability as low as r = .34 for the stop signal reaction time (SSRT). This instability indicates that cognitive control measures could be primarily influenced by situational factors rather than representing stable dispositional abilities. The specific factors driving this instability are unclear, which limits our understanding of when cognitive assessments provide reliable information about individual capabilities.
+
+Sleep represents a state variable that could explain observed instability in cognitive measures. Sleep disturbances differentially affect cognitive subcomponents, with sleep deprivation primarily impairing top-down control processes while leaving automatic processes intact \parencite{kusztor2019differentialsleep}. This selective vulnerability suggests that some cognitive measures may be more state-dependent than others, with their reliability tied to recent sleep patterns rather than reflecting measurement error or inherent trait instability.
+
+To address these issues, my project will use latent state–trait modelling, a structural equation modelling framework that partitions observed variance into stable trait-like components and occasion-specific fluctuations \parencite{steyer1999lst}. This approach allows me to quantify how much of executive function performance reflects enduring individual differences versus temporary variation, and to test whether sleep measures at different timescales help explain variation in performance. Possible research questions:
+
+    How much of the variance in EF performance is accounted for by individual differences, and how much is between-session variance (state + residual error)?
+    Do people with better average sleep also tend to perform better on stable, trait-like components of EF?
+    Do the short-term sleep measures (like the night before a session, or resting state EEG) account for EF performance changes from one session to the next?
+    Do the associations between sleep and EF performance look similar across tasks, or are some tasks more sensitive to sleep than others?
+
+
+\section{The Sleep-Cognition Relationship}
+
+Intro to sleep: \parencite{foster2020sleep} - Sleep, circadian rhythms and health: 
+Broad intro, gives an overview of some basic physiology and sleep regulation, and ties it to health and societal perspectives. Useful for an overall understanding of sleep, but also gives insights into how research frames the negative consequences of abnormal sleep.
+
+Function of sleep: \parencite{fjell2025sleeppatterns} - Sleep patterns and human brain health: 
+Focus on brain health, this is a good introduction to different theories about why we sleep. Look at the disussion about the relationship between sleep and brain health in general, and look at 'the way forward', what do they think we need to understand sleep better, and how does what I am doing fit into this picture?
+
+Intro to sleep physiology: \parencite{adamantidis2019oscillating} - Oscillating circuitries in the sleeping brain.
+Clear introduction to network organization during sleep. Don't get too lost in the physiology. Think about what is important for the thesis.
+
+\parencite{tai2022sleepef} - Impact of sleep duration on executive function and brain structure.
+Could be a starting point for the relationship between sleep and executive functions.
+
+\parencite{sen2023sleepef} - Sleep Duration and Executive function in Adults.
+Review article about sleep and executive functions. Tips about other relevant studies, but also contains some relevant points about subjective vs objective measurement of sleep. 
+
+\parencite{fjell2024sleep} - Individual sleep need is flexible and dynamically related to cognitive function.
+May give some food for thought when it comes to habitual sleep in general (rather than deprivation), and about dynamic views on sleep (like trait-state variations)
+
+We sleep about a third of our lives, but why is it so important? Staying alert and so on. Avoiding accidents. Sleep helps with the process of removing harmful plaques in the brain \parencite{Shokri-Kojori2018beta-amyloid}, and protects against brain atrophy \parencite{sexton2014sleepatrophy}
+Abnormal sleep is also tied to mental health conditions such as anxiety and depression, with studies indicating a bidirectional relationship \parencite{alvaro2013sleepdepression, sivertsen2012bidirectional}. One of the items on the depression scales we use in the study is about sleep.
+
+
+\section{Where does this go? Speed/accuracy and Egner's concept}
+
+
+Speed-accuracy trade-off: Dopamine regulation in d2 receptors in the striatum is related to speed/flexibility, and dopamine d1 regulation in PFC is related to accuracy/stability. This would suggest that they are processes that are regulated independently of each other. The fact that sleep deprivation differentially affects cognitive control (top-down control is impaired whereas bottom-up control is spared) would also support the idea that they are different. \cite{egner2023principles} Egner suggests a two-dimensional conception instead of a one dimensional view with stability and flexibility being opposite ends of a scale. 
+
+theta would fit into this picture because the brain needs to know that there is a need for control, so i guess more errors with less theta means you're simply not awake enough to do the top-down control?
+
+and less theta with more accurate answers = less need for control because the participant has got it. They don't need as much conflict monitoring because the task appears easier? But it is a very difficult task, so i would definitely guess more theta. 
+
+
+
+\section{Current Gaps in the Literature}
+Videreføring av \parencite{kusztor2019differentialsleep, thunberg2024unreliability}. We know that executive functions are differentially affected by sleep deprivation. We also know that inhibition may not be valid as a construct, and that the measures are unreliable.
+I try to build upon this knowledge by figuring out how much of variance is stable and can be ascribed to traits in participants, and how much is unstable and can be ascribed to either states or error (random noise and measurement error). 
+
+
+\section{Research Questions and Hypotheses}
+\begin{enumerate}
+    \item How much of the variance in EF performance is accounted for by individual differences, and how much is between-session variance (state + residual error)?
+    \item Do people with better average sleep also tend to perform better on stable, trait-like components of EF?
+    \item Do the short-term sleep measures (like the night before a session, or resting state EEG) account for EF performance changes from one session to the next?
+    \item Do the associations between sleep and EF performance look similar across tasks, or are some tasks more sensitive to sleep than others?
+\end{enumerate}
+
+
+\chapter{Background}
+A student walks into a busy café. He orders a cappuccino and sits down at a table to read a complicated article about cognitive control. Next to him is a family of four with two small children running around the table. On the other side is a group of friends engaged in high-spirited conversation. The man smiles to himself for having chosen such a lively place to study, but soon manages to shut the noise out and focus on the text in front of him. After a few minutes the waitress comes with his coffee, and he shifts his attention to thank her for the cup. In this everyday situation, adapted from an example in Egner’s (2023) article on cognitive control, the student engages several abilities that we refer to as \emph{cognitive control} or \emph{executive functions}.
+
+While waiting in line he needs to keep his goal of ordering coffee active in working memory while coordinating the speech necessary to communicate it. He uses selective attention to track the barista’s questions and inhibits both irrelevant thoughts and the surrounding noise until it is his turn. To respond appropriately if the barista asks something unexpected he also needs to remain flexible, rather than relying on a rehearsed script. Each of these processes can fail: he might forget what he intended to order, become distracted and miss a question, give an inappropriate answer when asked something unanticipated, or hesitate and respond awkwardly because he cannot shift quickly enough between what he planned to say and what the situation requires.
+
+Something about from everyday life to high-stakes situation, when EF fails, why we study it in this project.
+
+Here is a chapter about executive functions for inspiration:
+https://www-sciencedirect-com.ezproxy.uio.no/science/chapter/handbook/pii/B9780444641502000204?via%3Dihub 
+
+
+\section{Frameworks of cognitive control}
+Executive functions. Inhibition, shifting and updating. Present the Friedman-Miyake framework of unity and diversity. \parencite{friedman2017unity}
+
+
+
+Back to \parencite{egner2023principles} working memory stability-flexibility framework with biasing vs. gating.
+Working memory figure. Explain with the rest of the story about gating attention at a café with the figure.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Master thesis/figures/theory/Egner2023fig1WM.jpg}
+    \caption{Egner's (2023) figure of working memory.}
+    \label{fig:mylabel}
+\end{figure}
+
+The dual mechanisms of control (DMC, \cite{braver2012dualmechanisms}) framework offers a mechanistic account of executive function by distinguishing between two temporal modes of control, proactive and reactive. Proactive control refers to the sustained, anticipatory maintenance of task goals to bias perception and action before an event occurs, whereas reactive control reflects a just-in-time reactivation of goals when interference or conflict is detected. These modes differ in timing and in cognitive demands. Proactive control is more effortful and resource-dependent, and reactive control is relatively low-cost and stimulus-driven. If you look at the unity–diversity model in relation to DMC, it highlights that the same executive task can rely on multiple underlying control modes, and that individuals may differ in the extent to which they engage proactive versus reactive strategies. 
+
+This distinction could help us understand variability in executive functioning across time. Because proactive control depends on sustained goal maintenance, it is more vulnerable to fluctuations in arousal, attentional capacity, and fatigue, whereas reactive control tends to remain stable under such conditions. In this context, sleep becomes a theoretically meaningful source of variation, like we saw in the study of \cite{kusztor2019differentialsleep}. Poor or irregular sleep impaired proactive, top-down control processes more strongly than automatic, reactive ones. This could potentially reveal something about which components of a task reflect stable trait-like abilities and which reflect state-dependent fluctuations. Thus, the DMC framework can be used to clarify some of the mechanisms underlying executive performance and provide a principled basis for predicting how habitual and nightly sleep variability should differentially influence the processes engaged during tasks such as task switching.
+
+
+\subsection{Task switching and set shifting}
+\cite{kiesel2010review, egner2023principles, monsell2003switching}
+
+TST - stimulus based interference. Congruent vs incongruent trials (trykke på samme knapp for de to oppgavene eller trykke på forskjellig knapp). Typically, the congruency effect is higher in switch trials than in repetition trials, which may reflect higher proactive interference in  a task switch. LES HELE AVSNITTET OM STIMULUS-BASED INTERFERENCE IGJEN. HER ER DET GULL Å HENTE.
+
+\paragraph{Neural correlates of set shifting}
+\cite{kiesel2010review}
+
+\subsection{Reliability of executive function tasks}
+Why do EF tasks often show poor reliability? (unstable across time). \parencite{thunberg2024unreliability}
+
+\paragraph{Reliability challenges in executive function measures}
+In classical test theory, an observed score ($X$) is assumed to reflect a true score ($T$) plus random measurement error ($E$), expressed as 
+
+\begin{equation}
+    X = T + E
+\end{equation}
+
+Building on classical test theory, latent state–trait (LST) modeling further decomposes the observed score into a stable trait component, a state component representing systematic occasion-specific variance, and residual error \parencite{steyer1999lst}.
+
+\begin{equation}
+    X_{it} = T_i + S_{it} + E_{it}
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $T_i$ = trait component (stable individual differences between persons)
+    \item $S_{it}$ = state component (systematic but temporary within-person variation)
+    \item $E_{it}$ = residual component (unsystematic measurement error)
+\end{itemize}
+
+In LST-SEM we do not consider all instability to be noise. Rather, we split it up into 
+
+T = trait (stable differences between individuals)
+
+S = state (systematic, but temporary within-individual differences)
+
+E = residual (measurement error/noise)
+
+
+In the current paper I will focus on the EF set shifting. WILCKENS?
+
+\section{Sleep}
+Define key dimensions: duration, efficiency, continuity, and variability.
+
+How does sleep quality affect attention, working memory, and mood?
+Note 
+\begin{itemize}
+    \item age
+    \item individual variation
+    \item state-related variability
+\end{itemize}
+
+Sleep is highly variable and critical for cognitive control, we want to find out more about how fluctuations affect executive functioning.
+
+
+\section{Executive Function and Sleep}
+Sleep: \cite{adamantidis2019oscillating, fjell2024sleep, fjell2025sleeppatterns, foster2020sleep, sen2023sleepef, tai2022sleepef} 
+Sleep, cognition and emotion: \cite{wilckens2014sleeppreparation, wilckens2020sleepmddswitch}  
+
+\subsection{Neural correlates of executive function}
+Frontal midline theta as a neural marker of cognitive control.
+\cite{kusztor2019differentialsleep, wilckens2014sleeppreparation, wilckens2020sleepmddswitch}
+
+Features: 
+\cite{cavanagh2014theta, depestele2023thetadriving}
+Cavanagh \& Frank 2014, Depestele 2023, Verbeke 2021.
+\paragraph{}
+FM-theta is generated in ACC/mPFC and is associated with cognitive control demands.
+
+\paragraph{}
+FM-theta increases in response to conflict, errors, and task-switching demands.
+
+\paragraph{}
+Sleep deprivation reduces FM-theta power during control tasks.
+
+\paragraph{}
+Therefore FM-theta is expected to behave as a state-sensitive marker in this project.
+
+
+\paragraph{Sleep Deprivation Effects}
+
+\paragraph{Individual Differences}
+
+
+\chapter{Methods}
+\section{Design and procedure}
+
+\subsection{Ethical approval}
+The project was approved by the Regional Committees for Medical and Health Research Ethics (REK \#197760).
+
+\subsection{Data management}
+In the Mind the Sleep project we collected information about health which is classified as sensitive data (Norwegian: særlige kategorier av personopplysninger). All data files generated as a part of MtS (i.e. EEG, MR, task performance, questionnaires, actigraphy) are stored on TSD. 
+
+\subsection{Study design}
+The study was a within subjects-design with 3 sessions separated by 2 weeks. Session 1 comprised MINI, questionnaire A, questionnaire B and receiving overall instructions regarding the study. Participants received their actigraphy watch at this time point and sleep diary. Hence, sleep data was collected over the timespan of four weeks. Session two and three were identical and comprised an EEG recording during a resting-state, Stop-signal, Switch number-letter, Stroop, and N-back task. In addition, participants filled out questionnaire A. They had the option to either do the questionnaire A at the lab or at home depending on their schedule demands. Questionnaire B was sent out to participants on a daily basis from session one onwards, hence, over the timespan of four weeks. 
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1.0\linewidth]{Master thesis//figures//methods/MICC Study design.jpg}
+    \caption{Study design for Mind the Sleep project}
+    \label{fig:placeholder}
+\end{figure}
+\paragraph{Sample}
+Data collection is ongoing. The project includes adult participants (18-65 years), both with and without symptoms of depression. All participants are right-handed, speak Norwegian, and have normal or corrected-to-normal vision.
+Participants (N = 50) are recruited through online advertisements on Instagram and Facebook, and screened for depression via phone using the MADRS depression screening tool. Eligible participants attend an initial 1.5-hour session including clinical interview (MINI) and baseline questionnaires. Participants are then equipped with actigraphy devices and instructed in daily sleep diary completion. They are also given daily questionnaires through e-mail. At two-week intervals, participants complete EEG sessions with executive function assessments (stop signal, task-switching, Stroop, and n-back tasks) and repeated questionnaire measures.
+\paragraph{Exclusion Criteria}
+Certain psychological and neurological disorders, sleep disturbances, and particular medications were grounds for exclusion.
+Exclusion criteria: Schizophrenia, bipolar disorder or personality disorders (like borderline or dyssocial personality disorder), parkinsons, dementia, epilepsy, stroke, traumatic head injury. Psychotic disorders (current or in the past). Using medication like anticholinergic or antipsychotic medicine. Antiepileptica, tricyclic antidepressants or sleep medicine like nefazodone. Benzodiazepines. Substance abuse. 
+We screen participants with MADRS in the initial phone interview. If they have a score over 20 they are excluded unless they are in contact with health care for their mental health.
+
+\subsection{Questionnaires}
+MtS included the following questionnaires: PHQ, MADRS, MINI, GAD, BRIEF, ESS, PSQ, BIS, ASEBA, PAN, and sleep information. Sleep information was part of the questionnaires both as a stand-alone sleep diary and as separate items in the daily and bi-weekly questionnaires. Below an overview is provided on which questionnaires at what time point/session and more detail on each questionnaire itself. 
+
+\begin{table}[h!]
+\centering
+\caption{Overview of questionnaire sessions and entries}
+\label{tab:questionnaire_sessions}
+\begin{tabularx}{\textwidth}{@{} l X c @{}}
+\toprule
+\textbf{Session} & \textbf{Questionnaire} & \textbf{Number of entries} \\
+\midrule
+Telephone call recruitment session & PHQ and MADRS, both carried out verbally with the experimenter over the telephone. & 1 \\
+First session at the lab (no EEG) & MINI, carried out verbally with the experimenter in person. & 1 \\
+Bi-weekly & MADRS, GAD, BRIEF, ESS, PSQ, BIS, ASEBA, and sleep information. & 3 \\
+Daily & PAN, BRIEF, and sleep information. & 28 \\
+Sleep diary & Sleep information. & 28 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\subsection{EEG}
+Each EEG session contained a resting state recording (5 minutes with eyes open, 5 minutes with eyes closed) and four tasks in the following order: stop signal task (for 20 minutes), task-switching task (15 minutes), Stroop task (12 minutes), and the n-back task (25 minutes). The order was kept constant across participants and sessions. 
+
+Executive functions were assessed using four standard tasks: response inhibition (stop-signal task; \parencite{logan1984inhibition}), interference control (color–word Stroop task; \parencite{stroop1935interference}), working memory updating (n-back; \parencite{kirchner1958update}), and cognitive flexibility (task-switching paradigm; \parencite{rogers1995taskswitch}).
+
+\paragraph{Apparatus and acquisition}
+\\Experiment setup 
+\\Experiment computer: check
+\\Operating system: Windows X 
+\\Experiment software: PsychToolbox 3 
+\\Display screen: check
+\\Display refresh rate: check 
+\\Response device: Cedrus RB-740 (Cedrus Corporation, San Pedro, USA)
+ 
+\paragraph{Electrophysiological recordings}
+\\Electrodes: X passive Ag/AgCl 
+\\Amplifier: BrainAmp 
+\\Recording software: BrainVision Recorder  
+\\EEG positions: International 10/20 
+\\EEG reference/ground: FCz/AFz 
+\\EEG offline reference: earlobes 
+\\EMG: bipolar electrode montages on the abductor pollis brevis on both hands \\Sampling rate: 5000 Hz 
+
+\paragraph{Resting state}
+Each EEG session contained 2 x 5 minutes resting state recordings, first with their eyes open and then with their eyes closed. Participants were told that we wanted to measure their brain activity during rest. To do this, they should just sit still, rest their gaze at the fixation cross on the screen, and let their thoughts wander. They were explicitly told to try to avoid movement, such as tapping their fingers or shaking their legs, and to try to avoid concrete time passing activities, such as counting.  
+
+
+\paragraph{Task-Switching Paradigm}
+In the task-switching task, participants were presented with a pair of one letter and one number on the screen for 1200 ms. The font colour of the pair was either blue or yellow. If the font colour was blue, then participants were instructed to report, by button press, if the number was even (left button) or odd (right button). If the font colour was yellow however, then participants were instructed to report, by button press, if the letter was a vowel (left button) or a consonant (right button). Prior to the presentation of the pair, a fixation cross was presented on the screen for a duration between 1300 and 1700ms.
+
+In one-third of the trials, the font colour switched from the colour in the previous trial: the switch trials. In the remaining two-thirds of the trials, the font colour was the same as the previous trial: the repeat trials. The task consisted of four blocks, with each block consisting of 60 trials. Participants had 15 trials for practicing before the experiment began. In total, the task consisted of 240 trials, adding up to a total duration of approximately 15 minutes. 
+
+The trial types 
+
+congruent, incongruent. Switch, repeat. correct, error.
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1.0\linewidth]{Master thesis//figures//methods/switch.jpeg}
+    \caption{Task switching paradigm used in the project}
+    \label{fig:placeholder}
+\end{figure}
+
+Spectral estimation method
+
+fmid-theta definition
+
+Electrodes and time window
+\subsection{EEG Feature Extraction}
+\begin{itemize}
+    \item Preprocessing pipeline (filter, ICA, referencing, epoching). We apply a low pass filter (40Hz), resample to 500Hz, high pass filter (0.1Hz) and remove EMG channels. We map electrode names and add FCz as the empty reference eletrode, then we re-reference to the average of the earlobes. We create an event list and rename the triggers for epoching (different script). We run the ICA, and remove components conservatively by manual inspection.
+    \item How do I calculate fmid-theta (method, time window). Give a definition of theta.
+    \item Other features (beta? connectivity?)
+    \item Why these features? State vs trait sensitivity
+\end{itemize}
+
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{} & \textbf{Left button} & \textbf{Right button} \\
+\hline
+\textbf{Letters} & A E I Y U & B C D F G \\
+\hline
+\textbf{Numbers} & 0 2 4 6 8 & 1 3 5 7 9 \\
+\hline
+\end{tabular}
+\caption{Task switching paradigm. Depending on the colour of the text, participants had to attend to either the letters or numbers. If they responded to the letters, they had to press the left button for vowels and the right button for consonants. If responding to the numbers, they had to press the left button for even numbers and the right button for odd numbers.}
+\label{tab:task_switching}
+\end{table}
+
+
+
+\subsection{Actigraphy}
+Include a very simple and brief explanation of the setup, the equipment and software used, duration of use and so on.
+
+The actigraphs we use measure basic accelerometry, with movement in three axes (X, Y and Z). Sleep parameters are NOT estimated using the Cole-Kripke algorithm (COLE-KRIPKE, 1992). Get this right.
+
+\paragraph{Feature Extraction from Actigraphy}
+The derived sleep parameters are:
+\begin{itemize}
+    \item \textbf{TST (Total Sleep Time)} - Estimated total duration of sleep, excluding awakenings. Greater total sleep time generally indicates better sleep quality.
+    \item \textbf{SOL (Sleep Onset Latency)} - The time taken to fall asleep. Longer latency suggests poorer sleep quality.
+    \item \textbf{WASO (Wake After Sleep Onset)} - Total time spent awake after initially falling asleep. Greater WASO reflects more fragmented sleep and thus lower sleep quality.
+    \item \textbf{SE (Sleep Efficiency)} - Calculated as TST divided by time in bed, multiplied by 100\%. Values above 85–90\% are typically considered indicative of good sleep efficiency.
+    \item \textbf{Number of awakenings} - The number of awakenings detected during the night. A higher number indicates poorer sleep continuity.
+\end{itemize}
+
+\paragraph{Limitations of actigraphy} There are some limitations related to the use of actigraphy for sleep measurement. Polysomnography (PSG) remains the gold standard for assessing sleep because it provides a direct physiological measurement of sleep stages through simultaneous recording of brain activity (EEG), eye movements (EOG), and muscle tone (EMG), allowing precise differentiation between sleep and wakefulness (ADD A REFERENCE). PSG requires an extensive set-up, which makes it more suitable for lab studies. Wrist actigraphy is a practical and validated alternative for field studies where we are interested in habitual sleep. In the present study, only the accelerometer function of the ActiGraph devices was used, with all other sensors disabled to preserve battery life and participants’ privacy. Because actigraphy infers sleep and wake from movement alone, it may misclassify periods of quiet wakefulness as sleep, and can underestimate wake after sleep onset (WASO) compared with PSG (SOURCES, FOR GOD'S SAKE!!!). To ensure accuracy, actigraphy data were cross-checked against participants’ sleep diaries. Any apparent sleep periods not confirmed in the diary were excluded from analyses. Sources of errors here could be when participants take the actigraph off and leave it on the counter for periods of the day. The stillness will sometimes be registered as sleep.
+
+\section{Statistical Analysis}
+
+\subsection{Data Preprocessing}
+
+\subsection{Latent state-trait modelling}
+\paragraph{LST}
+I will apply latent state-trait modelling (LST-SEM) to repeated executive function tasks (stop signal, Stroop, n-back, task-switching) across the study sessions. For each EF measure, the repeated task scores will be modelled as indicators of latent trait and state factors. A trait component captures stable individual differences in EF performance across sessions. Since we only measure executive functions at two timepoints, the second component will encompass both state variance and residual error.
+
+Traditional reliability estimates treat all instability as error, but latent state–trait modeling allows us to distinguish stable, trait-like variance from occasion-specific variance.
+Even when only two measurement occasions are available, the model enables estimation of trait consistency and residual variance. The latter may reflect both state fluctuations and measurement error.
+By introducing sleep-related variables as predictors of this residual variance, we can examine whether part of the apparent unreliability in executive-function measures reflects systematic, state-dependent influences rather than random noise.
+\paragraph{SEM}
+\paragraph{Neural predictors}
+Frontal midline theta (and other features) can be added as
+
+\begin{itemize}
+    \item \textbf{State predictor:} resting-state theta before each session predicts the state component in EF
+    \item \textbf{Trait predictor:} average across sessions predicts the trait component in EF
+    \item \textbf{Session specific covariate:} residual/state variance. Probably cannot get this?
+\end{itemize}
+
+Important to tie the EEG directly to the model in an explicit manner
+
+
+\paragraph{Model Development}
+The sleep variables derived from actigraphy (e.g., sleep duration, efficiency, fragmentation, variability) will be included as predictors of the state component to assess whether sleep quality and timing explain within-person fluctuations in EF performance. Average sleep across the recording period (or a two-week baseline) will be used as a trait-like indicator of sleep and related to the EF trait component. Short-term predictors, like sleep quality the night before a session or resting-state EEG at the beginning of a session, will also be included. They can be modelled in relation to the state component of EF, to test whether deviations from normal sleep patterns influence performance on the tasks (after accounting for trait variance and residual error). Model estimation will be conducted within a structural equation modelling framework, and I will evaluate model fit and variance decomposition.
+
+
+\chapter{Results}
+\section{Descriptive Statistics}
+\paragraph{Data Completeness}
+\paragraph{Sleep Patterns}
+\paragraph{Cognitive Performance}
+
+
+\chapter{Discussion}
+\section{Main Findings}
+
+\section{Theoretical Implications}
+\paragraph{Sleep-Cognition Mechanisms}
+\paragraph{Methodological Contributions}
+
+\section{Limitations}
+\paragraph{Sample Size and Generalizability}
+\paragraph{Measurement Limitations}
+\paragraph{Model Constraints}
+
+\section{Future Research}
+\paragraph{Good ideas}
+\paragraph{Come in buckets}
+
+\chapter{Conclusion}
+What did we learn from all of this
+
+% ============= REFERENCES =============
+\printbibliography[heading=bibintoc,title={References}]
+
+% ============= APPENDICES =============
+\begin{appendices}
+\chapter{Supplementary Tables and Figures}
+\section{Additional Statistical Analyses}
+\section{Model Architecture Details}
+
+\chapter{Code and Implementation}
+\section{Data Preprocessing Pipeline}
+\section{Model Training Scripts}
+\section{Evaluation Functions}
+\end{appendices}
+
+\end{document}
