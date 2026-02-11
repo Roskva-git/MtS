@@ -1,3 +1,18 @@
+%% 4.1 TST Behavioural visuals
+
+% Author: Røskva
+% Date: 10.02.26
+% Last changed: 11.02.26
+
+% Workflow:
+% Step 1. Preprocess EEG + ICA
+% Step 2. Manually reject ICs
+% Step 3. Map logfiles onto EEG events (creates *_mapped.set)
+% Step 4. Extract behavioural overview 
+        % Step 4.1 Create visuals
+% Step 5. Epoching
+
+
 %% Load data
 load('C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Data\behavioural_overview_master.mat');
 % Assumes the table is named T
