@@ -9,7 +9,7 @@
 % Step 2. Manually reject ICs
 % Step 3. Map logfiles onto EEG events (creates *_mapped.set)
 % Step 4. Extract behavioural overview 
-        % Step 4.1 Create visuals
+% Step 4.1 Create visuals
 % Step 5. Epoching
 
 
