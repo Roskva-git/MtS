@@ -105,12 +105,11 @@ for f = 1:length(mapped_files)
 
         nonOM = ~isOM;
 
-        % --- Switch x Congruency cells (for interaction)
+        % --- 2x2 cells (Switch x Congruency)
         sw_con = isSwitch & isCon;
         sw_inc = isSwitch & isInc;
         rp_con = isRepeat & isCon;
         rp_inc = isRepeat & isInc;
-
 
 
         % --- Counts
@@ -122,7 +121,6 @@ for f = 1:length(mapped_files)
         nOmission = sum(isOM);
         nCorrect  = sum(isCC);
         nError    = sum(isCE);
-
 
         % --- Accuracy per Switch x Congruency cell (overall, includes omissions)
         
@@ -151,22 +149,23 @@ for f = 1:length(mapped_files)
         end
 
 
+
         % --- Omission counts by condition (RAW)
+
         nOmission_switch = sum(isOM & isSwitch);
         nOmission_repeat = sum(isOM & isRepeat);
-
+        
         nOmission_con = sum(isOM & isCon);
         nOmission_inc = sum(isOM & isInc);
-
+        
         % --- Omission rates by condition (PROPORTIONS)
         omit_switch_rate = NaN; omit_repeat_rate = NaN;
         omit_con_rate    = NaN; omit_inc_rate    = NaN;
-
+        
         if nSwitch > 0, omit_switch_rate = nOmission_switch / nSwitch; end
         if nRepeat > 0, omit_repeat_rate = nOmission_repeat / nRepeat; end
         if nCon > 0,    omit_con_rate    = nOmission_con / nCon; end
         if nInc > 0,    omit_inc_rate    = nOmission_inc / nInc; end
-
 
 
         % --- Accuracy (two definitions)
@@ -249,8 +248,9 @@ for f = 1:length(mapped_files)
         rt_sd_cC_inc   = std(rt_cC_inc, 'omitnan');
         rt_n_cC_inc    = sum(~isnan(rt_cC_inc));
 
+
         % --- Correct RT per Switch x Congruency cell
-        
+
         rt_cC_sw_con = mean(rt(sw_con & isCC), 'omitnan');
         rt_cC_sw_inc = mean(rt(sw_inc & isCC), 'omitnan');
         rt_cC_rp_con = mean(rt(rp_con & isCC), 'omitnan');
@@ -262,7 +262,6 @@ for f = 1:length(mapped_files)
         cong_cost_repeat = rt_cC_rp_inc - rt_cC_rp_con;
         
         rt_interaction = cong_cost_switch - cong_cost_repeat;
-
 
 
         % RT error-only by switch/repeat
@@ -288,6 +287,19 @@ for f = 1:length(mapped_files)
         rt_mean_cE_inc = mean(rt_cE_inc, 'omitnan');
         rt_sd_cE_inc   = std(rt_cE_inc, 'omitnan');
         rt_n_cE_inc    = sum(~isnan(rt_cE_inc));
+
+
+        % --- Error RT per Switch x Congruency cell
+        rt_cE_sw_con = mean(rt(isCE & sw_con), 'omitnan');
+        rt_cE_sw_inc = mean(rt(isCE & sw_inc), 'omitnan');
+        rt_cE_rp_con = mean(rt(isCE & rp_con), 'omitnan');
+        rt_cE_rp_inc = mean(rt(isCE & rp_inc), 'omitnan');
+        
+        % --- Error RT interaction (difference-in-differences)
+        cong_cost_switch_err = rt_cE_sw_inc - rt_cE_sw_con;
+        cong_cost_repeat_err = rt_cE_rp_inc - rt_cE_rp_con;
+        
+        rt_interaction_err = cong_cost_switch_err - cong_cost_repeat_err;
 
 
 
@@ -320,7 +332,6 @@ for f = 1:length(mapped_files)
         results(r).omit_inc_rate    = omit_inc_rate;
 
 
-        % --- Accuracy overview --- 
 
         results(r).acc_overall        = acc_overall;          % includes omissions
         results(r).acc_response       = acc_response;         % excludes omissions
@@ -384,6 +395,7 @@ for f = 1:length(mapped_files)
         results(r).rt_interaction = rt_interaction;
 
 
+
         % Error RT by switch/repeat
         results(r).rt_mean_cE_switch = rt_mean_cE_switch;
         results(r).rt_sd_cE_switch   = rt_sd_cE_switch;
@@ -401,6 +413,14 @@ for f = 1:length(mapped_files)
         results(r).rt_mean_cE_inc = rt_mean_cE_inc;
         results(r).rt_sd_cE_inc   = rt_sd_cE_inc;
         results(r).rt_n_cE_inc    = rt_n_cE_inc;
+
+        results(r).rt_cE_sw_con = rt_cE_sw_con;
+        results(r).rt_cE_sw_inc = rt_cE_sw_inc;
+        results(r).rt_cE_rp_con = rt_cE_rp_con;
+        results(r).rt_cE_rp_inc = rt_cE_rp_inc;
+        
+        results(r).rt_interaction_err = rt_interaction_err;
+
 
 
         disp(['SUCCESS: behavioural row added for participant ' num2str(participantID) ', session ' num2str(session)]);
