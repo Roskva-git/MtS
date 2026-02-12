@@ -1,8 +1,8 @@
-%% 4.1 TST Behavioural visuals
+%% 4.1 TST Behavioural tables and figures
 
 % Author: Røskva
 % Date: 10.02.26
-% Last changed: 12.02.26
+% Last changed: 11.02.26
 
 % Workflow:
 % Step 1. Preprocess EEG + ICA
@@ -15,6 +15,10 @@
 
 %% Load data
 T = readtable("C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Data\Behavioural overview master.xlsx.xlsx", 'VariableNamingRule','preserve');
+T = convertvars(T, @ischar, @str2double);
+T = convertvars(T, @isstring, @str2double);
+T = convertvars(T, @iscell, @str2double);
+
 
 
 %% Create a descriptive table
@@ -23,32 +27,59 @@ T = readtable("C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC -
 T.participantID = [];
 T.session = [];
 
-%% Keep numeric variables only
-numVars = varfun(@isnumeric, T, 'OutputFormat','uniform');
-Tnum = T(:, numVars);
+Tnum = T(:, vartype('numeric'));
 
-%% Compute descriptives
+
+%% Compute descriptives (includes all numeric variables)
 Mean   = varfun(@(x) mean(x,'omitnan'),   Tnum);
 SD     = varfun(@(x) std(x,'omitnan'),    Tnum);
 Median = varfun(@(x) median(x,'omitnan'), Tnum);
 MinVal = varfun(@(x) min(x,[],'omitnan'), Tnum);
 MaxVal = varfun(@(x) max(x,[],'omitnan'), Tnum);
+N      = varfun(@(x) sum(~isnan(x)),      Tnum);              % N non-NaN
+SumVal = varfun(@(x) sum(x,'omitnan'),    Tnum);              % useful for trial counts
 
+% Ensure consistent variable names
 Mean.Properties.VariableNames   = Tnum.Properties.VariableNames;
 SD.Properties.VariableNames     = Tnum.Properties.VariableNames;
 Median.Properties.VariableNames = Tnum.Properties.VariableNames;
 MinVal.Properties.VariableNames = Tnum.Properties.VariableNames;
 MaxVal.Properties.VariableNames = Tnum.Properties.VariableNames;
-
+N.Properties.VariableNames      = Tnum.Properties.VariableNames;
+SumVal.Properties.VariableNames = Tnum.Properties.VariableNames;
 
 %% Combine into one table
-Desc = [Mean; SD; Median; MinVal; MaxVal];
-Desc.Properties.RowNames = {'Mean','SD','Median','Min','Max'};
+Desc = [Mean; SD; Median; MinVal; MaxVal; N; SumVal];
+Desc.Properties.RowNames = {'Mean','SD','Median','Min','Max','N','Sum'};
+
 
 %% Save as Excel
-writetable(Desc, ...
-'C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Data\behavioural_descriptives.xlsx', ...
-'WriteRowNames', true);
+outFile = "C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Data\behavioural_descriptives.xlsx";
+
+writetable(Desc, outFile, 'WriteRowNames', true, 'Sheet', 'AllNumeric');
+
+% Count/trial variables only (nTrials..., nCorrect..., rt_n..., etc.)
+vn = string(Tnum.Properties.VariableNames);
+isCountVar = startsWith(vn,"n") | contains(vn,"_n_") | startsWith(vn,"rt_n") | contains(vn,"rt_n");
+Tcounts = Tnum(:, isCountVar);
+
+MeanC   = varfun(@(x) mean(x,'omitnan'), Tcounts);
+SDC     = varfun(@(x) std(x,'omitnan'),  Tcounts);
+MinC    = varfun(@(x) min(x,[],'omitnan'), Tcounts);
+MaxC    = varfun(@(x) max(x,[],'omitnan'), Tcounts);
+SumC    = varfun(@(x) sum(x,'omitnan'),  Tcounts);
+
+MeanC.Properties.VariableNames = Tcounts.Properties.VariableNames;
+SDC.Properties.VariableNames   = Tcounts.Properties.VariableNames;
+MinC.Properties.VariableNames  = Tcounts.Properties.VariableNames;
+MaxC.Properties.VariableNames  = Tcounts.Properties.VariableNames;
+SumC.Properties.VariableNames  = Tcounts.Properties.VariableNames;
+
+DescCounts = [MeanC; SDC; MinC; MaxC; SumC];
+DescCounts.Properties.RowNames = {'Mean','SD','Min','Max','Sum'};
+
+writetable(DescCounts, outFile, 'WriteRowNames', true, 'Sheet', 'CountsOnly');
+
 
 
 %% Plot descriptives
@@ -90,14 +121,24 @@ T.prop_correct  = T.nCorrect  ./ T.nTrialsStim;
 T.prop_error    = T.nError    ./ T.nTrialsStim;
 T.prop_omission = T.nOmission ./ T.nTrialsStim;
 
-% Plot
-figure;
-boxplot([T.prop_correct, T.prop_error, T.prop_omission], ...
-        'Labels', {'Correct','Error','Omission'});
+% Ensure proportions are numeric (fixes your error)
+T.prop_correct  = double(T.prop_correct);
+T.prop_error    = double(T.prop_error);
+T.prop_omission = double(T.prop_omission);
 
+% Mean proportions
+meanProps = mean([T.prop_correct, T.prop_error, T.prop_omission], 'omitnan');
+
+% Stacked bar
+figure;
+bar(meanProps, 'stacked');
+
+ylim([0 1]);
 ylabel('Proportion');
 title('Response proportions');
-grid on;
+
+legend({'Correct','Error','Omission'}, 'Location','best');
+
 
 % Proportions of correct vs non-correct (error and omissions)
 
