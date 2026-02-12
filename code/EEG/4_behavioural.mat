@@ -214,6 +214,32 @@ for f = 1:length(mapped_files)
         rt_sd_cC_inc   = std(rt_cC_inc, 'omitnan');
         rt_n_cC_inc    = sum(~isnan(rt_cC_inc));
 
+        % RT error-only by switch/repeat
+        rt_cE_switch = rt(isCE & isSwitch);
+        rt_cE_repeat = rt(isCE & isRepeat);
+        
+        rt_mean_cE_switch = mean(rt_cE_switch, 'omitnan');
+        rt_sd_cE_switch   = std(rt_cE_switch, 'omitnan');
+        rt_n_cE_switch    = sum(~isnan(rt_cE_switch));
+        
+        rt_mean_cE_repeat = mean(rt_cE_repeat, 'omitnan');
+        rt_sd_cE_repeat   = std(rt_cE_repeat, 'omitnan');
+        rt_n_cE_repeat    = sum(~isnan(rt_cE_repeat));
+        
+        % RT error-only by congruency
+        rt_cE_con = rt(isCE & isCon);
+        rt_cE_inc = rt(isCE & isInc);
+        
+        rt_mean_cE_con = mean(rt_cE_con, 'omitnan');
+        rt_sd_cE_con   = std(rt_cE_con, 'omitnan');
+        rt_n_cE_con    = sum(~isnan(rt_cE_con));
+        
+        rt_mean_cE_inc = mean(rt_cE_inc, 'omitnan');
+        rt_sd_cE_inc   = std(rt_cE_inc, 'omitnan');
+        rt_n_cE_inc    = sum(~isnan(rt_cE_inc));
+
+
+
         % --- Store row
         r = r + 1;
         results(r).participantID = participantID;
