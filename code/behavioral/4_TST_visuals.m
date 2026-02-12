@@ -2,7 +2,7 @@
 
 % Author: Røskva
 % Date: 10.02.26
-% Last changed: 11.02.26
+% Last changed: 12.02.26
 
 % Workflow:
 % Step 1. Preprocess EEG + ICA
