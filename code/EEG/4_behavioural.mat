@@ -318,6 +318,25 @@ for f = 1:length(mapped_files)
         results(r).rt_sd_cC_inc   = rt_sd_cC_inc;
         results(r).rt_n_cC_inc    = rt_n_cC_inc;
 
+        % Error RT by switch/repeat
+        results(r).rt_mean_cE_switch = rt_mean_cE_switch;
+        results(r).rt_sd_cE_switch   = rt_sd_cE_switch;
+        results(r).rt_n_cE_switch    = rt_n_cE_switch;
+        
+        results(r).rt_mean_cE_repeat = rt_mean_cE_repeat;
+        results(r).rt_sd_cE_repeat   = rt_sd_cE_repeat;
+        results(r).rt_n_cE_repeat    = rt_n_cE_repeat;
+        
+        % Error RT by congruency
+        results(r).rt_mean_cE_con = rt_mean_cE_con;
+        results(r).rt_sd_cE_con   = rt_sd_cE_con;
+        results(r).rt_n_cE_con    = rt_n_cE_con;
+        
+        results(r).rt_mean_cE_inc = rt_mean_cE_inc;
+        results(r).rt_sd_cE_inc   = rt_sd_cE_inc;
+        results(r).rt_n_cE_inc    = rt_n_cE_inc;
+
+
         disp(['SUCCESS: behavioural row added for participant ' num2str(participantID) ', session ' num2str(session)]);
 
     catch ME
