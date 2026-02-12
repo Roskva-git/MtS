@@ -2,7 +2,7 @@
 
 % Author: Røskva
 % Date: 13.01.26
-% Last changed: 11.02.26
+% Last changed: 12.02.26
 
 % Workflow:
 % Step 1. Preprocess EEG + ICA
@@ -105,6 +105,14 @@ for f = 1:length(mapped_files)
 
         nonOM = ~isOM;
 
+        % --- Switch x Congruency cells (for interaction)
+        sw_con = isSwitch & isCon;
+        sw_inc = isSwitch & isInc;
+        rp_con = isRepeat & isCon;
+        rp_inc = isRepeat & isInc;
+
+
+
         % --- Counts
         nSwitch   = sum(isSwitch);
         nRepeat   = sum(isRepeat);
@@ -114,6 +122,33 @@ for f = 1:length(mapped_files)
         nOmission = sum(isOM);
         nCorrect  = sum(isCC);
         nError    = sum(isCE);
+
+
+        % --- Accuracy per Switch x Congruency cell (overall, includes omissions)
+        
+        if sum(sw_con) > 0
+            acc_sw_con = sum(sw_con & isCC) / sum(sw_con);
+        else
+            acc_sw_con = NaN;
+        end
+        
+        if sum(sw_inc) > 0
+            acc_sw_inc = sum(sw_inc & isCC) / sum(sw_inc);
+        else
+            acc_sw_inc = NaN;
+        end
+        
+        if sum(rp_con) > 0
+            acc_rp_con = sum(rp_con & isCC) / sum(rp_con);
+        else
+            acc_rp_con = NaN;
+        end
+        
+        if sum(rp_inc) > 0
+            acc_rp_inc = sum(rp_inc & isCC) / sum(rp_inc);
+        else
+            acc_rp_inc = NaN;
+        end
 
 
         % --- Omission counts by condition (RAW)
@@ -213,6 +248,22 @@ for f = 1:length(mapped_files)
         rt_mean_cC_inc = mean(rt_cC_inc, 'omitnan');
         rt_sd_cC_inc   = std(rt_cC_inc, 'omitnan');
         rt_n_cC_inc    = sum(~isnan(rt_cC_inc));
+
+        % --- Correct RT per Switch x Congruency cell
+        
+        rt_cC_sw_con = mean(rt(sw_con & isCC), 'omitnan');
+        rt_cC_sw_inc = mean(rt(sw_inc & isCC), 'omitnan');
+        rt_cC_rp_con = mean(rt(rp_con & isCC), 'omitnan');
+        rt_cC_rp_inc = mean(rt(rp_inc & isCC), 'omitnan');
+        
+        % --- Interaction metric (difference-in-differences)
+        
+        cong_cost_switch = rt_cC_sw_inc - rt_cC_sw_con;
+        cong_cost_repeat = rt_cC_rp_inc - rt_cC_rp_con;
+        
+        rt_interaction = cong_cost_switch - cong_cost_repeat;
+
+
 
         % RT error-only by switch/repeat
         rt_cE_switch = rt(isCE & isSwitch);
@@ -317,6 +368,21 @@ for f = 1:length(mapped_files)
         results(r).rt_mean_cC_inc = rt_mean_cC_inc;
         results(r).rt_sd_cC_inc   = rt_sd_cC_inc;
         results(r).rt_n_cC_inc    = rt_n_cC_inc;
+
+        % --- Store Switch x Congruency cells
+        
+        results(r).acc_sw_con = acc_sw_con;
+        results(r).acc_sw_inc = acc_sw_inc;
+        results(r).acc_rp_con = acc_rp_con;
+        results(r).acc_rp_inc = acc_rp_inc;
+        
+        results(r).rt_cC_sw_con = rt_cC_sw_con;
+        results(r).rt_cC_sw_inc = rt_cC_sw_inc;
+        results(r).rt_cC_rp_con = rt_cC_rp_con;
+        results(r).rt_cC_rp_inc = rt_cC_rp_inc;
+        
+        results(r).rt_interaction = rt_interaction;
+
 
         % Error RT by switch/repeat
         results(r).rt_mean_cE_switch = rt_mean_cE_switch;
