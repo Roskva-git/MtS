@@ -111,6 +111,12 @@ for f = 1:length(mapped_files)
         rp_con = isRepeat & isCon;
         rp_inc = isRepeat & isInc;
 
+        % --- Trial counts per interaction cell
+        n_sw_con = sum(sw_con);
+        n_sw_inc = sum(sw_inc);
+        n_rp_con = sum(rp_con);
+        n_rp_inc = sum(rp_inc);
+
 
         % --- Counts
         nSwitch   = sum(isSwitch);
@@ -395,6 +401,12 @@ for f = 1:length(mapped_files)
         results(r).rt_interaction = rt_interaction;
 
 
+        results(r).n_sw_con = n_sw_con;
+        results(r).n_sw_inc = n_sw_inc;
+        results(r).n_rp_con = n_rp_con;
+        results(r).n_rp_inc = n_rp_inc;
+
+
 
         % Error RT by switch/repeat
         results(r).rt_mean_cE_switch = rt_mean_cE_switch;
@@ -456,7 +468,7 @@ disp('Behavioural extraction complete.');
 %% Check the table for sanity %%
 
 % Navigate to the output folder
-% cd('\\hypatia.uio.no\...\4_behavioural')
+% cd('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural')
 
 % Open the MAT file
 % load('behavioural_overview_master.mat')
