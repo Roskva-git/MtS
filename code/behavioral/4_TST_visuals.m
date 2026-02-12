@@ -2,7 +2,7 @@
 
 % Author: Røskva
 % Date: 10.02.26
-% Last changed: 11.02.26
+% Last changed: 12.02.26
 
 % Workflow:
 % Step 1. Preprocess EEG + ICA
@@ -14,8 +14,8 @@
 
 
 %% Load data
-load('C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Data\behavioural_overview_master.mat');
-% Assumes the table is named T
+T = readtable("C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Data\Behavioural overview master.xlsx.xlsx", 'VariableNamingRule','preserve');
+
 
 %% Create a descriptive table
 
