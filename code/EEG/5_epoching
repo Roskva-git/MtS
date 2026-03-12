@@ -1,57 +1,98 @@
-%% 4. Batch Epoching for TST Data
+%% 5. Batch Epoching for TST Data
 
 % Author: Røskva
 % Date: 18.12.25
-% Last changed: 18.12.25
+% Last changed: 12.03.26
 
-% Workflow: 
-% Step 1. Run the preprocessing script with ICA
-% step 2. Reject independent components 
-% Step 3. Run the mapping script using the logfile to map events
-% Step 4. Get behavioural overview
-% Step 5. Epoch & analyze
+% Workflow:
+% Step 1. Preprocess EEG + ICA
+% Step 2. Manually reject ICs
+% Step 3. Map logfiles onto EEG events
+% Step 4. Extract behavioural overview
+% Step 5. Epoch data (this script)
 
-% DESCRIPTION:
-% This script loads cleaned EEG datasets (with mapped events) and creates
-% epochs around stimulus events for subsequent time–frequency analysis.
+% PURPOSE:
+% Create stimulus-locked epochs for all task trials while preserving
+% metadata fields (switch/repeat, congruency, outcome etc.).
+% Artifact epochs are detected but only marked, not removed.
 
-% TODO (after mapping is finalized):
-% - define event labels for each trial type (e.g., R_C_corr, S_I_err)
-% - choose epoch window (likely -1 to 2 seconds for time–freq)
-% - baseline correction window (likely pre-stim baseline)
-% - handle omissions separately
-% - reject epochs with excessive noise if necessary
+% Epoch window: -1500 ms to +1500 ms
+% Artifact detection: ±100 µV
+% Baseline correction will be applied later during time–frequency analysis.
 
-%% Initialize EEGLAB and paths
-addpath('\\hypatia...\eeglab2025.0.0');
-raw_folder = '\\hypatia...\Data\TST\2_cleaned';      % cleaned files
-out_folder = '\\hypatia...\Data\TST\3_epoched';      % epoched output
 
-eeglab;
+%% 0. Initialize EEGLAB and set paths
 
-%% Loop over cleaned datasets
-cleaned_files = dir(fullfile(raw_folder, '*_cleaned.set'));
+addpath('\\hypatia.uio.no\...\eeglab2025.0.0\', ...
+        '\\hypatia.uio.no\...\Røskva\', ...
+        '\\hypatia.uio.no\...\Røskva\Code\');
 
-for f = 1:length(cleaned_files)
+eeglab;  % Start EEGLAB
 
-    % Load dataset
-    EEG = pop_loadset('filename', cleaned_files(f).name, 'filepath', raw_folder);
-    [~, base_name, ~] = fileparts(cleaned_files(f).name);
 
-    % Extract event labels (placeholder)
-    % Example: eventTypes = {'Stimulus_R_C','Stimulus_S_I'};
-    % TODO: replace once mapping script finalized.
+%% 1. Define folders
 
-    % Epoching (placeholder event name and times)
-    % Note: update 'Stimulus' to real mapped labels later.
-    EEG = pop_epoch(EEG, {'Stimulus'}, [-1 2]);  % TODO: update event types
-    EEG = pop_rmbase(EEG, [-200 0]);             % baseline correction (ms)
+mapped_folder = '\\hypatia.uio.no\...\3_mapped\';
+out_folder    = '\\hypatia.uio.no\...\4_epoched\';
 
-    % Save
-    out_filename = [base_name '_epoched.set'];
-    pop_saveset(EEG, 'filename', out_filename, 'filepath', out_folder);
-
-    disp(['Epoched: ' out_filename]);
+if ~exist(out_folder, 'dir')
+    mkdir(out_folder);
 end
 
-disp('Batch epoching complete.');
+
+%% 2. Load dataset (single participant test)
+
+filename = 'TST_33_1_cleaned_mapped.set';
+
+EEG = pop_loadset('filename', filename, 'filepath', mapped_folder);
+[ALLEEG, EEG, CURRENTSET] = eeg_store(ALLEEG, EEG, 0);
+
+[~, base_name, ~] = fileparts(filename);
+
+disp(['Epoching dataset: ' base_name]);
+
+
+%% 3. Identify stimulus events (LET* or NUM*)
+
+types = {EEG.event.type};
+
+stimMask = startsWith(types, 'LET') | startsWith(types, 'NUM');
+
+stimEvents = unique(types(stimMask));
+
+disp('Stimulus event types detected:');
+disp(stimEvents');
+
+
+%% 4. Epoch around stimulus events
+
+EEG = pop_epoch(EEG, stimEvents, [-1.5 1.5], ...
+    'newname', [base_name '_epoched'], ...
+    'epochinfo', 'yes');
+
+[ALLEEG, EEG, CURRENTSET] = pop_newset(ALLEEG, EEG, 1, 'gui', 'off');
+
+
+%% 5. Detect high-amplitude artifacts (mark only)
+
+EEG = pop_eegthresh(EEG, 1, ...
+    1:EEG.nbchan, ...   % all channels
+    -100, 100, ...      % amplitude threshold
+    -1.5, 1.5, ...      % time window
+    0, 0);              % mark but do not reject
+
+nMarked = sum(EEG.reject.rejthresh);
+
+disp(['Epochs marked for potential artifact: ' num2str(nMarked)]);
+
+
+%% 6. Save epoched dataset
+
+out_filename = [base_name '_epoched.set'];
+
+pop_saveset(EEG, 'filename', out_filename, 'filepath', out_folder);
+
+disp(['SUCCESS: epoched dataset saved as ' out_filename]);
+
+
+disp('Epoching test complete.');
