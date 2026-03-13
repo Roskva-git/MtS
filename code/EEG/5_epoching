@@ -169,3 +169,9 @@ EEG_roi.reject.rejmanualE = EEG.reject.rejmanualE;
 
 % Open scroll viewer
 pop_eegplot(EEG_roi,1,1,1);
+
+
+% What are we left with after all this?
+stim = {EEG.event.type};
+stim = stim(contains(stim,'NUM') | contains(stim,'LET'));
+tabulate(stim
