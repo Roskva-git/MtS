@@ -15,6 +15,7 @@
 % Create stimulus-locked epochs for all task trials while preserving
 % metadata fields (switch/repeat, congruency, outcome etc.).
 % Artifact epochs are detected but only marked, not removed.
+% Sanity checks provided at the bottom of the script
 
 % Epoch window: -1500 ms to +1500 ms
 % Artifact detection: ±100 µV
@@ -23,8 +24,8 @@
 
 %% 0. Initialize EEGLAB and set paths
 
-addpath('\\hypatia.uio.no\...\eeglab2025.0.0\', ...
-        '\\hypatia.uio.no\...\Røskva\', ...
+addpath('Z:\Projects\Røskva\Code\eeglab2025.1.0', ...
+        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\', ...
         '\\hypatia.uio.no\...\Røskva\Code\');
 
 eeglab;  % Start EEGLAB
@@ -32,8 +33,8 @@ eeglab;  % Start EEGLAB
 
 %% 1. Define folders
 
-mapped_folder = '\\hypatia.uio.no\...\3_mapped\';
-out_folder    = '\\hypatia.uio.no\...\4_epoched\';
+mapped_folder = 'Z:\Projects\Røskva\Data\TST\3_mapped';
+out_folder    = 'Z:\Projects\Røskva\Data\TST\5_epoched';
 
 if ~exist(out_folder, 'dir')
     mkdir(out_folder);
@@ -55,9 +56,7 @@ disp(['Epoching dataset: ' base_name]);
 %% 3. Identify stimulus events (LET* or NUM*)
 
 types = {EEG.event.type};
-
 stimMask = startsWith(types, 'LET') | startsWith(types, 'NUM');
-
 stimEvents = unique(types(stimMask));
 
 disp('Stimulus event types detected:');
@@ -89,10 +88,52 @@ disp(['Epochs marked for potential artifact: ' num2str(nMarked)]);
 %% 6. Save epoched dataset
 
 out_filename = [base_name '_epoched.set'];
-
 pop_saveset(EEG, 'filename', out_filename, 'filepath', out_folder);
 
 disp(['SUCCESS: epoched dataset saved as ' out_filename]);
-
-
 disp('Epoching test complete.');
+
+
+
+
+
+
+
+
+
+
+
+
+%% Sanity checks to make sure the script ran as intended
+
+% EEG - Confirm the dataset dimensions look normal.
+%       Looks something like:
+%       nbchan: 30
+%       pnts: ~1500
+%       trials: 240
+%       srate: 500
+
+% EEG.xmin - Confirms the epoch timing, should be xmin = -1.5
+% EEG.xmax - Confirms the epoch timing, should be xmax = 1.5
+
+% fieldnames(EEG.event) - Confirm that metadata fields survived epoching
+%       Returns something like this:
+%       taskSwitch
+%       congruency
+%       outcome
+%       rt
+%       trialNr
+%       block
+
+% unique({EEG.event.type}) - Confirm stimulus labels were preserved
+%       For this pipeline, it returns something like
+%       LET_R_Con_cC
+%       LET_S_Inc_cE
+%       NUM_S_Inc_OM
+
+% sum(EEG.reject.rejthresh) - Confirm artifact marking worked
+
+% EEG.trials - confirm how many trials were included
+
+% EEG.chanlocs - confirm which channels are included
+%              - Should be all for now, defining ROI happens later
