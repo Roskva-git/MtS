@@ -16,6 +16,7 @@
 % metadata fields (switch/repeat, congruency, outcome etc.).
 % Artifact epochs are detected but only marked, not removed.
 % Sanity checks provided at the bottom of the script
+% HOWTO for manual inspection of artifacts after that
 
 % Epoch window: -1500 ms to +1500 ms
 % Artifact detection: ±100 µV
@@ -26,7 +27,7 @@
 
 addpath('Z:\Projects\Røskva\Code\eeglab2025.1.0', ...
         '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\', ...
-        '\\hypatia.uio.no\...\Røskva\Code\');
+        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\');
 
 eeglab;  % Start EEGLAB
 
@@ -41,67 +42,80 @@ if ~exist(out_folder, 'dir')
 end
 
 
-%% 2. Load dataset (single participant test)
+%% 2. Get list of mapped datasets
 
-filename = 'TST_33_1_cleaned_mapped.set';
-
-EEG = pop_loadset('filename', filename, 'filepath', mapped_folder);
-[ALLEEG, EEG, CURRENTSET] = eeg_store(ALLEEG, EEG, 0);
-
-[~, base_name, ~] = fileparts(filename);
-
-disp(['Epoching dataset: ' base_name]);
+mapped_files = dir(fullfile(mapped_folder, '*_cleaned_mapped.set'));
 
 
-%% 3. Identify stimulus events (LET* or NUM*)
+%% 3. Loop over datasets
 
-types = {EEG.event.type};
-stimMask = startsWith(types, 'LET') | startsWith(types, 'NUM');
-stimEvents = unique(types(stimMask));
+for f = 1:length(mapped_files)
 
-disp('Stimulus event types detected:');
-disp(stimEvents');
+    try
 
+        filename = mapped_files(f).name;
+        [~, base_name, ~] = fileparts(filename);
 
-%% 4. Epoch around stimulus events
+        disp(['Epoching dataset: ' base_name]);
 
-EEG = pop_epoch(EEG, stimEvents, [-1.5 1.5], ...
-    'newname', [base_name '_epoched'], ...
-    'epochinfo', 'yes');
+        %% 3.1 Load dataset
 
-[ALLEEG, EEG, CURRENTSET] = pop_newset(ALLEEG, EEG, 1, 'gui', 'off');
+        EEG = pop_loadset('filename', filename, 'filepath', mapped_folder);
+        [ALLEEG, EEG, CURRENTSET] = eeg_store(ALLEEG, EEG, 0);
 
 
-%% 5. Detect high-amplitude artifacts (mark only)
+        %% 3.2 Identify stimulus events (LET* or NUM*)
 
-EEG = pop_eegthresh(EEG, 1, ...
-    1:EEG.nbchan, ...   % all channels
-    -100, 100, ...      % amplitude threshold
-    -1.5, 1.5, ...      % time window
-    0, 0);              % mark but do not reject
+        types = {EEG.event.type};
 
-nMarked = sum(EEG.reject.rejthresh);
+        stimMask = startsWith(types, 'LET') | startsWith(types, 'NUM');
 
-disp(['Epochs marked for potential artifact: ' num2str(nMarked)]);
+        stimEvents = unique(types(stimMask));
 
 
-%% 6. Save epoched dataset
+        %% 3.3 Epoch around stimulus events
 
-out_filename = [base_name '_epoched.set'];
-pop_saveset(EEG, 'filename', out_filename, 'filepath', out_folder);
+        EEG = pop_epoch(EEG, stimEvents, [-1.5 1.5], ...
+            'newname', [base_name '_epoched'], ...
+            'epochinfo', 'yes');
 
-disp(['SUCCESS: epoched dataset saved as ' out_filename]);
-disp('Epoching test complete.');
-
-
+        [ALLEEG, EEG, CURRENTSET] = pop_newset(ALLEEG, EEG, 1, 'gui', 'off');
 
 
+        %% 3.4 Detect high-amplitude artifacts (mark only)
+
+        EEG = pop_eegthresh(EEG, 1, ...
+            1:EEG.nbchan, ...   % all channels
+            -100, 100, ...      % amplitude threshold
+            -1.5, 1.5, ...      % time window
+            0, 0);              % mark but do not reject
+
+        nMarked = sum(EEG.reject.rejthresh);
+
+        disp(['Epochs marked for potential artifact: ' num2str(nMarked)]);
 
 
+        %% 3.5 Save epoched dataset
+
+        out_filename = [base_name '_epoched.set'];
+
+        pop_saveset(EEG, 'filename', out_filename, 'filepath', out_folder);
+
+        disp(['SUCCESS: epoched dataset saved as ' out_filename]);
+
+    catch ME
+
+        warning(['FAILED epoching: ' mapped_files(f).name]);
+        disp(getReport(ME,'extended'));
+
+        continue
+
+    end
+
+end
 
 
-
-
+disp('Batch epoching complete.');
 
 
 %% Sanity checks to make sure the script ran as intended
@@ -137,3 +151,21 @@ disp('Epoching test complete.');
 
 % EEG.chanlocs - confirm which channels are included
 %              - Should be all for now, defining ROI happens later
+
+
+
+%% Inspect data by eye
+
+% Copy threshold flags so they appear visually in the EEG viewer
+EEG.reject.rejmanual  = EEG.reject.rejthresh;
+EEG.reject.rejmanualE = EEG.reject.rejthreshE;
+
+% Create temporary dataset with ROI channels (Fz=5, Cz=14, FCz=30)
+EEG_roi = pop_select(EEG,'channel',[5 30 14]);
+
+% Copy rejection marks into the ROI dataset (pop_select removes them)
+EEG_roi.reject.rejmanual  = EEG.reject.rejmanual;
+EEG_roi.reject.rejmanualE = EEG.reject.rejmanualE;
+
+% Open scroll viewer
+pop_eegplot(EEG_roi,1,1,1);
