@@ -1,0 +1,67 @@
+%% 6. Create subsets + logging
+
+clear; clc;
+
+inFolder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\5_epoched\';
+
+out_cong = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\6_congruence\';
+out_sr   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\6_switchrepeat\';
+out_int  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\6_interaction\';
+
+files = dir(fullfile(inFolder, '*.set'));
+
+minTrials = 10;
+
+log = {};
+
+for i = 1:length(files)
+
+    EEG = pop_loadset('filename', files(i).name, ...
+                      'filepath', files(i).folder);
+
+    baseName = erase(files(i).name, '_cleaned_mapped_epoched.set');
+    baseName = [baseName '_epoched'];
+
+    conditions = {
+        'switch',        {'LET_S_Con_cC','LET_S_Inc_cC','NUM_S_Con_cC','NUM_S_Inc_cC'}, out_sr;
+        'repeat',        {'LET_R_Con_cC','LET_R_Inc_cC','NUM_R_Con_cC','NUM_R_Inc_cC'}, out_sr;
+        'congruent',     {'LET_R_Con_cC','LET_S_Con_cC','NUM_R_Con_cC','NUM_S_Con_cC'}, out_cong;
+        'incongruent',   {'LET_R_Inc_cC','LET_S_Inc_cC','NUM_R_Inc_cC','NUM_S_Inc_cC'}, out_cong;
+        'rep_con',       {'LET_R_Con_cC','NUM_R_Con_cC'}, out_int;
+        'rep_inc',       {'LET_R_Inc_cC','NUM_R_Inc_cC'}, out_int;
+        'switch_con',    {'LET_S_Con_cC','NUM_S_Con_cC'}, out_int;
+        'switch_inc',    {'LET_S_Inc_cC','NUM_S_Inc_cC'}, out_int;
+    };
+
+    for c = 1:size(conditions,1)
+
+        condName = conditions{c,1};
+        condTypes = conditions{c,2};
+        outPath = conditions{c,3};
+
+        EEG_sub = pop_selectevent(EEG, 'mappedType', condTypes, ...
+            'deleteepochs','on');
+
+        nTrials = EEG_sub.trials;
+
+        isMissing = nTrials == 0;
+        isLow = nTrials > 0 && nTrials < minTrials;
+
+        % log: subject, condition, trials, low flag, missing flag
+        log(end+1,:) = {baseName, condName, nTrials, isLow, isMissing};
+
+        if ~isMissing
+            pop_saveset(EEG_sub, ...
+                'filename', [baseName '_' condName '.set'], ...
+                'filepath', outPath);
+        end
+
+    end
+end
+
+% convert log to table
+logTable = cell2table(log, ...
+    'VariableNames', {'Subject','Condition','Trials','LowTrials','Missing'});
+
+% save log
+writetable(logTable, fullfile(inFolder, 'subset_log.csv'));
