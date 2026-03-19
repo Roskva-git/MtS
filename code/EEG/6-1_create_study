@@ -1,5 +1,6 @@
 %% 6.1 create 2x2 study
 
+
 % Author: Røskva
 % Date: 19.03.26
 % Last changed: 19.03.26
@@ -34,12 +35,17 @@ for f = 1:size(folders,1)
     path  = folders{f,2};
 
     files = dir(fullfile(path, '*.set'));
+    
+    [~, idx_sort] = sort({files.name});
+    files = files(idx_sort);
 
     for i = 1:length(files)
 
         EEG = pop_loadset('filename', files(i).name, ...
                           'filepath', files(i).folder);
 
+        EEG = eeg_checkset(EEG);
+        
         [ALLEEG, EEG] = eeg_store(ALLEEG, EEG, idx);
 
         % subject
@@ -53,10 +59,10 @@ for f = 1:size(folders,1)
             sw = 'switch';
         end
 
-        if contains(label, 'con')
-            cong = 'congruent';
-        else
+        if contains(label, 'inc')
             cong = 'incongruent';
+        else
+            cong = 'congruent';
         end
 
         commands{idx} = { ...
@@ -88,5 +94,5 @@ STUDY = std_checkset(STUDY, ALLEEG);
 
 % save STUDY
 [STUDY, ALLEEG] = pop_savestudy(STUDY, ALLEEG, ...
-    'filename','mts_tst_study.study', ...
+    'filename','mts_tst.study', ...
     'filepath', base);
