@@ -1,4 +1,17 @@
-%% 6. Create subsets + logging
+%% 6.0 Create subsets + logging
+
+% Author: Røskva
+% Date: 18.03.26
+% Last changed: 19.03.26
+
+% Workflow:
+% Step 1. Preprocess EEG + ICA
+% Step 2. Manually reject ICs
+% Step 3. Map logfiles onto EEG events
+% Step 4. Extract behavioural overview
+% Step 5. Epoch data (this script)
+% Step 6. Study set-up
+
 
 clear; clc;
 
