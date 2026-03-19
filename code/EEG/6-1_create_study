@@ -1,0 +1,92 @@
+%% 6.1 create 2x2 study
+
+% Author: Røskva
+% Date: 19.03.26
+% Last changed: 19.03.26
+
+% Workflow:
+% Step 1. Preprocess EEG + ICA
+% Step 2. Manually reject ICs
+% Step 3. Map logfiles onto EEG events
+% Step 4. Extract behavioural overview
+% Step 5. Epoch data (this script)
+% Step 6. Study set-up
+
+clear; clc;
+
+
+base = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\';
+
+folders = {
+    'rep_con',    [base 'rep_con'];
+    'rep_inc',    [base 'rep_inc'];
+    'switch_con', [base 'switch_con'];
+    'switch_inc', [base 'switch_inc'];
+};
+
+ALLEEG = [];
+commands = {};
+idx = 1;
+
+for f = 1:size(folders,1)
+
+    label = folders{f,1};
+    path  = folders{f,2};
+
+    files = dir(fullfile(path, '*.set'));
+
+    for i = 1:length(files)
+
+        EEG = pop_loadset('filename', files(i).name, ...
+                          'filepath', files(i).folder);
+
+        [ALLEEG, EEG] = eeg_store(ALLEEG, EEG, idx);
+
+        % subject
+        parts = split(files(i).name, '_');
+        subj = [parts{1} '_' parts{2} '_' parts{3}];
+
+        % factors
+        if contains(label, 'rep')
+            sw = 'repeat';
+        else
+            sw = 'switch';
+        end
+
+        if contains(label, 'con')
+            cong = 'congruent';
+        else
+            cong = 'incongruent';
+        end
+
+        commands{idx} = { ...
+            'index', idx, ...
+            'subject', subj, ...
+            'session', 1, ...
+            'swcond', sw, ...
+            'congruency', cong ...
+        };
+
+        idx = idx + 1;
+    end
+end
+
+% create STUDY
+[STUDY, ALLEEG] = std_editset([], ALLEEG, ...
+    'name', 'mts_tst_study', ...
+    'commands', commands);
+
+STUDY = std_checkset(STUDY, ALLEEG);
+
+% define 2×2 design
+STUDY = std_makedesign(STUDY, ALLEEG, 1, ...
+    'name','2x2', ...
+    'variable1','swcond','values1',{'switch','repeat'}, ...
+    'variable2','congruency','values2',{'congruent','incongruent'});
+
+STUDY = std_checkset(STUDY, ALLEEG);
+
+% save STUDY
+[STUDY, ALLEEG] = pop_savestudy(STUDY, ALLEEG, ...
+    'filename','mts_tst_study.study', ...
+    'filepath', base);
