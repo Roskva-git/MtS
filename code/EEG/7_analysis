@@ -1,0 +1,106 @@
+%% 7.0 Analysis
+
+% Author: Røskva
+% Date: 20.03.26
+% Last changed: 20.03.26
+
+% Workflow:
+% Step 1. Preprocess EEG + ICA
+% Step 2. Manually reject ICs
+% Step 3. Map logfiles onto EEG events
+% Step 4. Extract behavioural overview
+% Step 5. Epoch data (this script)
+% Step 6. Study set-up
+% Step 7. Analysis
+
+
+% Per subject theta extraction
+
+clear; clc;
+
+base = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\';
+
+folders = {
+    'rep_con',    [base 'rep_con\'];
+    'rep_inc',    [base 'rep_inc\'];
+    'switch_con', [base 'switch_con\'];
+    'switch_inc', [base 'switch_inc\'];
+};
+
+% get subject list from one folder
+files = dir(fullfile(folders{1,2}, '*.set'));
+n_sub = length(files);
+
+% preallocate
+theta_rep_con = zeros(n_sub,1);
+theta_rep_inc = zeros(n_sub,1);
+theta_switch_con = zeros(n_sub,1);
+theta_switch_inc = zeros(n_sub,1);
+
+for s = 1:n_sub
+
+    % load each condition for same subject index
+    EEG1 = pop_loadset('filename', files(s).name, 'filepath', folders{1,2});
+    EEG2 = pop_loadset('filename', strrep(files(s).name,'rep_con','rep_inc'), 'filepath', folders{2,2});
+    EEG3 = pop_loadset('filename', strrep(files(s).name,'rep_con','switch_con'), 'filepath', folders{3,2});
+    EEG4 = pop_loadset('filename', strrep(files(s).name,'rep_con','switch_inc'), 'filepath', folders{4,2});
+
+    % compute ERSP (single channel, e.g. FCz = 30)
+    [ersp1,~,~,times,freqs] = newtimef(mean(EEG1.data(30,:,:),3), EEG1.pnts, ...
+        [EEG1.xmin EEG1.xmax]*1000, EEG1.srate, [3 0.8], 'plotersp','off');
+
+    [ersp2,~,~,~,~] = newtimef(mean(EEG2.data(30,:,:),3), EEG2.pnts, ...
+        [EEG2.xmin EEG2.xmax]*1000, EEG2.srate, [3 0.8], 'plotersp','off');
+
+    [ersp3,~,~,~,~] = newtimef(mean(EEG3.data(30,:,:),3), EEG3.pnts, ...
+        [EEG3.xmin EEG3.xmax]*1000, EEG3.srate, [3 0.8], 'plotersp','off');
+
+    [ersp4,~,~,~,~] = newtimef(mean(EEG4.data(30,:,:),3), EEG4.pnts, ...
+        [EEG4.xmin EEG4.xmax]*1000, EEG4.srate, [3 0.8], 'plotersp','off');
+
+    % define theta + time window
+    theta_idx = freqs >= 4 & freqs <= 8;
+    time_idx  = times >= 200 & times <= 500;
+
+    % extract means
+    theta_rep_con(s)    = mean(mean(ersp1(theta_idx, time_idx)));
+    theta_rep_inc(s)    = mean(mean(ersp2(theta_idx, time_idx)));
+    theta_switch_con(s) = mean(mean(ersp3(theta_idx, time_idx)));
+    theta_switch_inc(s) = mean(mean(ersp4(theta_idx, time_idx)));
+
+end
+
+% table
+T = table(theta_rep_con, theta_rep_inc, ...
+          theta_switch_con, theta_switch_inc);
+
+% differences
+T.switch_vs_repeat_con = T.theta_switch_con - T.theta_rep_con;
+T.switch_vs_repeat_inc = T.theta_switch_inc - T.theta_rep_inc;
+
+disp(T)
+
+
+%% Do a t-test
+
+ttest(T.theta_switch_con, T.theta_rep_con)
+ttest(T.theta_switch_inc, T.theta_rep_inc)
+
+
+%% Run an ANOVA
+
+data_tbl = table( ...
+    T.theta_rep_con, ...
+    T.theta_rep_inc, ...
+    T.theta_switch_con, ...
+    T.theta_switch_inc, ...
+    'VariableNames', {'rep_con','rep_inc','switch_con','switch_inc'});
+
+within = table( ...
+    categorical({'repeat';'repeat';'switch';'switch'}), ...
+    categorical({'congruent';'incongruent';'congruent';'incongruent'}), ...
+    'VariableNames', {'Switch','Congruency'});
+
+rm = fitrm(data_tbl, 'rep_con-switch_inc ~ 1', 'WithinDesign', within);
+
+ranova(rm, 'WithinModel', 'Switch*Congruency')
