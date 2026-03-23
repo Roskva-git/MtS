@@ -1,0 +1,106 @@
+TODO: Handle missing data, espesially try to sleep. 
+
+# --- Script for extracting sleep data from csv master document. ---
+# 
+# Author: Røskva
+# Date created: 23.03.26
+#
+# We want 
+# TST (Total Sleep Time) - Estimated total duration of sleep, excluding awakenings.
+# SOL (Sleep Onset Latency) - The time taken to fall asleep. 
+# WASO (Wake After Sleep Onset) - Total time spent awake after initially falling asleep.
+# SE (Sleep Efficiency) - Calculated as TST divided by time in bed, multiplied by 100%.
+# Number of awakenings - The number of awakenings detected during the night.
+
+import pandas as pd
+import numpy as np
+
+# --- LOAD DATA (CHANGE PATH) ---
+df = pd.read_csv(
+    "//hypatia.uio.no/lh-sv-psi/MICC/Projects/MindTheSleep/Projects/Røskva/Data/Sleep/MtS_allSleepDiaries - Copy.csv",
+    sep=";",
+    encoding="cp1252"
+)
+
+# --- RESULT DATAFRAME ---
+sleep_summary = []
+
+# --- LOOP OVER PARTICIPANTS ---
+for i, row in df.iterrows():
+
+    ID = row['ID']
+    session1 = row['12_session1']
+    correct = row['11_correctStart']
+
+    # Correct EEG index
+    EEG_idx = session1 if correct == 1 else session1 - 1
+
+    # Define window
+    start = int(EEG_idx - 14)
+    end   = int(EEG_idx - 1)
+
+    TST_values = []
+
+    for t in range(start, end + 1):
+
+        if t < 1:
+            continue
+
+        try:
+            sleep_time = pd.to_datetime(row[f'4_tryToSleepTime_T{t}'], errors='coerce')
+            wake_time  = pd.to_datetime(row[f'9_getUpTime_T{t}'], errors='coerce')
+
+            if pd.isna(sleep_time) or pd.isna(wake_time):
+                continue
+
+            tib = (wake_time - sleep_time).total_seconds() / 60
+            if tib <= 0:
+                tib += 24 * 60
+
+            sol  = pd.to_numeric(row.get(f'5_solMin_T{t}'), errors='coerce')
+            waso = pd.to_numeric(row.get(f'7_awakeningMin_T{t}'), errors='coerce')
+
+            if pd.isna(waso):
+                continue
+
+            # Your rule: SOL optional
+            if pd.isna(sol):
+                tst = tib - waso
+            else:
+                tst = tib - sol - waso
+
+            TST_values.append(tst / 60)  # convert to hours
+
+        except:
+            continue
+
+    # Summary stats
+    TST_values = np.array(TST_values)
+
+    n_valid = len(TST_values)
+
+    if n_valid > 0:
+        mean = np.nanmean(TST_values)
+        sd   = np.nanstd(TST_values)
+    else:
+        mean = np.nan
+        sd   = np.nan
+
+    sleep_summary.append({
+        'ID': ID,
+        'TST_mean_14d': mean,
+        'TST_sd_14d': sd,
+        'n_valid_days': n_valid,
+        'valid_for_analysis': n_valid >= 7
+    })
+
+# --- FINAL DATAFRAME ---
+sleep_summary = pd.DataFrame(sleep_summary)
+
+# --- SAVE ---
+sleep_summary.to_csv(
+    r"C:\Users\roskvatb\OneDrive - Universitetet i Oslo\Dokumenter\Python output\sleep_summary.csv",
+    index=False
+)
+print("FILE SAVED")
+ 
