@@ -16,7 +16,7 @@
 clear; clc;
 
 
-base = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\';
+base = '\\hypatia.uio.no\...\TST\6_subsets\';
 
 folders = {
     'rep_con',    [base 'rep_con'];
