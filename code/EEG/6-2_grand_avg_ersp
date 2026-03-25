@@ -8,7 +8,7 @@ Last modified: 20.03.2026
 clear; clc;
 eeglab;
 
-base = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\';
+base = '\\hypatia.uio.no\...\TST\6_subsets\';
 
 conds = {'rep_con','rep_inc','switch_con','switch_inc'};
 
@@ -54,7 +54,7 @@ end
 
 % For the love of god, save this now!
 
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\grand_ersp.mat', ...
+save('\\hypatia.uio.no\...\6_subsets\grand_ersp.mat', ...
      'all_ersp', 'times', 'freqs')
 
 
