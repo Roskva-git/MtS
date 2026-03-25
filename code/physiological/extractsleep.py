@@ -54,7 +54,7 @@ import numpy as np
 
 # --- LOAD DATA ---
 df = pd.read_csv(
-    "//hypatia.uio.no/lh-sv-psi/MICC/Projects/MindTheSleep/Projects/Røskva/Data/Sleep/MtS_allSleepDiaries - Copy.csv",
+    "//hypatia.uio.no/.../MtS_allSleepDiaries - Copy.csv",
     sep=";",
     encoding="cp1252"
 )
@@ -182,7 +182,7 @@ for i, row in df.iterrows():
 sleep_summary = pd.DataFrame(sleep_summary)
 
 sleep_summary.to_csv(
-    r"C:\Users\roskvatb\OneDrive - Universitetet i Oslo\Dokumenter\Python output\sleep_summary.csv",
+    r"C:\Users\roskvatb\...\sleep_summary.csv",
     index=False
 )
 
