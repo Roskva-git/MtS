@@ -14,7 +14,7 @@
 
 
 %% Load data
-T = readtable("C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Data\Behavioural overview master.xlsx.xlsx", 'VariableNamingRule','preserve');
+T = readtable("C:\Users\catba\...\Behavioural overview master.xlsx.xlsx", 'VariableNamingRule','preserve');
 T = convertvars(T, @ischar, @str2double);
 T = convertvars(T, @isstring, @str2double);
 T = convertvars(T, @iscell, @str2double);
