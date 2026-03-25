@@ -10,7 +10,8 @@ Description:
 This script extracts day-by-day sleep metrics from the MtS sleep diary dataset
 for the 14 days preceding the first EEG session.
 
-For each participant and each valid day (-14 to -1 relative to EEG), the script computes:
+For each participant and each valid day for the 14 days preceding the first EEG session 
+(including the night immediately preceding EEG; day 0), the script computes:
 - Total Sleep Time (TST): tryToSleep → first awakening − SOL − WASO
 - Sleep Onset Latency (SOL): minutes (NaN → 0)
 - Wake After Sleep Onset (WASO): minutes (NaN → 0)
@@ -42,7 +43,7 @@ import numpy as np
 
 # --- LOAD ---
 df = pd.read_csv(
-    "//hypatia.uio.no/.../MtS_allSleepDiaries - Copy.csv",
+    "//hypatia.uio.no/lh-sv-psi/MICC/Projects/MindTheSleep/Projects/Røskva/Data/Sleep/MtS_allSleepDiaries - Copy.csv",
     sep=";",
     encoding="cp1252"
 )
@@ -59,7 +60,7 @@ for i, row in df.iterrows():
     EEG_idx = session1 if correct == 1 else session1 - 1
 
     start = int(EEG_idx - 14)
-    end   = int(EEG_idx - 1)
+    end = int(EEG_idx)
 
     for t in range(start, end + 1):
 
@@ -108,7 +109,10 @@ for i, row in df.iterrows():
             # --- STORE ROW ---
             rows.append({
                 'ID': ID,
-                'day_relative_to_EEG': t - EEG_idx,  # -14 to -1
+
+                'diary_day': t,                     # absolute position in dataset
+                'day_relative_to_EEG': t - EEG_idx, # -14 … -1
+                'is_night_before_EEG': (t == EEG_idx),
 
                 'TST_h': tst / 60,
                 'SOL_min': sol,
@@ -125,7 +129,7 @@ daily_sleep = pd.DataFrame(rows)
 
 # --- SAVE ---
 daily_sleep.to_csv(
-    r"C:\Users\roskvatb\...\Python output\sleep_daily.csv",
+    r"C:\Users\roskvatb\OneDrive - Universitetet i Oslo\Dokumenter\Python output\sleep_daily.csv",
     index=False
 )
 
