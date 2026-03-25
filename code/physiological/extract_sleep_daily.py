@@ -42,7 +42,7 @@ import numpy as np
 
 # --- LOAD ---
 df = pd.read_csv(
-    "//hypatia.uio.no/lh-sv-psi/MICC/Projects/MindTheSleep/Projects/Røskva/Data/Sleep/MtS_allSleepDiaries - Copy.csv",
+    "//hypatia.uio.no/.../MtS_allSleepDiaries - Copy.csv",
     sep=";",
     encoding="cp1252"
 )
@@ -125,7 +125,7 @@ daily_sleep = pd.DataFrame(rows)
 
 # --- SAVE ---
 daily_sleep.to_csv(
-    r"C:\Users\roskvatb\OneDrive - Universitetet i Oslo\Dokumenter\Python output\sleep_daily.csv",
+    r"C:\Users\roskvatb\...\Python output\sleep_daily.csv",
     index=False
 )
 
