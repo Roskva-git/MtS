@@ -15,9 +15,9 @@
 
 clear; clc;
 
-inFolder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\5_epoched\';
+inFolder = '\\hypatia.uio.no\...\TST\5_epoched\';
 
-baseOut = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\';
+baseOut = '\\hypatia.uio.no\...\TST\6_subsets\';
 
 out_rep_con    = [baseOut 'rep_con\'];
 out_rep_inc    = [baseOut 'rep_inc\'];
