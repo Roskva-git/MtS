@@ -2,78 +2,42 @@
 
 Author: Røskva
 Created: 20.03.2026
-Last modified: 20.03.2026
+Last modified: 24.03.2026
 
+% Use these folders
+folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\rep_con\';
+files = dir(fullfile(folder, '*.set'));
 
-clear; clc;
-eeglab;
+% Make a stack of the values used to plot ERSP
+all_ersp = [];
 
-base = '\\hypatia.uio.no\...\TST\6_subsets\';
+% Loop over files
+for i = 1:length(files)
 
-conds = {'rep_con','rep_inc','switch_con','switch_inc'};
+    EEG = pop_loadset('filename', files(i).name, 'filepath', folder);
 
-all_ersp = struct();
+    [ersp,~,~,times,freqs] = newtimef( ...
+        EEG.data(30,:,:), ...
+        EEG.pnts, ...
+        [-1500 1498], ...
+        EEG.srate, ...
+        [3 0.8], ...
+        'baseline', [-500 -100], ...
+        'plotersp', 'off', ...
+        'plotitc', 'off' ...
+    );
 
-for c = 1:length(conds)
-
-    folder = fullfile(base, conds{c});
-    files = dir(fullfile(folder, '*.set'));
-
-    ersp_all = [];
-
-    for i = 1:length(files)
-
-        EEG = pop_loadset('filename', files(i).name, ...
-                          'filepath', files(i).folder);
-
-        % pick channel (change if needed)
-        chan = find(strcmpi({EEG.chanlocs.labels}, 'FCz'));
-
-        % compute ERSP
-        [ersp, itc, powbase, times, freqs] = newtimef( ...
-            EEG.data(chan,:,:), ...
-            EEG.pnts, ...
-            [EEG.xmin EEG.xmax]*1000, ...
-            EEG.srate, ...
-            [3 0.8], ...
-            'baseline', [-500 -100], ...
-            'freqs', [3 30], ...
-            'nfreqs', 100, ...
-            'ntimesout', 200, ...
-            'plotersp','off', ...
-            'plotitc','off');
-
-        ersp_all(:,:,i) = ersp;
-
-    end
-
-    % grand average
-    all_ersp.(conds{c}) = mean(ersp_all, 3);
-
+    all_ersp(:,:,i) = ersp;   % stack subjects
 end
 
-% For the love of god, save this now!
-
-save('\\hypatia.uio.no\...\6_subsets\grand_ersp.mat', ...
-     'all_ersp', 'times', 'freqs')
+% Make the grand average
+grand_ersp = mean(all_ersp, 3);
 
 
-%% Plot this grand average motherfucker
+% Save this godforsaken thing
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\rep_con\all_ersp.mat', ...
+     'all_ersp', 'times', 'freqs');
 
+% Plot the grand average ERSP
 figure;
-
-titles = {'rep\_con','rep\_inc','switch\_con','switch\_inc'};
-
-for c = 1:4
-    subplot(2,2,c)
-
-    imagesc(times, freqs, all_ersp.(conds{c}))
-    axis xy
-    title(titles{c})
-
-    caxis([-3 3]) % adjust contrast
-    xlabel('Time (ms)')
-    ylabel('Frequency (Hz)')
-end
-
-colorbar
+tftopo(grand_ersp, times, freqs);
