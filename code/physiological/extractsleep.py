@@ -1,14 +1,52 @@
-# --- Script for extracting descriptive summary of sleep data from csv master document. ---
-# 
-# Author: Røskva
-# Date created: 23.03.26
-#
-# We want 
-# TST (Total Sleep Time) - Estimated total duration of sleep, excluding awakenings.
-# SOL (Sleep Onset Latency) - The time taken to fall asleep. 
-# WASO (Wake After Sleep Onset) - Total time spent awake after initially falling asleep.
-# SE (Sleep Efficiency) - Calculated as TST divided by time in bed, multiplied by 100%.
-# Number of awakenings - The number of awakenings detected during the night.
+"""
+Script: extractsleep.py
+
+Author: Røskva
+Project: Mind the Sleep (MtS) – Master’s Thesis
+Date created: 23.03.2026
+Date edited: 25.03.2026
+
+Description:
+This script computes participant-level sleep summary metrics from the MtS sleep diary dataset.
+Metrics are calculated for the 14 days preceding the first EEG session.
+
+For each participant, the script computes:
+- Total Sleep Time (TST): tryToSleep → first awakening − SOL − WASO
+- Sleep Onset Latency (SOL): minutes (NaN → 0)
+- Wake After Sleep Onset (WASO): minutes (NaN → 0)
+- Sleep Efficiency (SE): TST / (bedTime → getUpTime) × 100
+- Number of awakenings: count (NaN → 0)
+
+For each variable, the script outputs:
+- Mean across valid days
+- Standard deviation (intra-individual variability)
+
+Additional outputs:
+- Number of valid diary days per participant
+- Indicator for inclusion in analysis (≥ 7 valid days)
+
+Input:
+- CSV file: MtS_allSleepDiaries - Copy.csv
+
+Output:
+- sleep_summary.csv (one row per participant)
+
+Variables:
+- 4_tryToSleepTime / 4_bedTime
+- 5_solMin
+- 6_awakeningNumber
+- 7_awakeningMin
+- 8_awakeTime
+- 9_getUpTime
+- 12_session1
+- 11_correctStart
+
+Notes:
+- Missing SOL, WASO, and awakenings are treated as 0
+- Days with invalid or missing time values are excluded
+- Time differences crossing midnight are handled
+- Summary statistics are based only on valid days within the 14-day window
+"""
 
 
 import pandas as pd
@@ -39,6 +77,7 @@ for i, row in df.iterrows():
     WASO_vals = []
     SE_vals = []
     AWAK_vals = []
+    SOL_vals = []
 
     for t in range(start, end + 1):
 
@@ -72,9 +111,9 @@ for i, row in df.iterrows():
                 tib_full += 24 * 60
 
             # --- COMPONENTS ---
-            sol  = pd.to_numeric(row.get(f'5_sleeponsetlMin_T{t}'), errors='coerce')
             waso = pd.to_numeric(row.get(f'7_awakeningMin_T{t}'), errors='coerce')
             awak = pd.to_numeric(row.get(f'6_awakeningNumber_T{t}'), errors='coerce')
+            sol  = pd.to_numeric(row.get(f'5_solMin_T{t}'), errors='coerce')
 
             sol  = 0 if pd.isna(sol) else sol
             waso = 0 if pd.isna(waso) else waso
@@ -94,6 +133,7 @@ for i, row in df.iterrows():
             WASO_vals.append(waso)      # minutes
             SE_vals.append(se)          # %
             AWAK_vals.append(awak)
+            SOL_vals.append(sol)        # minutes
 
         except:
             continue
@@ -103,6 +143,7 @@ for i, row in df.iterrows():
     WASO_vals = np.array(WASO_vals)
     SE_vals = np.array(SE_vals)
     AWAK_vals = np.array(AWAK_vals)
+    SOL_vals = np.array(SOL_vals)
 
     n_valid = len(TST_vals)
 
@@ -113,12 +154,16 @@ for i, row in df.iterrows():
     waso_m, waso_sd = m_sd(WASO_vals)
     se_m, se_sd = m_sd(SE_vals)
     awak_m, awak_sd = m_sd(AWAK_vals)
+    sol_m, sol_sd = m_sd(SOL_vals)
 
     sleep_summary.append({
         'ID': ID,
 
         'TST_mean_h': tst_m,
         'TST_sd_h': tst_sd,
+
+        'SOL_mean_min': sol_m,
+        'SOL_sd_min': sol_sd,
 
         'WASO_mean_min': waso_m,
         'WASO_sd_min': waso_sd,
