@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
-os.chdir(r"C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Code")
+os.chdir(r"C:\Users\catba\...\MICC - Master project\Code")
 os.getcwd()
 
 # -----------------------------
