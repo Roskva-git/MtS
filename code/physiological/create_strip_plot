@@ -1,0 +1,69 @@
+"""
+Script: create_strip_plot.py
+
+Author: Røskva
+Project: Mind the Sleep (MtS) – Master’s Thesis
+Date created: 25.03.2026
+Date edited: 25.03.2026
+
+Description:
+This script creates pretty visualizations using the sleep_daily.csv.
+
+Input:
+- CSV file: sleep_daily.csv
+
+Output:
+- plots (hopefully)
+
+Variables:
+
+
+Notes:
+
+"""
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# --- LOAD ---
+df = pd.read_csv(
+    r"C:\Users\roskvatb\...\sleep_daily.csv",
+    sep=';'
+)
+print(df.columns)
+
+
+# optional: ensure ordering by ID
+df['ID'] = df['ID'].astype(str)
+
+# --- PLOT ---
+plt.figure(figsize=(14,6))
+
+# boxplot
+sns.boxplot(
+    data=df,
+    x='ID',
+    y='TST_h',
+    color='lightgray',
+    showfliers=False
+)
+
+# strip plot (dots)
+sns.stripplot(
+    data=df,
+    x='ID',
+    y='TST_h',
+    color='black',
+    size=3,
+    jitter=True,
+    alpha=0.6
+)
+
+plt.xticks(rotation=90)
+plt.xlabel("Participant")
+plt.ylabel("TST (hours)")
+plt.title("Total Sleep Time per Participant (14 days pre-EEG)")
+
+plt.tight_layout()
+plt.show()
