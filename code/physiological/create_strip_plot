@@ -21,49 +21,87 @@ Variables:
 Notes:
 
 """
-
 import pandas as pd
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from matplotlib import cm
 
-# --- LOAD ---
+# =========================
+# LOAD DATA
+# =========================
 df = pd.read_csv(
-    r"C:\Users\roskvatb\...\sleep_daily.csv",
+    r"C:\Users\roskvatb\OneDrive - Universitetet i Oslo\Dokumenter\Python output\sleep_daily.csv",
     sep=';'
 )
-print(df.columns)
 
+# clean column names
+df.columns = df.columns.str.strip()
 
-# optional: ensure ordering by ID
-df['ID'] = df['ID'].astype(str)
+# =========================
+# ANONYMIZE PARTICIPANTS
+# =========================
+unique_ids = sorted(df['ID'].astype(str).unique())
+id_map = {old_id: i+1 for i, old_id in enumerate(unique_ids)}
+df['PID'] = df['ID'].astype(str).map(id_map)
 
-# --- PLOT ---
-plt.figure(figsize=(14,6))
+# =========================
+# COMPUTE VARIABILITY (SD)
+# =========================
+sd_per_pid = df.groupby('PID')['TST_h'].std()
 
-# boxplot
-sns.boxplot(
-    data=df,
-    x='ID',
-    y='TST_h',
-    color='lightgray',
-    showfliers=False
-)
+# normalize to 0–1
+sd_norm = (sd_per_pid - sd_per_pid.min()) / (sd_per_pid.max() - sd_per_pid.min())
 
-# strip plot (dots)
-sns.stripplot(
-    data=df,
-    x='ID',
-    y='TST_h',
-    color='black',
-    size=3,
-    jitter=True,
-    alpha=0.6
-)
+# invert: low variability = darker
+sd_norm = 1 - sd_norm
 
-plt.xticks(rotation=90)
+# =========================
+# COLOR MAPPING
+# =========================
+cmap = cm.get_cmap('Blues')  # ← pick your colour <3
+
+color_map = {
+    pid: cmap(0.3 + 0.7*val)
+    for pid, val in sd_norm.items()
+}
+
+# =========================
+# PLOT
+# =========================
+plt.figure(figsize=(16,6))
+
+for pid in sorted(df['PID'].unique()):
+    subset = df[df['PID'] == pid]
+
+    # boxplot
+    sns.boxplot(
+        data=subset,
+        x='PID',
+        y='TST_h',
+        color=color_map[pid],
+        width=0.6,
+        fliersize=0
+    )
+
+    # dots
+    sns.stripplot(
+        data=subset,
+        x='PID',
+        y='TST_h',
+        color=color_map[pid],
+        size=4,
+        jitter=0.25,
+        alpha=0.8
+    )
+
+# =========================
+# FORMATTING
+# =========================
 plt.xlabel("Participant")
-plt.ylabel("TST (hours)")
-plt.title("Total Sleep Time per Participant (14 days pre-EEG)")
+plt.ylabel("Total Sleep Time (hours)")
+plt.title("Sleep duration per participant (color = variability)")
 
+plt.xticks(rotation=0)
 plt.tight_layout()
 plt.show()
