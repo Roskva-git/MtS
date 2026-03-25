@@ -83,9 +83,9 @@ def plot_stacked(data, title):
     labels = ["Correct", "Incorrect", "Omission"]
 
     colors = [
-        "#00BFFF",  # neon blue
-        "#FF1493",  # neon pink
-        "#9D00FF"   # neon purple
+        "#93E9BE",  # aqua seafoam
+        "#E7A1B0",  # rose pink
+        "#728FCE"   # light purple blue
     ]
 
     x = range(len(data.keys()))
