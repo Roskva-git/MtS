@@ -52,10 +52,9 @@ During the data collection period I also plan to read articles, and to start cle
 - February 15th: Analyses finished
 - March 1st: Results section draft
 - March 15th: Discussion section draft 
-- April 1st: Complete first draft with abstract
-- April 15th: Revised draft 
+- April 23rd: Complete first draft with abstract
 - May 1st: Final draft
-- May 15th: Final thesis submission
+- May 8th: Final thesis submission
 
 ## Data management plan
 Same as the parent project (“Mind the sleep”) on ForskPro.
