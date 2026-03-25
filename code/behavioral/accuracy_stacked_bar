@@ -1,0 +1,157 @@
+"""
+Script: accuracy_stacked_bar.py
+
+Author: Røskva
+Project: Mind the Sleep (MtS) – Master’s Thesis
+Date created: 25.03.2026
+Date edited: 25.03.2026
+
+Description:
+This script creates pretty visualizations using the behavioural_overview_master.csv.
+
+Input:
+- CSV file: behavioural_overview_master.csv
+
+Output:
+- plots (hopefully)
+
+Variables:
+
+
+Notes:
+
+"""
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# =========================
+# LOAD DATA
+# =========================
+df = pd.read_csv(
+    r"\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\behavioural_overview_master.csv",
+    sep=';'
+)
+
+df.columns = df.columns.str.strip()
+
+# =========================
+# COMPUTE PROPORTIONS (MEAN ACROSS PARTICIPANTS)
+# =========================
+
+# --- SWITCH / REPEAT ---
+sr = {
+    "Repeat": [
+        df['acc_repeat_overall'].mean(),
+        1 - df['acc_repeat_overall'].mean() - df['omit_repeat_rate'].mean(),
+        df['omit_repeat_rate'].mean()
+    ],
+    "Switch": [
+        df['acc_switch_overall'].mean(),
+        1 - df['acc_switch_overall'].mean() - df['omit_switch_rate'].mean(),
+        df['omit_switch_rate'].mean()
+    ]
+}
+
+# --- CONGRUENCY ---
+cong = {
+    "Congruent": [
+        df['acc_con_overall'].mean(),
+        1 - df['acc_con_overall'].mean() - df['omit_con_rate'].mean(),
+        df['omit_con_rate'].mean()
+    ],
+    "Incongruent": [
+        df['acc_inc_overall'].mean(),
+        1 - df['acc_inc_overall'].mean() - df['omit_inc_rate'].mean(),
+        df['omit_inc_rate'].mean()
+    ]
+}
+
+labels = ["Correct", "Incorrect", "Omission"]
+colors = ["#4CAF50", "#F44336", "#9E9E9E"]  # green, red, grey
+
+
+# =========================
+# FUNCTION TO PLOT
+# =========================
+def plot_stacked(data, title):
+
+    fig, ax = plt.subplots(figsize=(4,7))
+
+    bottom = [0] * len(data)
+    labels = ["Correct", "Incorrect", "Omission"]
+
+    colors = [
+        "#00BFFF",  # neon blue
+        "#FF1493",  # neon pink
+        "#9D00FF"   # neon purple
+    ]
+
+    x = range(len(data.keys()))
+
+    for i, label in enumerate(labels):
+        values = [data[key][i] for key in data.keys()]
+
+        bars = ax.bar(
+            x,
+            values,
+            bottom=bottom,
+            label=label,
+            color=colors[i],
+            width=0.8,
+            edgecolor='black',     # ← adds definition
+            linewidth=0.8,
+            alpha=0.9              # ← slight depth
+        )
+
+        # add % labels inside bars
+        for j, (b, v) in enumerate(zip(bottom, values)):
+            if v > 0.05:
+                ax.text(
+                    j,
+                    b + v/2,
+                    f"{v*100:.0f}%",
+                    ha='center',
+                    va='center',
+                    color='white',
+                    fontsize=9,
+                    fontweight='bold'
+                )
+
+        bottom = [b + v for b, v in zip(bottom, values)]
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(list(data.keys()))
+
+    ax.set_ylim(0,1)
+    ax.set_ylabel("Percentage")
+
+    # clean style
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    ax.set_title(title)
+
+    ax.legend(
+    frameon=False,
+    loc='center left',
+    bbox_to_anchor=(1, 0.7)
+)
+
+    plt.tight_layout()
+    plt.tight_layout()
+
+    fig.savefig(
+        fr"C:\Users\roskvatb\OneDrive - Universitetet i Oslo\Dokumenter\Python output\{title}.png",
+        dpi=300,
+        bbox_inches='tight'
+    )
+
+    plt.show()
+    plt.show()
+# =========================
+# PLOTS
+# =========================
+plot_stacked(sr, "Accuracy by condition (Repeat vs Switch)")
+plot_stacked(cong, "Accuracy by condition (Congruent vs Incongruent)")
