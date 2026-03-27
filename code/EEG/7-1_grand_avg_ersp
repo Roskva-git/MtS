@@ -1,4 +1,4 @@
-%% 7.1 Create ERSPs (time–frequency decomposition)
+%% 7. Create ERSPs (time–frequency decomposition)
 
 % Author: Røskva
 % Date: 24.03.26
@@ -58,11 +58,17 @@
 folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\rep_con\';
 files = dir(fullfile(folder, '*.set'));
 
+% Get participants in same order each time 
+files = dir(fullfile(folder, '*.set')); 
+[~, idx] = sort({files.name}); 
+files = files(idx); 
+
+participant_files = cell(length(files),1);
+
+
 % Make a stack of the values used to plot ERSP
 all_ersp = [];
 
-% Name participants in matrice
-participant_files = cell(length(files),1);
 
 % Loop over files
 for i = 1:length(files)
@@ -76,10 +82,10 @@ for i = 1:length(files)
         EEG.pnts, ...
         [-1500 1498], ...
         EEG.srate, ...
-        [3 0.8], ...
+        [2 0.6], ...
         'baseline', [-500 -100], ...
         'freqs', [0 25], ...
-        'nfreqs', 150, ...
+        'nfreqs', 150, ... % removed this in last run
         'plotersp', 'off', ...
         'plotitc', 'off' ...
     );
