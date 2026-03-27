@@ -1,8 +1,58 @@
-%% Create the godforsaken ERSPs // time-frequency decomposition
+%% 7.1 Create ERSPs (time–frequency decomposition)
 
-Author: Røskva
-Created: 20.03.2026
-Last modified: 24.03.2026
+% Author: Røskva
+% Date: 24.03.26
+% Last changed: 27.03.26
+
+% Workflow:
+% Step 1. Preprocess EEG + ICA
+% Step 2. Manually reject ICs
+% Step 3. Map logfiles onto EEG events
+% Step 4. Extract behavioural overview
+% Step 5. Epoch data
+% Step 6. Create condition subsets
+% Step 7. Compute ERSPs (this script)
+
+
+% PURPOSE:
+% Compute event-related spectral perturbations (ERSPs) for all participants
+% within a single condition (e.g., repeat-congruent).
+% ERSPs are calculated at the channel of interest (FCz) using wavelet-based
+% time–frequency decomposition (newtimef).
+%
+% The script stacks single-subject ERSPs into a 3D matrix
+% (frequency × time × subject), allowing:
+%   - grand-average visualization
+%   - extraction of frequency bands (e.g., theta)
+%   - participant-level statistical analysis
+%
+% Participant identity is preserved via a parallel cell array
+% (participant_files), linking each matrix slice to its source dataset.
+
+
+% SETTINGS:
+% Input data: condition-specific epoched datasets (.set)
+% Channel: FCz (channel index 30)
+% Time window: −1500 to 1500 ms relative to stimulus
+% Baseline: −500 to −100 ms
+% Frequency range: 0–25 Hz
+% Wavelet parameters: [3 0.8]
+% Frequency resolution: nfreqs = 150
+
+
+% OUTPUT:
+% all_ersp         - 3D matrix (freq × time × subject)
+% grand_ersp       - mean ERSP across participants
+% times, freqs     - axes for time–frequency representation
+% participant_files- mapping between matrix index and dataset
+
+
+% NOTES:
+% - ERSPs are computed without plotting during the loop for efficiency
+% - Grand average is computed after stacking all participants
+% - Visualization is performed using tftopo (EEGLAB default)
+% - Output .mat file is used for downstream statistical analysis
+
 
 % Use these folders
 folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\rep_con\';
@@ -11,8 +61,13 @@ files = dir(fullfile(folder, '*.set'));
 % Make a stack of the values used to plot ERSP
 all_ersp = [];
 
+% Name participants in matrice
+participant_files = cell(length(files),1);
+
 % Loop over files
 for i = 1:length(files)
+    
+    participant_files{i} = files(i).name;
 
     EEG = pop_loadset('filename', files(i).name, 'filepath', folder);
 
@@ -23,6 +78,8 @@ for i = 1:length(files)
         EEG.srate, ...
         [3 0.8], ...
         'baseline', [-500 -100], ...
+        'freqs', [0 25], ...
+        'nfreqs', 150, ...
         'plotersp', 'off', ...
         'plotitc', 'off' ...
     );
@@ -36,7 +93,7 @@ grand_ersp = mean(all_ersp, 3);
 
 % Save this godforsaken thing
 save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\rep_con\all_ersp.mat', ...
-     'all_ersp', 'times', 'freqs');
+     'all_ersp', 'times', 'freqs', 'participant_files');
 
 % Plot the grand average ERSP
 figure;
