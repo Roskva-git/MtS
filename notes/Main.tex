@@ -1,4 +1,3 @@
-% University of Oslo - Department of Psychology
 % Cognitive Neuroscience Master's Programme
 
 \documentclass[12pt,a4paper]{report}
@@ -235,6 +234,9 @@ The relationship between sleep and cognition varies across individuals and acros
 - hypotheses
 - quick methodology overview
 
+What I actually think:
+Frontal midline theta is seen in tasks that require set shifting. Since incongruent switch trials would need the most cognitive control in this paradigm, participants should have more theta in these trials compared to the three other conditions.
+
 The present thesis attempts to address these gaps by examining how objectively measured sleep patterns relate to cognitive flexibility and its neural correlates. Using data from the Mind the Sleep project, sleep is quantified over four weeks using actigraphy, allowing estimation of both habitual sleep level (e.g., mean sleep duration and efficiency) and sleep variability (e.g., night-to-night fluctuations in these measures). Cognitive flexibility is assessed with a task-switching paradigm performed during an EEG session, enabling analysis of both behavioural performance and FM-theta activity during task switching. I combine objective sleep assessment with behavioural and electrophysiological markers of cognitive control in this thesis, with the aim to gain a nuanced understanding of how sleep patterns relate to flexible cognition in adults.
 
 The overarching research question is:
@@ -270,7 +272,7 @@ The study was a within subjects-design with 3 sessions separated by 2 weeks. Ses
     \label{fig:placeholder}
 \end{figure}
 \paragraph{Sample}
-Data collection is ongoing. The project includes adult participants (18-65 years), both with and without symptoms of depression. All participants are right-handed, speak Norwegian, and have normal or corrected-to-normal vision.
+The project includes adult participants (18-65 years), both with and without symptoms of depression. All participants are right-handed, speak Norwegian, and have normal or corrected-to-normal vision.
 Participants (N = 50) are recruited through online advertisements on Instagram and Facebook, and screened for depression via phone using the MADRS depression screening tool. Eligible participants attend an initial 1.5-hour session including clinical interview (MINI) and baseline questionnaires. Participants are then equipped with actigraphy devices and instructed in daily sleep diary completion. They are also given daily questionnaires through e-mail. At two-week intervals, participants complete EEG sessions with executive function assessments (stop signal, task-switching, Stroop, and n-back tasks) and repeated questionnaire measures.
 \paragraph{Exclusion Criteria}
 Certain psychological and neurological disorders, sleep disturbances, and particular medications were grounds for exclusion.
@@ -279,7 +281,7 @@ We screen participants with MADRS in the initial phone interview. If they have a
 
 \subsection{Data acquisition}
 
-REWRITE A BIT, MOST IS FROM JESSES THESIS:
+REWRITE, PARAGRAPH IS FROM JESSES THESIS:
 To investigate the influence of habitual and nightly sleep patterns on set shifting and theta activity, EEG-, TST- and sleep data were collected. The EEG was recorded using a multichannel EEG amplifier (BrainAmp, Brain Products GmbH, Germany) with 31 passive Ag/AgCl electrodes placed according to the international 10/20 EEG positions. FCz was used as the online reference, and AFz as the ground. Two electrodes, each placed on an earlobe, were offline references. The electrode impedances were reduced to below five $k\Omega$. The BrainVision Recorder (Brain products GmbH, Germany) software was used for recording and sampling the data at 5000 Hz. During the experimental sessions, including the rest state, a Dell Precision T5500 computer (Dell, Inc., USA) with Windows X as the operating system was used. Stimuli were presented using an Eizo FlexScan S2411W monitor. The experimental software was written in MATLAB 2019b (The MathWorks, Inc., USA). The Cedrus RB-740 response pad (Cedrus Corporation, San Pedro, USA) was used for participants’ responses to the tests. 
 
 
@@ -319,6 +321,47 @@ The trial types
 
 congruent, incongruent. Switch, repeat. correct, error.
 
+\paragraph{Eden's description of the task, do NOT use as is. For inspiration:}
+
+Materials  
+\paragraph{Setup} The task-switch task was programmed with Psychophysics Toolbox 
+version 3.0.16 in MATLAB R2019a (The MathWorks, Massachusetts, USA).  It was 
+conveyed with Windows 10 on a Dell Precision T5500 computer (Dell, Inc., Texas, USA). 
+The monitor, an Eizo 14 FlexScan S2411W monitor (Eizo, Inc.), was positioned 
+approximately 70 cm from the participants with a 60 Hz refresh rate and 1920x1200 
+resolution. The response recording box used was the button box SuperLab RB-740 (Cedrus 
+Corporation, 2006).  
+\paragraph{Task-switch} The task-switch data used in this study was from the first EEG 
+session. Participants were presented with a visual task-switch stimulus based on numbers and 
+letters to measure their cognitive flexibility. Stimuli characters were based on a division of 
+letters into  the vowels “A”, “E”, “I”, “Y” and “U”, and the consonants “B”, “C”, “D”, “F” 
+and “G”, as well as on a division of numbers into the even numbers “0”, “2”, “4”, “6” and 
+“8”, and the odd numbers “1”, “2”, “5”, “7” and “9”. When stimuli were presented, it was 
+16 
+either presented in the color yellow or blue. The color they were presented with determined 
+what rule to follow and when the color changed, the rule set also changed.  
+Before each block participants were presented with an instruction. Norwegian 
+participants were shown the task instructions in Norwegian, while non-Norwegians were 
+shown English instructions. The instruction stated a rule the participants were supposed to 
+follow responding to the letter or number shown, depending on the color. For example, they 
+were asked to press the left button if the number was an odd number and the right button if it 
+was an even number. However, they could only press the left button if the color of the odd 
+number was yellow. This was applied to the vowel/consonants too. If the text was blue, they 
+were instructed to press the left button for vowels and right button for consonants. For each 
+trial the ruleset was either repeated of what was presented in the previous trial or switched to 
+a new ruleset by switching color of the letter-number combination (see Figure 1). A trial 
+repeating a ruleset represented a “repeat trial”, while if the rule was switched the trial 
+represented a “switch trial”. To make sure the participants understood the task, they executed 
+15 practice trials before each block. The main task consisted of 240 trials divided over 4 
+blocks, leading to 60 trials each per block. Of all the 240 trials, 160 of them consisted of 
+repeat trials and 60 consisted of switch trials, presented in a randomized order. Display time 
+of the stimulus was 1200ms, together with a randomized inter-trial interval of 1300ms to 
+1700ms. During the trials, the participants were presented with feedback right after their 
+response if their accuracy was less than 60% (i.e., “Try to be more accurate”) and if they 
+responded with reaction times longer than 850ms (i.e., “Try to respond faster”). When 
+participants responded correctly, they were shown “Well done” feedback. The task can be 
+seen in the Figure 1 below. 
+
 
 
 \begin{figure}
@@ -327,19 +370,6 @@ congruent, incongruent. Switch, repeat. correct, error.
     \caption{Task switching paradigm used in the project}
     \label{fig:placeholder}
 \end{figure}
-
-Spectral estimation method
-
-fmid-theta definition
-
-Electrodes and time window
-\subsection{EEG Feature Extraction}
-\begin{itemize}
-    \item Preprocessing pipeline (filter, ICA, referencing, epoching). We apply a low pass filter (40Hz), resample to 500Hz, high pass filter (0.1Hz) and remove EMG channels. We map electrode names and add FCz as the empty reference eletrode, then we re-reference to the average of the earlobes. We create an event list and rename the triggers for epoching (different script). We run the ICA, and remove components conservatively by manual inspection.
-    \item How do I calculate fmid-theta (method, time window). Give a definition of theta.
-    \item Other features (beta? connectivity?)
-    \item Why these features? State vs trait sensitivity
-\end{itemize}
 
 \renewcommand{\arraystretch}{1.5}
 \setlength{\tabcolsep}{12pt}
@@ -361,12 +391,10 @@ Electrodes and time window
 
 
 
-\subsection{Actigraphy}
-Include a very simple and brief explanation of the setup, the equipment and software used, duration of use and so on.
+\subsection{Sleep diaries}
+Include a very simple and brief explanation of the diaries used.
 
-The actigraphs we use measure basic accelerometry, with movement in three axes (X, Y and Z). Sleep parameters are NOT estimated using the Cole-Kripke algorithm (COLE-KRIPKE, 1992). Get this right.
-
-\paragraph{Feature Extraction from Actigraphy}
+\paragraph{Feature Extraction from Sleep Diaries}
 The derived sleep parameters are:
 \begin{itemize}
     \item \textbf{TST (Total Sleep Time)} - Estimated total duration of sleep, excluding awakenings. Greater total sleep time generally indicates better sleep quality.
@@ -378,18 +406,128 @@ The derived sleep parameters are:
 
 \paragraph{Limitations of actigraphy} There are some limitations related to the use of actigraphy for sleep measurement. Polysomnography (PSG) remains the gold standard for assessing sleep because it provides a direct physiological measurement of sleep stages through simultaneous recording of brain activity (EEG), eye movements (EOG), and muscle tone (EMG), allowing precise differentiation between sleep and wakefulness (ADD A REFERENCE). PSG requires an extensive set-up, which makes it more suitable for lab studies. Wrist actigraphy is a practical and validated alternative for field studies where we are interested in habitual sleep. In the present study, only the accelerometer function of the ActiGraph devices was used, with all other sensors disabled to preserve battery life and participants’ privacy. Because actigraphy infers sleep and wake from movement alone, it may misclassify periods of quiet wakefulness as sleep, and can underestimate wake after sleep onset (WASO) compared with PSG (SOURCES, FOR GOD'S SAKE!!!). To ensure accuracy, actigraphy data were cross-checked against participants’ sleep diaries. Any apparent sleep periods not confirmed in the diary were excluded from analyses. Sources of errors here could be when participants take the actigraph off and leave it on the counter for periods of the day. The stillness will sometimes be registered as sleep.
 
+
 \section{Statistical Analysis}
 
-\subsection{Data Preprocessing}
+Doing a time-frequency analysis of frontal midline area FCz, Fz and Cz to look at how theta and beta activity relates to behavioural output in solving the task switching task. Then we will have a look at how it is related to sleep, as measured with actigraphs. 
+
+\subsection{EEG data processing}
+
+Explain this, please. 
+
+Spectral estimation method
+
+fmid-theta definition
+
+Electrodes and time window
+
+\begin{itemize}
+    \item How do I calculate fmid-theta (method, time window). Give a definition of theta.
+    \item Other features (beta? connectivity?)
+    \item Why these features? State vs trait sensitivity
+\end{itemize}
+
+\paragraph{Preprocessing} I applied a low pass filter (40Hz), resampled to 500Hz, then a high pass filter (0.1Hz) and removed EMG channels. I then mapped electrode names and added FCz as the empty reference eletrode, before re-referencing to the average of the earlobes. I created an event list and renamed the triggers for epoching (using a different script). Then I ran an independent component analysis (ICA), and removed noisy components by manual inspection.
+
+\paragraph{Epoching}
+Epochs from -1500 to 1500 ms around stimulus onset were extracted to prepare the data for time–frequency analysis. A longer window gives more stable estimates at lower frequencies, reducing edge problems, and leaving enough pre-stimulus data for baseline correction and normalization. As theta is a low frequency oscillation, it requires a longer temporal window to be estimated reliably. Time-frequency estimates depend on having enough data around the event because edge artifacts can affect wavelet-based analysis \parencite{herrmann2014timefrequencytutorial}. I marked trials for rejection after epoching if the electrodes of interest (Fz, FCz, and Cz) exceeded physiological limits ($\pm 100\,\mu V$), as recommended by \textcite{luck2014erp}. Restricting the rejection criterion to the electrodes of interest prevented noisy channels outside the region of analysis from causing unnecessary trial loss. Rejection was done only after visual inspection.
+
+\paragraph{Event-related spectral perturbations (ERSPs)} were computed for each participant and condition using EEGLAB’s wavelet-based time–frequency decomposition (newtimef). Analyses were conducted on pre-segmented condition-specific datasets (e.g., repeat–congruent), derived from the epoching and subsetting pipeline.
+
+For each dataset, data from the channel of interest (FCz, Fz and Cz) were extracted, and time–frequency decomposition was performed across epochs using Morlet wavelets with a constant cycle parameter ([3 0.8]). The analysis window spanned $-$1500 to 1500 ms relative to stimulus onset, matching the epoch definition. Power estimates were baseline-corrected using a pre-stimulus interval from $-$500 to $-$100 ms.
+
+Single-subject ERSPs were computed without visualization and stored as 2D time–frequency matrices (frequency × time). These matrices were then concatenated across participants into a 3D array, allowing aggregation at the group level.
+
+Grand-average ERSPs were obtained by averaging across the participant dimension. The resulting group-level time–frequency representations reflect mean stimulus-locked changes in oscillatory power for the given condition.
+
+Finally, grand-average ERSPs were visualized using tftopo, displaying power changes across time and frequency.
+Inspiration for visualisation and analysis: \cite{wu2015switchingersp}
 
 
 
 \chapter{Results}
 \section{Descriptive Statistics}
-\paragraph{Data Completeness}
+\paragraph{Effects}
+
+Mean age: 39,66 (SD 10.05). 10 men, 38 women.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lccccc}
+\hline
+ & TST & SOL & WASO & Sleep efficiency & Awakenings \\
+\hline
+Mean & $7.52\,h$ & $26.26\,min$ & $17.87\,min$ & $87.29\%$ & $1.66$ \\
+SD    & $1.07\,h$ & $21.16\,min$ & $17.98\,min$ & $7.64\%$  & $1.43$ \\
+\hline
+\end{tabular}
+\caption{Average sleep metrics from all participants for the two weeks before the first EEG session.}
+\label{tab:sleep_overview}
+\end{table}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1.0\linewidth]{Master thesis/figures/results/sleep_strip_plot.png}
+    \caption{Nightly sleep for all participants. Colour intensity indicates variability (SD).}
+    \label{fig:placeholder}
+\end{figure}
+
+• Nightly TST was estimated by calculating the time between when participants were trying to sleep (4\_tryToSleepTime) until their first awakening in the morning (8\_awakeTime), minus sleep onset latency (5\_sleeponsetlMin) and minus minutes nightly awakenings lasted (7\_awakeningMin). If participants did not report any awakenings, it was taken to mean they did not wake up during the night. Some participants did not fill out bedtime and the time they were trying to sleep separately, and in those cases they were treated as having the same value.
+\newline
+
+• SOL (Sleep Onset Latency) - The time taken to fall asleep. Longer latency suggests
+poorer sleep quality.
+\newline
+• WASO (Wake After Sleep Onset) - Total time spent awake after initially falling asleep.
+Greater WASO reflects more fragmented sleep and thus lower sleep quality.
+\newline
+• SE (Sleep Efficiency) - Calculated as TST divided by time in bed, multiplied by 100%.
+Values above 85–90% are typically considered indicative of good sleep efficiency.
+\newline
+• Number of awakenings - The number of awakenings detected during the night. A higher
+number indicates poorer sleep continuity.
+
+
+\paragraph{Behavioural results}
+Reaction times were longer for switch trials (M = 866.72 ms, SD = 194.08) than for repeat trials (M = 742.36 ms, SD = 187.50). Reaction times were also longer for incongruent trials (M = 801.88 ms, SD = 195.23) than for congruent trials (M = 756.83 ms, SD = 221.10).
+The switch cost was higher for incongruent than congruent trials, with a significant interaction between switch and congruency, $t(47) = -3.35, p = .002$. Cohen's d shows a medium effect size (d = 0.48)
+
 \paragraph{Sleep Patterns}
+Mean total sleep time: 
+
 \paragraph{Cognitive Performance}
 
+A 2 × 2 repeated-measures ANOVA was conducted on mean theta-band (4–8 Hz) power in the 200–500 ms post-stimulus window, with factors switch (switch vs. repeat) and congruency (congruent vs. incongruent). There was a significant main effect of switch, F(1,47) = 15.85, p < .001, indicating higher theta power for switch compared to repeat trials. A significant main effect of congruency was also observed, F(1,47) = 13.02, p < .001, with greater theta power in congruent relative to incongruent trials. There was a significant interaction between switch and congruency, F(1,47) = 7.62, p = .008, indicating that the effect of switching differed depending on congruency. Follow-up comparisons showed that the switch-related increase in theta power was more pronounced for congruent than incongruent trials.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1.0\linewidth]{Master thesis/figures/results/switchminusrepeat.png}
+    \caption{Power change from switch to repeat trials plotted for congruent and incongruent trials.}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcc}
+\hline
+Effect & $F(1, 47)$ & $p$ \\
+\hline
+Switch & 15.85 & $< .001$ \\
+Congruency & 13.02 & $< .001$ \\
+Switch $\times$ Congruency & 7.62 & $.008$ \\
+\hline
+\end{tabular}
+\caption{Repeated-measures ANOVA of theta power as a function of Switch and Congruency.}
+\label{tab:anova_theta}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1.0\linewidth]{Master thesis/figures/results/GA_ERSP_all_conditions.png}
+    \caption{Grand average ERSP plotted (from left to right, top to bottom) for congruent repeat trials, congruent switch trials, incongruent repeat trials and incongruent switch trials.}
+    \label{fig:placeholder}
+\end{figure}
 
 \chapter{Discussion}
 \section{Main Findings}
