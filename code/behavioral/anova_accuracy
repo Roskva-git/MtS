@@ -1,0 +1,55 @@
+%% Script: anova_accuracy
+
+% Author: Røskva 
+% Created: 06.04.2026
+% Modified: 06.04.2026
+
+% Purpose:
+% Run a 2×2 repeated-measures ANOVA on accuracy (andel korrekte svar)
+% with within-subject factors switch (repeat vs switch)
+% and congruency (congruent vs incongruent).
+
+% Input:
+% behavioural_measures_for_analysis.csv
+% (one row per participant, condition-specific accuracy values)
+
+% Output:
+% anova_acc_results.mat (ANOVA table)
+
+% Notes:
+% Accuracy is defined as proportion of correct responses per condition
+% (repeat–congruent, repeat–incongruent, switch–congruent, switch–incongruent).
+
+%% 1. Paths
+inFile  = '\\hypatia.uio.no\...\behavioural_measures_for_analysis.csv';
+outFile = '\\hypatia.uio.no\...\anova_acc_results.mat';
+
+%% 2. Load data
+T = readtable(inFile);
+
+%% 3. Create accuracy matrix (order: RC, RI, SC, SI)
+Y = [
+    T.acc_rp_con ...
+    T.acc_rp_inc ...
+    T.acc_sw_con ...
+    T.acc_sw_inc
+];
+
+Y = array2table(Y, 'VariableNames', {'RC','RI','SC','SI'});
+
+%% 4. Define within-subject factors
+Switch = categorical({'repeat';'repeat';'switch';'switch'});
+Congruency = categorical({'con';'inc';'con';'inc'});
+
+within = table(Switch, Congruency);
+
+%% 5. Run repeated-measures ANOVA
+rm = fitrm(Y, 'RC-SI ~ 1', 'WithinDesign', within);
+ranovatbl = ranova(rm, 'WithinModel', 'Switch*Congruency');
+
+%% 6. Display results
+disp('Accuracy ANOVA results:')
+disp(ranovatbl)
+
+%% 7. Save results
+save(outFile, 'ranovatbl')
