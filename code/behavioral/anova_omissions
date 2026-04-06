@@ -1,0 +1,57 @@
+%% Script: ANOVA_OMIT
+% Author: Røskva
+% Created: 06.04.2026
+% Modified: 06.04.2026
+
+% Purpose:
+% Run a 2×2 repeated-measures ANOVA on omission rates
+% with within-subject factors switch (repeat vs switch)
+% and congruency (congruent vs incongruent).
+
+% Input:
+% behavioural_measures_for_analysis.csv
+% (one row per participant, omission counts per condition)
+
+% Output:
+% anova_omit_results.mat (ANOVA table)
+
+% Notes:
+% Omission is defined as number of missed responses per condition.
+% Conditions:
+% repeat–congruent, repeat–incongruent, switch–congruent, switch–incongruent.
+
+clear; clc;
+
+%% 1. Paths
+inFile  = '\\hypatia.uio.no\...\behavioural_measures_for_analysis.csv';
+outFile = '\\hypatia.uio.no\...\anova_omit_results.mat';
+
+%% 2. Load data
+T = readtable(inFile);
+
+%% 3. Create omission matrix (order: RC, RI, SC, SI)
+Y = [
+    T.n_rp_con ...
+    T.n_rp_inc ...
+    T.n_sw_con ...
+    T.n_sw_inc
+];
+
+Y = array2table(Y, 'VariableNames', {'RC','RI','SC','SI'});
+
+%% 4. Define within-subject factors
+Switch = categorical({'repeat';'repeat';'switch';'switch'});
+Congruency = categorical({'con';'inc';'con';'inc'});
+
+within = table(Switch, Congruency);
+
+%% 5. Run repeated-measures ANOVA
+rm = fitrm(Y, 'RC-SI ~ 1', 'WithinDesign', within);
+ranovatbl = ranova(rm, 'WithinModel', 'Switch*Congruency');
+
+%% 6. Display results
+disp('Omission ANOVA results:')
+disp(ranovatbl)
+
+%% 7. Save results
+save(outFile, 'ranovatbl')
