@@ -26,8 +26,8 @@
 clear; clc;
 
 %% 1. Paths
-inFile  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\theta\theta_measures.csv';
-outFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\ANOVA\anova_theta_results.mat';
+inFile  = '\\hypatia.uio.no\...\theta_measures.csv';
+outFile = '\\hypatia.uio.no\...\anova_theta_results.mat';
 
 %% 2. Load data
 T = readtable(inFile);
