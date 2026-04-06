@@ -1,0 +1,65 @@
+%% Script: PREPARE_SLEEP_MEASURES
+
+% Author: Røskva 
+% Created: 06.04.2026
+% Modified: 06.04.2026
+
+% Purpose:
+% Prepare sleep variables for statistical analysis by combining
+% habitual sleep measures, variability, and night-to-night deviations.
+
+% Input:
+% sleep_summary.csv
+% (participant-level means and standard deviations)
+
+% sleep_daily.csv
+% (day-by-day sleep measures, including identification of night before EEG)
+
+% Output:
+% sleep_measures_for_analysis.csv
+% (one row per participant with:
+% mean sleep, variability, night-before values, and deviation scores)
+
+% Notes:
+% Deviation is computed as:
+% (sleep night before EEG) − (participant's mean sleep)
+
+% This yields both between-subject (habitual sleep) and within-subject
+% (nightly deviation) predictors for subsequent analyses.
+
+
+clear; clc;
+
+%% 1. Load data
+sleep_summary = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\sleep\sleep_summary.csv');
+sleep_daily   = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\sleep\sleep_daily.csv');
+
+%% 2. Convert summary variables (comma → dot → numeric)
+vars = {'TST_mean_h','TST_sd_h','SE_mean_pct','SE_sd_pct'};
+
+for i = 1:length(vars)
+    sleep_summary.(vars{i}) = str2double(strrep(sleep_summary.(vars{i}), ',', '.'));
+end
+
+%% 3. Extract night before EEG
+night_before = sleep_daily(strcmp(sleep_daily.is_night_before_EEG,'TRUE'), :);
+
+%% 4. Merge with summary data
+merged = join(night_before, sleep_summary, 'Keys','ID');
+
+%% 5. Compute deviations
+merged.TST_dev = merged.TST_h - merged.TST_mean_h;
+merged.SE_dev  = merged.SE_pct - merged.SE_mean_pct;
+
+%% 6. Keep relevant columns
+sleep_for_analysis = merged(:, {
+    'ID', ...
+    'TST_mean_h','TST_sd_h','TST_h','TST_dev', ...
+    'SE_mean_pct','SE_sd_pct','SE_pct','SE_dev'
+});
+
+%% 7. Save
+outFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\sleep\sleep_measures_for_analysis.csv';
+writetable(sleep_for_analysis, outFile);
+
+disp('Sleep measures ready for analysis.')
