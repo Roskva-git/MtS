@@ -1,0 +1,59 @@
+%% Script: ANOVA_THETA
+
+% Author: Røskva
+% Created: 06.04.2026
+% Modified: 06.04.2026
+
+% Purpose:
+% Run a 2×2 repeated-measures ANOVA on midfrontal theta power
+% with within-subject factors Switch (repeat vs switch)
+% and Congruency (congruent vs incongruent).
+
+% Input:
+% theta_measures.csv
+% (one row per participant, theta values per condition:
+% repeat–congruent, repeat–incongruent,
+% switch–congruent, switch–incongruent)
+
+% Output:
+% anova_theta_results.mat (ANOVA table)
+
+% Notes:
+% Theta values represent mean power in the 4–8 Hz range
+% within a 200–500 ms post-stimulus window, averaged across
+% electrodes Fz, FCz, and Cz.
+
+clear; clc;
+
+%% 1. Paths
+inFile  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\theta\theta_measures.csv';
+outFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\ANOVA\anova_theta_results.mat';
+
+%% 2. Load data
+T = readtable(inFile);
+
+%% 3. Create matrix (RC, RI, SC, SI)
+Y = [
+    T.theta_RC ...
+    T.theta_RI ...
+    T.theta_SC ...
+    T.theta_SI
+];
+
+Y = array2table(Y, 'VariableNames', {'RC','RI','SC','SI'});
+
+%% 4. Factors
+Switch = categorical({'repeat';'repeat';'switch';'switch'});
+Congruency = categorical({'con';'inc';'con';'inc'});
+
+within = table(Switch, Congruency);
+
+%% 5. ANOVA
+rm = fitrm(Y, 'RC-SI ~ 1', 'WithinDesign', within);
+ranovatbl = ranova(rm, 'WithinModel', 'Switch*Congruency');
+
+%% 6. Output
+disp('Theta ANOVA results:')
+disp(ranovatbl)
+
+save(outFile, 'ranovatbl')
