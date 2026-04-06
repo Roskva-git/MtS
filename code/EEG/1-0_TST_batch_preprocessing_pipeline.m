@@ -1,4 +1,4 @@
-%% 1. Batch EEG Preprocessing Pipeline for TST Data with ICA
+%% 1.0 Batch EEG Preprocessing Pipeline for TST Data with ICA
 
 % Author: Røskva
 % Date: 09.05.25
@@ -9,7 +9,7 @@
 % step 2. Reject independent components 
 % Step 3. Run the mapping script using the logfile to map events
 % Step 4. Get behavioural overview
-% Step 5. Epoch & analyze
+% Step 5. Epoch
 
 % DESCRIPTION:
 % This script performs batch preprocessing of EEG data (.vhdr files) for 
