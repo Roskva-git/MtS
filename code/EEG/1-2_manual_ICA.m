@@ -1,4 +1,4 @@
-%% Clean data with ICA
+%% 1.2 Clean data with ICA
 
 % Author: Røskva
 % Date: 09.05.25
