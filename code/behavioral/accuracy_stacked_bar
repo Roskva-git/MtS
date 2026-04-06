@@ -30,7 +30,7 @@ import matplotlib.pyplot as plt
 # LOAD DATA
 # =========================
 df = pd.read_csv(
-    r"\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\behavioural_overview_master.csv",
+    r"\\hypatia.uio.no\...\behavioural_overview_master.csv",
     sep=';'
 )
 
@@ -143,7 +143,7 @@ def plot_stacked(data, title):
     plt.tight_layout()
 
     fig.savefig(
-        fr"C:\Users\roskvatb\OneDrive - Universitetet i Oslo\Dokumenter\Python output\{title}.png",
+        fr"C:\Users\...\{title}.png",
         dpi=300,
         bbox_inches='tight'
     )
