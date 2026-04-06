@@ -11,7 +11,9 @@
 % Step 3. Map logfiles onto EEG events
 % Step 4. Extract behavioural overview
 % Step 5. Epoch data (this script)
-% Step 6. Study set-up
+
+% Analysis:
+% 1. Study set-up
 
 clear; clc;
 
