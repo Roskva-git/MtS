@@ -26,16 +26,16 @@
 %% 0. Initialize EEGLAB and set paths
 
 addpath('Z:\Projects\Røskva\Code\eeglab2025.1.0', ...
-        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\', ...
-        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\');
+        '\\hypatia.uio.no\...\Røskva\', ...
+        '\\hypatia.uio.no\...\Code\');
 
 eeglab;  % Start EEGLAB
 
 
 %% 1. Define folders
 
-mapped_folder = 'Z:\Projects\Røskva\Data\TST\3_mapped';
-out_folder    = 'Z:\Projects\Røskva\Data\TST\5_epoched';
+mapped_folder = 'Z:\Projects\...\3_mapped';
+out_folder    = 'Z:\Projects\...\5_epoched';
 
 if ~exist(out_folder, 'dir')
     mkdir(out_folder);
