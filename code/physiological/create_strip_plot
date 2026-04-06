@@ -31,7 +31,7 @@ from matplotlib import cm
 # LOAD DATA
 # =========================
 df = pd.read_csv(
-    r"C:\Users\roskvatb\OneDrive - Universitetet i Oslo\Dokumenter\Python output\sleep_daily.csv",
+    r"C:\Users\...\sleep_daily.csv",
     sep=';'
 )
 
