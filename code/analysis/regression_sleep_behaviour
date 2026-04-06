@@ -1,0 +1,64 @@
+%% Regression analysis - sleep and behaviour
+
+% Author: Røskva 
+% Created: 06.04.2026
+% Modified: 06.04.2026
+
+% Purpose:
+% Examine whether sleep variables predict behavioural performance
+% in the task-switching paradigm using linear regression models.
+
+% Input:
+% data_merged_sleep_behaviour.csv
+% (participant-level dataset combining behavioural measures and sleep variables)
+
+% Output:
+% regression_sleep_behaviour.mat
+% (fitted linear models)
+
+% Variables:
+% Dependent variable:
+% - switch_cost_RT (reaction time difference between switch and repeat trials)
+
+% Predictors:
+% - TST_mean_h (habitual sleep duration)
+% - TST_sd_h (sleep variability)
+% - TST_dev (night-before deviation from mean sleep)
+
+% Notes:
+% Multiple models are estimated to separately assess the contribution of
+% habitual sleep, variability, and short-term deviations. This allows
+% comparison between stable individual differences and within-subject
+% fluctuations in sleep.
+
+clear; clc;
+
+%% 1. Load merged dataset
+data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+
+%% 2. Create behavioural outcome (switch cost)
+data.switch_cost_RT = data.rt_cC_sw_con - data.rt_cC_rp_con;
+
+%% 3. Model 1: habitual sleep
+mdl1 = fitlm(data, 'switch_cost_RT ~ TST_mean_h');
+
+disp('Model 1: Habitual sleep')
+disp(mdl1)
+
+%% 4. Model 2: add variability
+mdl2 = fitlm(data, 'switch_cost_RT ~ TST_mean_h + TST_sd_h');
+
+disp('Model 2: Habitual sleep + variability')
+disp(mdl2)
+
+%% 5. Model 3: add night-before deviation
+mdl3 = fitlm(data, 'switch_cost_RT ~ TST_mean_h + TST_sd_h + TST_dev');
+
+disp('Model 3: Full model (including deviation)')
+disp(mdl3)
+
+%% 6. Save models
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\regression_sleep_behaviour.mat', ...
+    'mdl1','mdl2','mdl3');
+
+disp('Regression complete.')
