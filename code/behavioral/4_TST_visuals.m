@@ -54,7 +54,7 @@ Desc.Properties.RowNames = {'Mean','SD','Median','Min','Max','N','Sum'};
 
 
 %% Save as Excel
-outFile = "C:\Users\catba\Documents\Universitetet i Oslo\Høsten 2025\MICC - Master project\Data\behavioural_descriptives.xlsx";
+outFile = "C:\Users\...\behavioural_descriptives.xlsx";
 
 writetable(Desc, outFile, 'WriteRowNames', true, 'Sheet', 'AllNumeric');
 
