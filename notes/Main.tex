@@ -43,6 +43,7 @@
 }
 
 % Code listings (for Python/MATLAB code)
+\usepackage[framed,numbered]{matlab-prettifier}
 \usepackage{listings}
 \lstset{
     basicstyle=\footnotesize\ttfamily,
@@ -52,6 +53,7 @@
     numberstyle=\tiny,
     captionpos=b
 }
+
 
 % Appendices
 \usepackage[toc,page]{appendix}
@@ -410,6 +412,15 @@ The derived sleep parameters are:
 
 \section{Statistical Analysis}
 
+Statistical analyses were conducted to examine behavioural performance, neural activity, and their associations with sleep. Behavioural and EEG data were analysed using repeated-measures analyses of variance (ANOVAs) with the within-subject factors switch (switch vs. repeat) and congruency (congruent vs. incongruent). A 2×2 repeated-measures ANOVA tests whether mean differences between the four conditions (defined by two factors with two levels each) are larger than expected by chance, while accounting for within-participant variability.
+
+Behavioural performance was assessed using reaction times, accuracy, and omission rates. Reaction time data were first extracted at the trial level for each participant. Trials were classified according to switch (switch vs. repeat) and congruency (congruent vs. incongruent). For each participant, reaction times were then averaged separately within each of the four resulting conditions (repeat–congruent, repeat–incongruent, switch–congruent, switch–incongruent). These condition-specific mean reaction times were used as input to the repeated-measures ANOVA. Omission trials were excluded from reaction time analyses.
+
+Habitual sleep was operationalised as the participant’s mean sleep across the recording period, and variability was indexed using the within-participant standard deviation. Associations between habitual sleep measures and behavioural and neural outcomes were assessed using linear regression models. To examine short-term effects of sleep, night-to-night deviations were calculated by centring each night’s sleep relative to the participant’s own mean. These deviation scores were entered as predictors in linear mixed-effects models with random intercepts for participants, allowing assessment of within-participant relationships between sleep and performance. All analyses were conducted using an alpha level of .05.
+
+Repeated measures ANOVA. Linear models and linear mixed models. 
+With N = 48 participants, a sensitivity analysis in G*Power indicated that the design was capable of detecting small-to-medium within-subject effects (f $\approx$ 0.17–0.21, depending on the assumed power level) in the repeated measures ANOVAs. 
+
 Doing a time-frequency analysis of frontal midline area FCz, Fz and Cz to look at how theta and beta activity relates to behavioural output in solving the task switching task. Then we will have a look at how it is related to sleep, as measured with actigraphs. 
 
 \subsection{EEG data processing}
@@ -432,6 +443,9 @@ Electrodes and time window
 
 \paragraph{Epoching}
 Epochs from -1500 to 1500 ms around stimulus onset were extracted to prepare the data for time–frequency analysis. A longer window gives more stable estimates at lower frequencies, reducing edge problems, and leaving enough pre-stimulus data for baseline correction and normalization. As theta is a low frequency oscillation, it requires a longer temporal window to be estimated reliably. Time-frequency estimates depend on having enough data around the event because edge artifacts can affect wavelet-based analysis \parencite{herrmann2014timefrequencytutorial}. I marked trials for rejection after epoching if the electrodes of interest (Fz, FCz, and Cz) exceeded physiological limits ($\pm 100\,\mu V$), as recommended by \textcite{luck2014erp}. Restricting the rejection criterion to the electrodes of interest prevented noisy channels outside the region of analysis from causing unnecessary trial loss. Rejection was done only after visual inspection.
+
+\paragraph{Theta extraction}
+Theta power was extracted from midfrontal electrodes (Fz, FCz, Cz) using time–frequency decomposition (newtimef in EEGLAB). Power in the theta band (4–8 Hz) was averaged within a 200–500 ms post-stimulus window. For each participant and condition (repeat–congruent, repeat–incongruent, switch–congruent, switch–incongruent), theta values were averaged across time, frequency, and electrodes to yield a single summary measure per condition.
 
 \paragraph{Event-related spectral perturbations (ERSPs)} were computed for each participant and condition using EEGLAB’s wavelet-based time–frequency decomposition (newtimef). Analyses were conducted on pre-segmented condition-specific datasets (e.g., repeat–congruent), derived from the epoching and subsetting pipeline.
 
@@ -494,19 +508,44 @@ number indicates poorer sleep continuity.
 Reaction times were longer for switch trials (M = 866.72 ms, SD = 194.08) than for repeat trials (M = 742.36 ms, SD = 187.50). Reaction times were also longer for incongruent trials (M = 801.88 ms, SD = 195.23) than for congruent trials (M = 756.83 ms, SD = 221.10).
 The switch cost was higher for incongruent than congruent trials, with a significant interaction between switch and congruency, $t(47) = -3.35, p = .002$. Cohen's d shows a medium effect size (d = 0.48)
 
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcc}
+\hline
+Effect & $F(1, 47)$ & $p$ \\
+\hline
+Switch & 361.93 & $< .001$ \\
+Congruency & 25.28 & $< .001$ \\
+Switch $\times$ Congruency & 11.13 & $.002$ \\
+\hline
+\end{tabular}
+\caption{A 2 × 2 repeated-measures ANOVA on reaction times revealed a significant main effect of switch, F(1,47) = 361.93, p $< .001$, with slower responses on switch than repeat trials. There was also a significant main effect of congruency, F(1,47) = 25.28, p $< .001$, with slower responses on incongruent than congruent trials. In addition, a significant interaction between switch and congruency was observed, F(1,47) = 11.13, p = .002}
+\label{tab:anova_rt}
+\end{table}
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcc}
+\hline
+Effect & $F(1, 47)$ & $p$ \\
+\hline
+Switch & 287.75 & $< .001$ \\
+Congruency & 65.03 & $< .001$ \\
+Switch $\times$ Congruency & 14.41 & $< .001$ \\
+\hline
+\end{tabular}
+\caption{A 2 × 2 repeated-measures ANOVA on accuracy revealed a significant main effect of switch, F(1,47) = 287.75, p $< .001$, with lower accuracy on switch than repeat trials. There was also a significant main effect of congruency, F(1,47) = 65.03, p $< .001$, with lower accuracy on incongruent than congruent trials. In addition, a significant interaction between switch and congruency was observed, F(1,47) = 14.41, p $< .001$.}
+\label{tab:anova_rt}
+\end{table}
+
 \paragraph{Sleep Patterns}
 Mean total sleep time: 
 
 \paragraph{Cognitive Performance}
 
-A 2 × 2 repeated-measures ANOVA was conducted on mean theta-band (4–8 Hz) power in the 200–500 ms post-stimulus window, with factors switch (switch vs. repeat) and congruency (congruent vs. incongruent). There was a significant main effect of switch, F(1,47) = 15.85, p < .001, indicating higher theta power for switch compared to repeat trials. A significant main effect of congruency was also observed, F(1,47) = 13.02, p < .001, with greater theta power in congruent relative to incongruent trials. There was a significant interaction between switch and congruency, F(1,47) = 7.62, p = .008, indicating that the effect of switching differed depending on congruency. Follow-up comparisons showed that the switch-related increase in theta power was more pronounced for congruent than incongruent trials.
+A 2 × 2 repeated-measures ANOVA was conducted on mean theta-band (4–8 Hz) power in the 200–500 ms post-stimulus window, with factors switch (switch vs. repeat) and congruency (congruent vs. incongruent). There was a significant main effect of switch, F(1,47) = 15.85, p $< .001$, indicating higher theta power for switch compared to repeat trials. A significant main effect of congruency was also observed, F(1,47) = 13.02, p $< .001$, with greater theta power in congruent relative to incongruent trials. There was a significant interaction between switch and congruency, F(1,47) = 7.62, p = .008, indicating that the effect of switching differed depending on congruency. Follow-up comparisons showed that the switch-related increase in theta power was more pronounced for congruent than incongruent trials.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=1.0\linewidth]{Master thesis/figures/results/switchminusrepeat.png}
-    \caption{Power change from switch to repeat trials plotted for congruent and incongruent trials.}
-    \label{fig:placeholder}
-\end{figure}
 
 \begin{table}[ht]
 \centering
@@ -559,7 +598,7 @@ What did we learn from all of this
 \begin{appendices}
 \chapter{Supplementary Tables and Figures}
 \section{Additional Statistical Analyses}
-\section{Model Architecture Details}
+
 \section{DALL-E prompt for image generation}
 2x2 grid illustration in expressive manga style, clean line art, high contrast, subtle screentones. Same female protagonist with brown hair, same outfit, same kitchen, identical camera angle and framing in all four panels. Clear panel borders, equal size, minimal background clutter. Visual storytelling through posture, gaze, and motion lines. No text inside panels. Facial expressions subtle and controlled, showing cognitive states (focused, strained, calm, disengaged), not anger or distress.
 
@@ -576,9 +615,28 @@ Subtle visual encoding: sharp lines = attention, wavy lines = distraction, clean
 
 
 \chapter{Code and Implementation}
-\section{Data Preprocessing Pipeline}
-\section{Model Training Scripts}
-\section{Evaluation Functions}
+
+All my code (with anonymized paths) is openly available at https://github.com/Roskva-git/MtS. EEGLAB in MATLAB was used for EEG preprocessing and analysis. For some of the sleep data, Python was used to structure and analyze the dataset.
+
+\section{Data preprocessing pipeline}
+
+\begin{lstlisting}[style=Matlab-editor]
+\end{lstlisting}
+
+
+\section{Data cleaning scripts}
+
+\begin{lstlisting}[language=Python]
+def hello():
+    print("Hello, LaTeX!")
+\end{lstlisting}
+
+\section{Analyzing scripts}
+
+\begin{lstlisting}[style=Matlab-editor]
+\end{lstlisting}
+
+
 \end{appendices}
 
 \end{document}
