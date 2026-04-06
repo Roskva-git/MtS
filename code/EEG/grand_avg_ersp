@@ -57,7 +57,7 @@ Analysis:
 
 
 % Use these folders
-folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\rep_con\';
+folder = '\\hypatia.uio.no\...\rep_con\';
 files = dir(fullfile(folder, '*.set'));
 
 % Get participants in same order each time 
@@ -100,7 +100,7 @@ grand_ersp = mean(all_ersp, 3);
 
 
 % Save this godforsaken thing
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\rep_con\all_ersp.mat', ...
+save('\\hypatia.uio.no\...\all_ersp.mat', ...
      'all_ersp', 'times', 'freqs', 'participant_files');
 
 % Plot the grand average ERSP
