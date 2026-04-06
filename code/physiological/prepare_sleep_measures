@@ -31,8 +31,8 @@
 clear; clc;
 
 %% 1. Load data
-sleep_summary = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\sleep\sleep_summary.csv');
-sleep_daily   = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\sleep\sleep_daily.csv');
+sleep_summary = readtable('C:\Users\...\sleep_summary.csv');
+sleep_daily   = readtable('C:\Users\...\sleep_daily.csv');
 
 %% 2. Convert summary variables (comma → dot → numeric)
 vars = {'TST_mean_h','TST_sd_h','SE_mean_pct','SE_sd_pct'};
@@ -59,7 +59,16 @@ sleep_for_analysis = merged(:, {
 });
 
 %% 7. Save
-outFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\sleep\sleep_measures_for_analysis.csv';
+outFile = 'C:\Users\...\sleep_measures_for_analysis.csv';
 writetable(sleep_for_analysis, outFile);
 
 disp('Sleep measures ready for analysis.')
+
+
+%% INSPECTING TABLES
+
+% sleep_measures_for_analysis = readtable('C:\Users\...\sleep_measures_for_analysis.csv');
+% sleep_measures_for_analysis.Properties.VariableNames
+
+% head(sleep_measures_for_analysis)
+
