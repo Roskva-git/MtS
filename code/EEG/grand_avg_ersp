@@ -1,4 +1,4 @@
-%% 7. Create ERSPs (time–frequency decomposition)
+%% Create ERSPs (time–frequency decomposition)
 
 % Author: Røskva
 % Date: 24.03.26
@@ -10,8 +10,10 @@
 % Step 3. Map logfiles onto EEG events
 % Step 4. Extract behavioural overview
 % Step 5. Epoch data
-% Step 6. Create condition subsets
-% Step 7. Compute ERSPs (this script)
+
+Analysis:
+% 1. Create condition subsets
+% 2. Compute ERSPs (this script)
 
 
 % PURPOSE:
