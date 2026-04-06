@@ -1,0 +1,101 @@
+%% Script: EXTRACT_THETA
+
+% Author: Røskva
+% Created: 06.04.2026
+% Modified: 06.04.2026
+
+% Purpose:
+% Extract midfrontal theta power for each participant and condition.
+% Theta is defined as 4–8 Hz activity in the 200–500 ms post-stimulus window,
+% averaged across electrodes Fz (5), FCz (30), and Cz (14).
+
+% Input:
+% Epoched EEG datasets (.set files) organized by condition in:
+% \TST\6_subsets\
+% (rep_con, rep_inc, switch_con, switch_inc)
+
+% Output:
+% theta_measures.csv
+% (one row per participant, one theta value per condition:
+% repeat–congruent, repeat–incongruent, switch–congruent, switch–incongruent)
+
+% Notes:
+% Time–frequency decomposition is performed using EEGLAB's newtimef
+% with Morlet wavelets. Theta values are averaged across time, frequency,
+% and channels to yield a single summary measure per condition per participant.
+
+
+clear; clc;
+
+
+%% 1. Paths
+addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\eeglab2025.1.0')
+basePath = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\';
+outFile  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\theta\theta_measures.csv';
+
+folders = {
+    'rep_con'
+    'rep_inc'
+    'switch_con'
+    'switch_inc'
+};
+
+%% 2. Settings
+channels = [5 30 14]; % Fz, FCz, Cz
+freqRange = [4 8];
+timeRange = [200 500];
+
+%% 3. Loop over conditions
+theta_all = [];
+participant_ids = [];
+
+for cond = 1:4
+    
+    files = dir(fullfile(basePath, folders{cond}, '*.set'));
+    
+    for i = 1:length(files)
+        
+        EEG = pop_loadset(files(i).name, fullfile(basePath, folders{cond}));
+        
+        theta_channels = zeros(length(channels),1);
+        
+        for ch = 1:length(channels)
+            
+            [ersp,~,~,times,freqs] = newtimef( ...
+                EEG.data(channels(ch),:,:), ...
+                EEG.pnts, ...
+                [EEG.xmin EEG.xmax]*1000, ...
+                EEG.srate, ...
+                [3 0.8], ...
+                'plotersp','off','plotitc','off');
+            
+            % find indices
+            f_idx = freqs >= freqRange(1) & freqs <= freqRange(2);
+            t_idx = times >= timeRange(1) & times <= timeRange(2);
+            
+            % average theta
+            theta_channels(ch) = mean(ersp(f_idx, t_idx), 'all');
+        end
+        
+        % average across channels
+        theta_value = mean(theta_channels);
+        
+        % store
+        if cond == 1
+            participant_ids{i,1} = files(i).name;
+        end
+        
+        theta_all(i,cond) = theta_value;
+        
+    end
+end
+
+%% 4. Create table
+T_theta = table(participant_ids, ...
+    theta_all(:,1), theta_all(:,2), theta_all(:,3), theta_all(:,4), ...
+    'VariableNames', {'participant','theta_RC','theta_RI','theta_SC','theta_SI'});
+
+%% 5. Save
+writetable(T_theta, outFile);
+
+disp('Theta extraction complete.')
