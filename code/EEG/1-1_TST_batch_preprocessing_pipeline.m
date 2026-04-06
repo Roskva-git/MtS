@@ -1,4 +1,4 @@
-%% 1.0 Batch EEG Preprocessing Pipeline for TST Data with ICA
+%% 1.1 Batch EEG Preprocessing Pipeline for TST Data with ICA
 
 % Author: Røskva
 % Date: 09.05.25
