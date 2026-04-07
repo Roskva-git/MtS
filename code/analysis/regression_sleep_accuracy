@@ -1,0 +1,25 @@
+%% Script: REGRESSION_SLEEP_ACCURACY
+
+clear; clc;
+
+%% Load data
+data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+
+%% Create accuracy switch cost
+data.switch_cost_ACC = data.acc_sw_con - data.acc_rp_con;
+
+%% Model 1
+mdl1 = fitlm(data, 'switch_cost_ACC ~ TST_mean_h');
+disp(mdl1)
+
+%% Model 2
+mdl2 = fitlm(data, 'switch_cost_ACC ~ TST_mean_h + TST_sd_h');
+disp(mdl2)
+
+%% Model 3
+mdl3 = fitlm(data, 'switch_cost_ACC ~ TST_mean_h + TST_sd_h + TST_dev');
+disp(mdl3)
+
+%% Save
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\regression_sleep_accuracy.mat', ...
+    'mdl1','mdl2','mdl3');
