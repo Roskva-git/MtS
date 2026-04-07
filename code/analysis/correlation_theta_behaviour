@@ -1,0 +1,54 @@
+%% Script: CORRELATION_THETA_BEHAVIOUR
+
+% Author: Røskva 
+% Created 07.04.2026
+% Modified: 07.04.2026
+
+% Purpose:
+% Test the association between neural activity (theta) and behavioural
+% performance (reaction time) using Pearson correlation.
+
+% Input:
+% data_merged_sleep_behaviour.csv
+% theta_measures.csv
+
+% Output:
+% correlation_theta_behaviour.mat
+% correlation_theta_behaviour.csv
+
+% Variables:
+% - theta_switch_cost (theta_SC − theta_RC)
+% - switch_cost_RT (RT switch − RT repeat)
+
+clear; clc;
+
+%% 1. Load data
+behaviour = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+theta = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\theta\theta_measures.csv');
+
+% 1.1 Rename partipants to ID in theta_measures
+theta.Properties.VariableNames{'participant'} = 'ID';
+theta.ID = cellfun(@(x) str2double(regexp(x, '\d+', 'match', 'once')), theta.ID);
+
+%% 2. Merge
+data = innerjoin(behaviour, theta, 'Keys','ID');
+
+%% 3. Create variables
+data.switch_cost_RT = data.rt_cC_sw_con - data.rt_cC_rp_con;
+data.theta_switch_cost = data.theta_SC - data.theta_RC;
+
+%% 4. Correlation
+[r, p] = corr(data.theta_switch_cost, data.switch_cost_RT);
+
+fprintf('Correlation between theta and behaviour:\n');
+fprintf('r = %.3f, p = %.3f\n', r, p);
+
+%% 5. Save results
+results = table(r, p);
+writetable(results, ...
+'\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\correlation_theta_behaviour.csv');
+
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\correlation_theta_behaviour.mat', ...
+    'r','p');
+
+disp('Correlation complete.')
