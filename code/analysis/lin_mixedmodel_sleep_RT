@@ -1,8 +1,8 @@
-%% Script: MIXED_MODEL_SLEEP_RT
+%% Linear mixed model for sleep and reaction time
 
 % Author: Røskva 
 % Created: 07.04.2026
-% 
+% Modified: 07.04.2026
 
 % Purpose:
 % Examine whether night-to-night sleep deviation predicts reaction times
