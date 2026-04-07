@@ -1,0 +1,76 @@
+%% Script: REGRESSION_SLEEP_THETA
+
+% Author: Røskva
+% Created: 06.04.2026
+% Modified: 07.04.2026
+
+% Purpose:
+% Examine whether sleep variables predict neural activity,
+% operationalised as theta switch cost (difference in theta power
+% between switch and repeat trials).
+
+% Input:
+% theta_measures.csv
+% (participant-level theta values per condition:
+% repeat–congruent, repeat–incongruent,
+% switch–congruent, switch–incongruent)
+
+% sleep_measures_for_analysis.csv
+% (participant-level sleep measures:
+% habitual sleep, variability, and night-before deviation)
+
+% Output:
+% regression_sleep_theta.mat (fitted models)
+% regression_sleep_theta_coefficients.csv (model coefficients)
+
+% Variables:
+% Dependent variable:
+% - theta_switch_cost (theta_SC − theta_RC)
+
+% Predictors:
+% - TST_mean_h (habitual sleep duration)
+% - TST_sd_h (sleep variability)
+% - TST_dev (night-before deviation from mean sleep)
+
+% Notes:
+% Theta values represent mean power in the 4–8 Hz range within a
+% 200–500 ms post-stimulus window, averaged across Fz, FCz, and Cz.
+% Multiple models are estimated to assess contributions of stable
+% sleep patterns and short-term fluctuations.
+
+clear; clc;
+
+%% 1. Load data
+sleep = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_measures_for_analysis.csv');
+theta = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\theta_measures_for_analysis.csv');
+
+%% 2. Merge
+data = innerjoin(theta, sleep, 'Keys','ID');
+
+%% 3. Create outcome (theta switch cost)
+data.theta_switch_cost = data.theta_SC - data.theta_RC;
+
+%% 4. Model 1: habitual sleep
+mdl1 = fitlm(data, 'theta_switch_cost ~ TST_mean_h');
+disp('Model 1')
+disp(mdl1)
+
+%% 5. Model 2: add variability
+mdl2 = fitlm(data, 'theta_switch_cost ~ TST_mean_h + TST_sd_h');
+disp('Model 2')
+disp(mdl2)
+
+%% 6. Model 3: full model
+mdl3 = fitlm(data, 'theta_switch_cost ~ TST_mean_h + TST_sd_h + TST_dev');
+disp('Model 3')
+disp(mdl3)
+
+%% 7. Save models
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\regression_sleep_theta.mat', ...
+    'mdl1','mdl2','mdl3');
+
+%% 8. Save coefficients
+writetable(mdl3.Coefficients, ...
+'\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\regression_sleep_theta_coefficients.csv');
+
+disp('Done.')
