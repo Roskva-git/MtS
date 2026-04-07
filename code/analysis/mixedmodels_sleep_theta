@@ -1,0 +1,89 @@
+%% Script: MIXED_MODEL_SLEEP_THETA
+% Author: Røskva Bjørgfinsdóttir
+% Created: 07.04.2026
+% Modified: 07.04.2026
+
+% Purpose:
+% Examine whether night-to-night sleep deviation predicts theta activity
+% across task conditions using a linear mixed-effects model.
+
+% Input:
+% theta_measures.csv
+% (participant-level theta values per condition:
+% repeat–congruent, repeat–incongruent,
+% switch–congruent, switch–incongruent)
+
+% sleep_measures_for_analysis.csv
+% (participant-level sleep measures:
+% habitual sleep, variability, and night-before deviation)
+
+% Output:
+% mixed_model_sleep_theta.mat (fitted mixed-effects model)
+
+% Variables:
+% Dependent variable:
+% - theta (per condition)
+
+% Fixed effects:
+% - TST_dev (night-before deviation from mean sleep)
+% - Switch (repeat vs switch)
+% - Congruency (congruent vs incongruent)
+% - Interactions between sleep deviation and task factors
+
+% Random effects:
+% - Random intercept for participant (ID)
+
+% Notes:
+% Data are reshaped into long format (one row per participant × condition).
+% This model tests whether within-subject fluctuations in sleep are associated
+% with changes in neural activity (theta), including flexibility (Switch)
+% and stability (Congruency) effects.
+
+clear; clc;
+
+%% 1. Load data
+theta = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\theta\theta_measures.csv');
+sleep = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_measures_for_analysis.csv');
+
+%% 2. Merge
+data = innerjoin(theta, sleep, 'Keys','ID');
+
+%% 3. Create long format
+
+ID = [data.ID; data.ID; data.ID; data.ID];
+
+theta_vals = [
+    data.theta_RC
+    data.theta_RI
+    data.theta_SC
+    data.theta_SI
+];
+
+Switch = categorical([
+    repmat("repeat", height(data),1)
+    repmat("repeat", height(data),1)
+    repmat("switch", height(data),1)
+    repmat("switch", height(data),1)
+]);
+
+Congruency = categorical([
+    repmat("con", height(data),1)
+    repmat("inc", height(data),1)
+    repmat("con", height(data),1)
+    repmat("inc", height(data),1)
+]);
+
+TST_dev = [data.TST_dev; data.TST_dev; data.TST_dev; data.TST_dev];
+
+data_long = table(ID, theta_vals, Switch, Congruency, TST_dev);
+
+%% 4. Mixed model
+lme = fitlme(data_long, ...
+    'theta_vals ~ TST_dev * Switch * Congruency + (1|ID)');
+
+disp(lme)
+
+%% 5. Save
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_sleep_theta.mat', 'lme');
+
+disp('Mixed model (theta) complete.')
