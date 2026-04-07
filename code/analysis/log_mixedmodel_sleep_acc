@@ -1,0 +1,115 @@
+%% LOGISTIC MIXED MODEL FOR SLEEP AND ACCURACY
+
+% Author: Røskva 
+% Created: 07.04.2026
+
+% Purpose:
+% Examine whether night-to-night sleep deviation predicts accuracy
+% (correct vs incorrect responses) across task conditions using a
+% logistic mixed-effects model (binomial GLMM).
+
+% Input:
+% Trial-level dataset containing:
+% - ID (participant)
+% - Switch (repeat/switch)
+% - Congruency (congruent/incongruent)
+% - Accuracy (0 = incorrect, 1 = correct)
+% - TST_dev (sleep deviation night before EEG)
+
+% Output:
+% mixed_model_sleep_accuracy_logistic.mat
+
+% Model:
+% Accuracy ~ TST_dev * Switch * Congruency + (1 | ID)
+
+% Notes:
+% - Uses binomial distribution with logit link (logistic mixed model)
+% - Appropriate for binary outcome data (accuracy)
+% - Tests whether sleep influences flexibility (Switch), stability (Congruency),
+%   and their interaction
+
+
+clear; clc;
+
+%% 1. Load data
+data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+behav = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\Behavioural overview master.xlsx');
+
+
+%% 2. Rename ID column in behav
+behav.Properties.VariableNames{'participantID'} = 'ID';
+
+
+%% 3. Merge datasets
+data = innerjoin(data, behav, 'Keys','ID');
+
+
+%% 4. Compute trial counts per condition
+n_rp_con = data.nRepeat .* data.nCon;
+n_rp_inc = data.nRepeat .* data.nInc;
+n_sw_con = data.nSwitch .* data.nCon;
+n_sw_inc = data.nSwitch .* data.nInc;
+
+%% 4. Create Successes (correct trials)
+succ_rp_con = round(data.acc_rp_con_data .* data.n_rp_con);
+succ_rp_inc = round(data.acc_rp_inc_data .* data.n_rp_inc);
+succ_sw_con = round(data.acc_sw_con_data .* data.n_sw_con);
+succ_sw_inc = round(data.acc_sw_inc_data .* data.n_sw_inc);
+
+%% 6. Create Failures
+fail_rp_con = data.n_rp_con - succ_rp_con;
+fail_rp_inc = data.n_rp_inc - succ_rp_inc;
+fail_sw_con = data.n_sw_con - succ_sw_con;
+fail_sw_inc = data.n_sw_inc - succ_sw_inc;
+
+%% 7. Long format
+
+ID = [data.ID; data.ID; data.ID; data.ID];
+
+Success = [
+    succ_rp_con
+    succ_rp_inc
+    succ_sw_con
+    succ_sw_inc
+];
+
+Fail = [
+    fail_rp_con
+    fail_rp_inc
+    fail_sw_con
+    fail_sw_inc
+];
+
+Switch = categorical([
+    repmat("repeat", height(data),1)
+    repmat("repeat", height(data),1)
+    repmat("switch", height(data),1)
+    repmat("switch", height(data),1)
+]);
+
+Congruency = categorical([
+    repmat("con", height(data),1)
+    repmat("inc", height(data),1)
+    repmat("con", height(data),1)
+    repmat("inc", height(data),1)
+]);
+
+TST_dev = [data.TST_dev; data.TST_dev; data.TST_dev; data.TST_dev];
+
+data_long = table(ID, Success, Fail, Switch, Congruency, TST_dev);
+
+data_long.Acc = data_long.Success ./ (data_long.Success + data_long.Fail);
+data_long.N   = data_long.Success + data_long.Fail;
+
+%% 8. Logistic mixed model
+lme = fitglme(data_long, ...
+    'Acc ~ TST_dev * Switch * Congruency + (1|ID)', ...
+    'Distribution','Binomial', ...
+    'Weights', data_long.N);
+
+disp(lme)
+
+%% 9. Save
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_sleep_accuracy_logistic.mat', 'lme');
+
+disp('Logistic mixed model complete.')
