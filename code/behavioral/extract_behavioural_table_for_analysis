@@ -1,0 +1,106 @@
+%% ========================================================================
+%  BEHAVIOURAL DATA – FINAL ANALYSIS TABLE CREATION
+%
+%  PURPOSE:
+%  Create ONE clean behavioural dataset that contains ALL variables needed for:
+%   - 2x2 ANOVAs (Switch x Congruency)
+%   - Linear regressions (sleep → behaviour)
+%   - Mixed models (trial-condition level)
+%   - Descriptive statistics for reporting
+%
+%  INPUT:
+%   behavioural_overview_master.csv
+%   (one row per participant per session)
+%
+%  OUTPUT:
+%   1. behavioural_analysis_master.csv  (MAIN DATASET – USE THIS EVERYWHERE)
+%   2. behavioural_long.csv             (FOR ANOVA + MIXED MODELS)
+%
+%  IMPORTANT:
+%   - Uses ONLY correct RTs (standard practice)
+%   - Keeps accuracy INCLUDING omissions (consistent definition)
+%   - Adds explicit switch and congruency cost variables
+%   - No need to ever go back to the big 83-column table again
+%
+%  AUTHOR: ChatGPT <3 
+%  ========================================================================
+
+clear; clc;
+
+%% 1. LOAD DATA
+T = readtable('...\behavioural_overview_master.csv');
+
+%% 2. KEEP ONE SESSION (CHANGE IF NEEDED)
+T = T(T.session == 2, :);
+
+%% 3. CREATE CLEAN MASTER TABLE
+A = table;
+
+A.ID = T.participantID;
+
+%% --- CONDITION-LEVEL VARIABLES (CORE DESIGN: 2x2) ---
+
+% Reaction time (correct trials only)
+A.RT_RC = T.rt_cC_rp_con;   % Repeat Congruent
+A.RT_RI = T.rt_cC_rp_inc;   % Repeat Incongruent
+A.RT_SC = T.rt_cC_sw_con;   % Switch Congruent
+A.RT_SI = T.rt_cC_sw_inc;   % Switch Incongruent
+
+% Accuracy (correct / total trials in condition)
+A.ACC_RC = T.acc_rp_con;
+A.ACC_RI = T.acc_rp_inc;
+A.ACC_SC = T.acc_sw_con;
+A.ACC_SI = T.acc_sw_inc;
+
+%% --- OMISSIONS (IMPORTANT FOR DESCRIPTIVES / OPTIONAL ANALYSIS) ---
+
+A.OM_RC = T.nOmission ./ T.nTrialsStim; % overall omission rate
+% (you can refine per condition later if needed)
+
+%% --- DERIVED VARIABLES (YOU WILL NEED THESE) ---
+
+% Mean RTs
+A.RT_repeat = mean([A.RT_RC A.RT_RI],2);
+A.RT_switch = mean([A.RT_SC A.RT_SI],2);
+
+A.RT_congruent   = mean([A.RT_RC A.RT_SC],2);
+A.RT_incongruent = mean([A.RT_RI A.RT_SI],2);
+
+% Mean Accuracy
+A.ACC_repeat = mean([A.ACC_RC A.ACC_RI],2);
+A.ACC_switch = mean([A.ACC_SC A.ACC_SI],2);
+
+A.ACC_congruent   = mean([A.ACC_RC A.ACC_SC],2);
+A.ACC_incongruent = mean([A.ACC_RI A.ACC_SI],2);
+
+% --- COST VARIABLES (KEY FOR REGRESSIONS) ---
+
+% Switch cost (flexibility)
+A.RT_switch_cost = A.RT_switch - A.RT_repeat;
+A.ACC_switch_cost = A.ACC_switch - A.ACC_repeat;
+
+% Congruency cost (stability)
+A.RT_cong_cost = A.RT_incongruent - A.RT_congruent;
+A.ACC_cong_cost = A.ACC_incongruent - A.ACC_congruent;
+
+%% 4. SAVE MASTER TABLE
+writetable(A, 'behavioural_analysis_master.csv');
+
+%% 5. CREATE LONG FORMAT (FOR ANOVA + MIXED MODELS)
+
+long = table;
+
+long.ID = repelem(A.ID,4);
+
+% Factors
+long.Switch = categorical([0 0 1 1]');
+long.Congruency = categorical([1 0 1 0]');
+
+% Dependent variables
+long.RT  = [A.RT_RC; A.RT_RI; A.RT_SC; A.RT_SI];
+long.ACC = [A.ACC_RC; A.ACC_RI; A.ACC_SC; A.ACC_SI];
+
+%% 6. SAVE LONG TABLE
+writetable(long, 'behavioural_long.csv');
+
+disp('Behavioural datasets ready for ALL analyses.');
