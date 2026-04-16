@@ -1,0 +1,153 @@
+%% Behavioural accuracy summary (TST)
+
+% Author: Røskva
+% Date: 16.04.26
+% Last changed: 16.04.26
+
+% Workflow:
+% Step 1. Preprocess EEG + ICA
+% Step 2. Manually reject ICs
+% Step 3. Map logfiles onto EEG events (creates *_mapped.set)
+% Step 4. Extract behavioural overview (behavioural_overview_master.csv)
+% Step 5. Compute accuracy summaries (this script)
+
+% PURPOSE:
+%   Compute group-level behavioural accuracy summaries from the master table.
+%   Produces:
+%     - Accuracy by switch/repeat
+%     - Accuracy by congruency
+%     - Accuracy by switch × congruency (2×2 design)
+%
+%   Uses full trial counts per condition:
+%     - Correct trials (cC)
+%     - Incorrect trials (cE)
+%     - Omissions (OM)
+%
+%   All accuracy measures are defined as:
+%     correct / total trials (including omissions)
+
+% INPUT:
+%   - behavioural_overview_master.csv
+%     (one row per participant per session, containing trial counts and RT summaries)
+
+% OUTPUT:
+%   - Printed tables in MATLAB command window
+%   - accuracy_summary_results.mat (structured summary for reporting)
+
+% IMPORTANT:
+%   - Uses participant-level proportions (not pooled counts)
+%   - Uses correct 2×2 cell-level counts (no approximations)
+%   - Results correspond directly to values reported in thesis tables
+%   - Script overwrites previous accuracy summary file
+
+clear; clc;
+
+%% LOAD
+T = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\behavioural_overview_master.csv');
+
+%% ===== SWITCH / REPEAT (CORRECT) =====
+
+% totals
+N_repeat = T.n_rp_con + T.n_rp_inc;
+N_switch = T.n_sw_con + T.n_sw_inc;
+
+% correct
+C_repeat = T.n_cC_rp_con + T.n_cC_rp_inc;
+C_switch = T.n_cC_sw_con + T.n_cC_sw_inc;
+
+% omission
+O_repeat = T.n_om_rp_con + T.n_om_rp_inc;
+O_switch = T.n_om_sw_con + T.n_om_sw_inc;
+
+% proportions (participant-level)
+acc_repeat = mean(C_repeat ./ N_repeat);
+acc_switch = mean(C_switch ./ N_switch);
+
+om_repeat = mean(O_repeat ./ N_repeat);
+om_switch = mean(O_switch ./ N_switch);
+
+err_repeat = 1 - acc_repeat - om_repeat;
+err_switch = 1 - acc_switch - om_switch;
+
+% totals
+acc_total = mean(T.nCorrect ./ T.nTrialsStim);
+om_total  = mean(T.nOmission ./ T.nTrialsStim);
+err_total = 1 - acc_total - om_total;
+
+%% ===== CONGRUENCY =====
+
+N_con = T.n_rp_con + T.n_sw_con;
+N_inc = T.n_rp_inc + T.n_sw_inc;
+
+C_con = T.n_cC_rp_con + T.n_cC_sw_con;
+C_inc = T.n_cC_rp_inc + T.n_cC_sw_inc;
+
+O_con = T.n_om_rp_con + T.n_om_sw_con;
+O_inc = T.n_om_rp_inc + T.n_om_sw_inc;
+
+acc_con = mean(C_con ./ N_con);
+acc_inc = mean(C_inc ./ N_inc);
+
+om_con = mean(O_con ./ N_con);
+om_inc = mean(O_inc ./ N_inc);
+
+err_con = 1 - acc_con - om_con;
+err_inc = 1 - acc_inc - om_inc;
+
+%% ===== 2x2 (NOW FULLY CORRECT) =====
+
+% proportions per cell
+acc_RC = mean(T.n_cC_rp_con ./ T.n_rp_con);
+acc_RI = mean(T.n_cC_rp_inc ./ T.n_rp_inc);
+acc_SC = mean(T.n_cC_sw_con ./ T.n_sw_con);
+acc_SI = mean(T.n_cC_sw_inc ./ T.n_sw_inc);
+
+om_RC = mean(T.n_om_rp_con ./ T.n_rp_con);
+om_RI = mean(T.n_om_rp_inc ./ T.n_rp_inc);
+om_SC = mean(T.n_om_sw_con ./ T.n_sw_con);
+om_SI = mean(T.n_om_sw_inc ./ T.n_sw_inc);
+
+err_RC = 1 - acc_RC - om_RC;
+err_RI = 1 - acc_RI - om_RI;
+err_SC = 1 - acc_SC - om_SC;
+err_SI = 1 - acc_SI - om_SI;
+
+%% ===== PRINT =====
+
+fprintf('\nAccuracy by condition (switch/repeat)\n')
+fprintf('\tRepeat\tSwitch\tTotal\n')
+fprintf('Correct\t%.2f%%\t%.2f%%\t%.2f%%\n', acc_repeat*100, acc_switch*100, acc_total*100)
+fprintf('Incorrect\t%.2f%%\t%.2f%%\t%.2f%%\n', err_repeat*100, err_switch*100, err_total*100)
+fprintf('Omission\t%.2f%%\t%.2f%%\t%.2f%%\n', om_repeat*100, om_switch*100, om_total*100)
+
+fprintf('\nAccuracy by condition (congruency)\n')
+fprintf('\tCongruent\tIncongruent\tTotal\n')
+fprintf('Correct\t%.2f%%\t%.2f%%\t%.2f%%\n', acc_con*100, acc_inc*100, acc_total*100)
+fprintf('Incorrect\t%.2f%%\t%.2f%%\t%.2f%%\n', err_con*100, err_inc*100, err_total*100)
+fprintf('Omission\t%.2f%%\t%.2f%%\t%.2f%%\n', om_con*100, om_inc*100, om_total*100)
+
+fprintf('\nAccuracy by switch and congruency\n')
+fprintf('\tRC\tRI\tSC\tSI\n')
+fprintf('Correct\t%.2f%%\t%.2f%%\t%.2f%%\t%.2f%%\n', acc_RC*100, acc_RI*100, acc_SC*100, acc_SI*100)
+fprintf('Incorrect\t%.2f%%\t%.2f%%\t%.2f%%\t%.2f%%\n', err_RC*100, err_RI*100, err_SC*100, err_SI*100)
+fprintf('Omission\t%.2f%%\t%.2f%%\t%.2f%%\t%.2f%%\n', om_RC*100, om_RI*100, om_SC*100, om_SI*100)
+
+%% ===== SAVE =====
+
+results_ACC = struct;
+
+results_ACC.switch_repeat = [acc_repeat acc_switch acc_total;
+                             err_repeat err_switch err_total;
+                             om_repeat  om_switch  om_total];
+
+results_ACC.congruency = [acc_con acc_inc;
+                          err_con err_inc;
+                          om_con  om_inc];
+
+results_ACC.by_condition = [acc_RC acc_RI acc_SC acc_SI;
+                            err_RC err_RI err_SC err_SI;
+                            om_RC  om_RI  om_SC  om_SI];
+
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\accuracy_summary_results.mat', 'results_ACC');
+
+disp('Accuracy results saved and overwritten.');
