@@ -1,25 +1,57 @@
-%% Script: REGRESSION_SLEEP_ACCURACY
+%% ========================================================================
+%  REGRESSION: SLEEP → OVERALL ACCURACY
+%
+%  AUTHOR: Røskva
+%  DATE: 16.04.26
+%
+%  PURPOSE:
+%   Test whether sleep predicts general task performance (overall accuracy),
+%   independent of task condition (switch/congruency).
+%
+%  MODELS:
+%   Model 1: Mean sleep (TST_mean_h)
+%   Model 2: + Sleep variability (TST_sd_h)
+%   Model 3: + Night-before deviation (TST_dev)
+%
+%  INPUT:
+%   sleep_behav_merged.csv
+%
+%  OUTPUT:
+%   regression_sleep_overall_accuracy.mat
+%
+%  NOTES:
+%   - Accuracy includes omissions (correct / all trials)
+%   - Overall accuracy is computed as the mean across 4 conditions
+%   - N ≈ 46 (participants with complete sleep data)
+%  ========================================================================
 
 clear; clc;
 
-%% Load data
+%% LOAD DATA
 data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_behav_merged.csv');
 
-%% Create accuracy switch cost
-data.switch_cost_ACC = data.acc_sw_con - data.acc_rp_con;
+%% CREATE OVERALL ACCURACY
+data.acc_overall = mean([ ...
+    data.acc_sw_con, ...
+    data.acc_sw_inc, ...
+    data.acc_rp_con, ...
+    data.acc_rp_inc ...
+], 2);
 
-%% Model 1
-mdl1 = fitlm(data, 'switch_cost_ACC ~ TST_mean_h');
+%% MODEL 1: Mean sleep
+mdl1 = fitlm(data, 'acc_overall ~ TST_mean_h');
 disp(mdl1)
 
-%% Model 2
-mdl2 = fitlm(data, 'switch_cost_ACC ~ TST_mean_h + TST_sd_h');
+%% MODEL 2: + variability
+mdl2 = fitlm(data, 'acc_overall ~ TST_mean_h + TST_sd_h');
 disp(mdl2)
 
-%% Model 3
-mdl3 = fitlm(data, 'switch_cost_ACC ~ TST_mean_h + TST_sd_h + TST_dev');
+%% MODEL 3: + deviation (full model)
+mdl3 = fitlm(data, 'acc_overall ~ TST_mean_h + TST_sd_h + TST_dev');
 disp(mdl3)
 
-%% Save
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\regression_sleep_accuracy.mat', ...
+%% SAVE RESULTS
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\regression_sleep_overall_accuracy.mat', ...
     'mdl1','mdl2','mdl3');
+
+disp('Overall accuracy regression complete.');
