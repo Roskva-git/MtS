@@ -1,4 +1,4 @@
-%% 1.4 Behavioural data extraction (TST)
+%% 4. Behavioural data extraction (TST)
 
 % Author: Røskva
 % Date: 13.01.26
@@ -24,13 +24,13 @@
 %   - behavioural_overview_master.mat
 
 %% 0. Initialize EEGLAB and Set Paths
-addpath('\\hypatia.uio.no\...\eeglab2025.0.0\', ...
-        '\\hypatia.uio.no\...\Røskva\', ...
-        '\\hypatia.uio.no\...\Røskva\Code\');
+addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Code\tools\eeglab2025.0.0\', ...
+        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\', ...
+        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\');
 eeglab;  % Start EEGLAB
 
-mapped_folder = '\\hypatia.uio.no\...\3c_mapped\';
-out_folder    = '\\hypatia.uio.no\...\4_behavioural\';
+mapped_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\3_mapped\';
+out_folder    = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\';
 
 if ~exist(out_folder, 'dir')
     mkdir(out_folder);
@@ -46,8 +46,9 @@ r = 0;
 %% 2. Loop over datasets
 for f = 1:length(mapped_files)
 
+    filename = mapped_files(f).name;
+
     try
-        filename = mapped_files(f).name;
         [~, base_name, ~] = fileparts(filename);
         disp(['Behavioural extraction for: ' base_name]);
 
@@ -56,8 +57,7 @@ for f = 1:length(mapped_files)
         % --- Extract participantID and session from name: TST_<ID>_<session>_...
         tokens = regexp(base_name, '^TST_(\d+)_(\d+)', 'tokens');
         if isempty(tokens)
-            warning(['Could not parse ID/session from: ' base_name ' (skipping)']);
-            continue;
+            error(['Could not parse ID/session from: ' base_name]);
         end
         participantID = str2double(tokens{1}{1});
         session       = str2double(tokens{1}{2});
@@ -110,6 +110,23 @@ for f = 1:length(mapped_files)
         sw_inc = isSwitch & isInc;
         rp_con = isRepeat & isCon;
         rp_inc = isRepeat & isInc;
+
+        % --- FULL outcome counts per 2x2 cell
+
+        n_cC_sw_con = sum(isCC & sw_con);
+        n_cC_sw_inc = sum(isCC & sw_inc);
+        n_cC_rp_con = sum(isCC & rp_con);
+        n_cC_rp_inc = sum(isCC & rp_inc);
+        
+        n_cE_sw_con = sum(isCE & sw_con);
+        n_cE_sw_inc = sum(isCE & sw_inc);
+        n_cE_rp_con = sum(isCE & rp_con);
+        n_cE_rp_inc = sum(isCE & rp_inc);
+        
+        n_om_sw_con = sum(isOM & sw_con);
+        n_om_sw_inc = sum(isOM & sw_inc);
+        n_om_rp_con = sum(isOM & rp_con);
+        n_om_rp_inc = sum(isOM & rp_inc);
 
         % --- Trial counts per interaction cell
         n_sw_con = sum(sw_con);
@@ -407,6 +424,21 @@ for f = 1:length(mapped_files)
         results(r).n_rp_inc = n_rp_inc;
 
 
+        results(r).n_cC_sw_con = n_cC_sw_con;
+        results(r).n_cC_sw_inc = n_cC_sw_inc;
+        results(r).n_cC_rp_con = n_cC_rp_con;
+        results(r).n_cC_rp_inc = n_cC_rp_inc;
+        
+        results(r).n_cE_sw_con = n_cE_sw_con;
+        results(r).n_cE_sw_inc = n_cE_sw_inc;
+        results(r).n_cE_rp_con = n_cE_rp_con;
+        results(r).n_cE_rp_inc = n_cE_rp_inc;
+        
+        results(r).n_om_sw_con = n_om_sw_con;
+        results(r).n_om_sw_inc = n_om_sw_inc;
+        results(r).n_om_rp_con = n_om_rp_con;
+        results(r).n_om_rp_inc = n_om_rp_inc;
+        
 
         % Error RT by switch/repeat
         results(r).rt_mean_cE_switch = rt_mean_cE_switch;
@@ -444,6 +476,8 @@ for f = 1:length(mapped_files)
     end
 
 end
+
+
 
 %% 3. Save master table
 if isempty(results)
