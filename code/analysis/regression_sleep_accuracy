@@ -3,7 +3,7 @@
 clear; clc;
 
 %% Load data
-data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_behav_merged.csv');
 
 %% Create accuracy switch cost
 data.switch_cost_ACC = data.acc_sw_con - data.acc_rp_con;
