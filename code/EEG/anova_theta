@@ -33,18 +33,13 @@ outFile = '\\hypatia.uio.no\...\anova_theta_results.mat';
 T = readtable(inFile);
 
 %% 3. Create matrix (RC, RI, SC, SI)
-Y = [
-    T.theta_RC ...
-    T.theta_RI ...
-    T.theta_SC ...
-    T.theta_SI
-];
-
-Y = array2table(Y, 'VariableNames', {'RC','RI','SC','SI'});
+Y = table(T.participant, ...
+    T.theta_RC, T.theta_RI, T.theta_SC, T.theta_SI, ...
+    'VariableNames', {'ID','RC','RI','SC','SI'});
 
 %% 4. Factors
-Switch = categorical({'repeat';'repeat';'switch';'switch'});
-Congruency = categorical({'con';'inc';'con';'inc'});
+Switch = categorical({'Repeat';'Repeat';'Switch';'Switch'});
+Congruency = categorical({'Congruent';'Incongruent';'Congruent';'Incongruent'});
 
 within = table(Switch, Congruency);
 
