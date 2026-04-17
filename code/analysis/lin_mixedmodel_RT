@@ -9,7 +9,7 @@
 % across task conditions using a linear mixed-effects model.
 
 % Input:
-% data_merged_sleep_behaviour.csv
+% sleep_behav_theta_merged.csv
 % (participant-level dataset containing behavioural measures and sleep variables)
 
 % Output:
@@ -37,7 +37,7 @@
 clear; clc;
 
 %% 1. Load data
-data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_behav_theta_merged.csv');
 
 %% 2. Create long format
 
@@ -76,6 +76,6 @@ lme = fitlme(data_long, ...
 disp(lme)
 
 %% 4. Save
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_sleep_RT.mat', 'lme');
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_sdev_RT.mat', 'lme');
 
 disp('Mixed model complete.')
