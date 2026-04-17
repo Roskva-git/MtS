@@ -43,13 +43,18 @@
 clear; clc;
 
 %% 1. Load data
-theta = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\theta\theta_measures.csv');
+theta = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\theta_measures_cycles_3_0p8_winsize1s.csv');
 sleep = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_measures_for_analysis.csv');
 
-%% 2. Merge
+%% 2. Fix ID variable name
+theta.Properties.VariableNames{'participant'} = 'ID';
+
+%% 3. Merge (N should become 46)
 data = innerjoin(theta, sleep, 'Keys','ID');
 
-%% 3. Create long format
+fprintf('Merged N (theta + sleep): %d\n', height(data));
+
+%% 4. Create long format
 
 ID = [data.ID; data.ID; data.ID; data.ID];
 
@@ -78,13 +83,14 @@ TST_dev = [data.TST_dev; data.TST_dev; data.TST_dev; data.TST_dev];
 
 data_long = table(ID, theta_vals, Switch, Congruency, TST_dev);
 
-%% 4. Mixed model
+%% 5. Mixed model
 lme = fitlme(data_long, ...
     'theta_vals ~ TST_dev * Switch * Congruency + (1|ID)');
 
 disp(lme)
 
-%% 5. Save
+%% 6. Save
 save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_sleep_theta.mat', 'lme');
 
+disp('Mixed model (theta) complete.');
 disp('Mixed model (theta) complete.')
