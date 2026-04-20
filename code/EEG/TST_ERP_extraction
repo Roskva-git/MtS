@@ -1,0 +1,87 @@
+%% TST ERP EXTRACTION
+% Author: Røskva
+% Created: 20.04.2026
+% Modified: 20.04.2026
+
+% Purpose:
+% Extract event-related potentials (ERPs) for each participant and condition
+% in the task-switching paradigm.
+
+% ERPs are computed as the average time-domain signal across trials,
+% and further averaged across midfrontal electrodes (Fz, FCz, Cz).
+
+% Input:
+% Epoched EEG datasets (.set files) organised by condition in:
+% \TST\6_subsets\
+% (rep_con, rep_inc, switch_con, switch_inc)
+
+% Output:
+% ERP_struct.mat
+% (structure containing one ERP waveform per participant per condition,
+% including time vector)
+
+% Notes:
+% - ERPs are computed in the time domain (no time–frequency decomposition)
+% - Each ERP represents mean amplitude over trials and selected channels
+% - Output can be used for grand-average visualisation and sanity checks
+%   of the underlying EEG signal
+
+
+clear; clc;
+
+%% 0. Initialize paths
+
+basePath = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\';
+outPath  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\ERPs\';
+
+% Define condition folders
+folders = {'rep_con','rep_inc','switch_con','switch_inc'};
+
+% Define channels of interest (midfrontal)
+channels_of_interest = {'Fz','FCz','Cz'};
+
+%% 1. Initialise output structure
+
+ERP_all = struct;
+
+%% 2. Loop over conditions and participants
+
+for cond = 1:4
+    
+    % Get all .set files in the subset folder
+    files = dir(fullfile(basePath, folders{cond}, '*.set'));
+    
+    % Ensure consistent participant order
+    [~, idx] = sort({files.name});
+    files = files(idx);
+    
+    for i = 1:length(files)
+        
+        % Load epoched EEG data
+        EEG = pop_loadset(files(i).name, fullfile(basePath, folders{cond}));
+        
+        % Find indices of channels of interest
+        chan_labels = {EEG.chanlocs.labels};
+        ch_idx = find(ismember(chan_labels, channels_of_interest));
+        
+        % Extract data from selected channels
+        % Dimensions: channels × time × trials
+        data_ch = EEG.data(ch_idx,:,:);
+        
+        % Compute ERP:
+        % average across channels, then across trials
+        ERP = squeeze(mean(mean(data_ch,1),3));
+        
+        % Store results
+        ERP_all(i,cond).participant = files(i).name;
+        ERP_all(i,cond).condition   = folders{cond};
+        ERP_all(i,cond).ERP         = ERP;
+        ERP_all(i,cond).times       = EEG.times;
+    end
+end
+
+%% 3. Save output
+
+save(fullfile(outPath,'ERP_struct.mat'), 'ERP_all');
+
+disp('ERP extraction complete.');
