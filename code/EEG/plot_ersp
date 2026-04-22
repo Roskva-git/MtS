@@ -1,0 +1,35 @@
+%% Script: PLOT_ERSP_FROM_FILE
+
+clear; clc;
+
+load('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\ersp_cycles_3_0p8_winsize1s.mat');
+
+condition_titles = {'Repeat congruent','Repeat incongruent','Switch congruent','Switch incongruent'};
+
+for ch = 1:length(channel_labels)
+
+    figure('Color','w','Name',['ERSP - ' channel_labels{ch}]);
+
+    for cond = 1:4
+
+        % grand average across subjects for one condition and one channel
+        grand_ersp = mean(all_ersp(:,:,:,cond,ch), 3);
+
+        subplot(2,2,cond)
+        imagesc(times, freqs, grand_ersp)
+        axis xy
+        xline(0, '--k')
+        yline(4, ':k')
+        yline(8, ':k')
+        xlim([-500 1000])     % adjust if needed
+        ylim([3 25])
+        caxis([-2 2])         % adjust if needed
+        colorbar
+
+        xlabel('Time (ms)')
+        ylabel('Frequency (Hz)')
+        title(condition_titles{cond})
+    end
+
+    sgtitle(['Grand-average ERSPs at ' channel_labels{ch}])
+end
