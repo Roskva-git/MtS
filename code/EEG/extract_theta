@@ -2,58 +2,62 @@
 
 % Author: Røskva
 % Created: 06.04.2026
-% Modified: 17.04.2026
-
+% Modified: 22.04.2026
+%
 % Purpose:
 % Extract midfrontal theta power for each participant and condition.
 % Theta is defined as 4–8 Hz activity in the 200–500 ms post-stimulus window,
 % averaged across electrodes Fz (5), FCz (30), and Cz (14).
-
+%
 % Input:
 % Epoched EEG datasets (.set files) organized by condition in:
 % \TST\6_subsets\
 % (rep_con, rep_inc, switch_con, switch_inc)
-
+%
 % Output:
-% theta_measures.csv
-% (one row per participant, one theta value per condition:
-% repeat–congruent, repeat–incongruent, switch–congruent, switch–incongruent)
-
+% theta_measures_cycles_3_0p8_winsize1s.csv
+% ersp_cycles_3_0p8_winsize1s.mat
+%
 % Notes:
 % Time–frequency decomposition is performed using EEGLAB's newtimef
 % with Morlet wavelets. Theta values are averaged across time, frequency,
 % and channels to yield a single summary measure per condition per participant.
-
+% An explicit winsize of 1 second is used so that 4 Hz is analyzable.
+% ERSPs are saved separately for each electrode:
+% dimensions = freq × time × subject × condition × channel
 
 clear; clc;
 
 %% 1. PATHS
-addpath('\\hypatia.uio.no\...\eeglab2025.1.0')
-basePath = '\\hypatia.uio.no\...\6_subsets';
-outTheta = '\\hypatia.uio.no\...\theta_measures_cycles_3_0p8.csv';
-outERSP  = '\\hypatia.uio.no\...\ersp_cycles_3_0p8.mat';
+addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\eeglab2025.1.0')
+basePath = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets';
+outTheta = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\theta_measures_cycles_3_0p8_winsize1s.csv';
+outERSP  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\ersp_cycles_3_0p8_winsize1s.mat';
 
 folders = {'rep_con','rep_inc','switch_con','switch_inc'};
+channel_labels = {'Fz','FCz','Cz'};
 
 %% 2. SETTINGS
 channels  = [5 30 14];   % Fz, FCz, Cz
 freqRange = [4 8];
 timeRange = [200 500];
 
-cycles = [3 0.8]; % <<< ONLY CHANGE THIS
+cycles = [3 0.8];
+plotFreqs = [3 25];
+baselineWindow = [-500 -100];
+padratio = 4; % modest increase in frequency resolution for cleaner ERSPs
 
 %% 3. INITIALISE
 theta_all = [];
 participant_ids = [];
-
-all_ersp = []; % freq × time × subject × condition
+all_ersp = []; % freq × time × subject × condition × channel
 
 %% 4. MAIN LOOP
 for cond = 1:4
     
     files = dir(fullfile(basePath, folders{cond}, '*.set'));
     
-    % --- ensure consistent participant order
+    % ensure consistent participant order
     [~, idx] = sort({files.name});
     files = files(idx);
     
@@ -65,43 +69,43 @@ for cond = 1:4
         
         for ch = 1:length(channels)
             
-            % --- compute ERSP
+            % compute ERSP
             [ersp,~,~,times,freqs] = newtimef( ...
                 EEG.data(channels(ch),:,:), ...
                 EEG.pnts, ...
                 [EEG.xmin EEG.xmax]*1000, ...
                 EEG.srate, ...
                 cycles, ...
-                'baseline', [-500 -100], ...
-                'plotersp','off','plotitc','off');
+                'baseline', baselineWindow, ...
+                'winsize', EEG.srate, ...
+                'freqs', plotFreqs, ...
+                'padratio', padratio, ...
+                'plotersp','off', ...
+                'plotitc','off');
             
-            % --- allocate ERSP matrix ONCE
+            % allocate ERSP matrix once
             if cond == 1 && i == 1 && ch == 1
                 nFiles = length(files);
-                all_ersp = zeros(size(ersp,1), size(ersp,2), nFiles, 4);
+                all_ersp = zeros(size(ersp,1), size(ersp,2), nFiles, 4, length(channels));
             end
             
-            % --- store channel ERSP
-            if ch == 1
-                ersp_stack = zeros(size(ersp,1), size(ersp,2), length(channels));
-            end
-            ersp_stack(:,:,ch) = ersp;
+            % store ERSP separately for each channel
+            all_ersp(:,:,i,cond,ch) = ersp;
             
-            % --- theta extraction
+            % theta extraction
             f_idx = freqs >= freqRange(1) & freqs <= freqRange(2);
             t_idx = times >= timeRange(1) & times <= timeRange(2);
             
             theta_channels(ch) = mean(ersp(f_idx, t_idx), 'all');
         end
         
-        % --- average across channels
+        % average theta across channels
         theta_value = mean(theta_channels);
-        ersp_mean_channels = mean(ersp_stack, 3);
         
-        % --- store theta
+        % store theta
         theta_all(i,cond) = theta_value;
         
-        % --- store participant ID (only once)
+        % store participant ID only once
         if cond == 1
             tokens = regexp(files(i).name, '^TST_(\d+)', 'tokens');
             if ~isempty(tokens)
@@ -110,8 +114,6 @@ for cond = 1:4
                 participant_ids{i,1} = NaN;
             end
         end
-        % --- store ERSP
-        all_ersp(:,:,i,cond) = ersp_mean_channels;
         
     end
 end
@@ -124,24 +126,8 @@ T_theta = table(participant_ids, ...
 writetable(T_theta, outTheta);
 
 %% 6. SAVE ERSP DATA
-save(outERSP, 'all_ersp', 'times', 'freqs', 'participant_ids');
+save(outERSP, 'all_ersp', 'times', 'freqs', 'participant_ids', ...
+    'cycles', 'plotFreqs', 'baselineWindow', 'padratio', ...
+    'channels', 'channel_labels', 'folders');
 
 disp('Theta + ERSP extraction complete.');
-
-
-
-%% Script: PLOT_ERSP_FROM_FILE
-
-load('\\...\ersp_cycles_3_0p8.mat');
-
-condition_names = {'RC','RI','SC','SI'};
-
-for cond = 1:4
-    
-    grand_ersp = mean(all_ersp(:,:,:,cond), 3);
-    
-    figure;
-    tftopo(grand_ersp, times, freqs);
-    title(['Grand average ERSP - ' condition_names{cond}]);
-    
-end
