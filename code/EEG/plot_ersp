@@ -33,3 +33,41 @@ for ch = 1:length(channel_labels)
 
     sgtitle(['Grand-average ERSPs at ' channel_labels{ch}])
 end
+
+
+
+
+
+%% Script: PLOT_ERSP_FROM_FILE_ALL_ELECTRODES
+
+clear; clc;
+
+load('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\ersp_cycles_3_0p8_winsize1s.mat');
+
+condition_titles = {'Repeat congruent','Repeat incongruent','Switch congruent','Switch incongruent'};
+
+figure('Color','w');
+
+for ch = 1:length(channel_labels)
+    for cond = 1:4
+
+        grand_ersp = mean(all_ersp(:,:,:,cond,ch), 3);
+
+        subplot(length(channel_labels),4,(ch-1)*4 + cond)
+        imagesc(times, freqs, grand_ersp)
+        axis xy
+        xline(0, '--k')
+        yline(4, ':k')
+        yline(8, ':k')
+        xlim([-500 1000])
+        ylim([3 25])
+        caxis([-2 2])
+
+        xlabel('Time (ms)')
+        ylabel('Hz')
+        title([channel_labels{ch} ' - ' condition_titles{cond}])
+    end
+end
+
+sgtitle('Grand-average ERSPs per condition and electrode')
+colorbar
