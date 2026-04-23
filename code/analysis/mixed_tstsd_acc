@@ -1,0 +1,132 @@
+%% LOGISTIC MIXED MODEL FOR SLEEP VARIABILITY AND ACCURACY
+
+% Author: Røskva
+% Created: 07.04.2026
+% Modified: 23.04.2026
+
+% Purpose:
+% Examine whether sleep variability predicts accuracy
+% across task conditions using a logistic mixed-effects model.
+
+% Accuracy is defined as:
+% correct vs not-correct
+% where failures include both incorrect responses and omissions.
+
+% Input:
+% behavioural_overview_master.csv
+% sleep_measures_for_analysis.csv
+
+% Output:
+% mixed_model_tstsd_accuracy_logistic.mat
+% mixed_model_tstsd_accuracy_results.txt
+
+% Model:
+% Success ~ TST_sd_h * Switch * Congruency + (1 | ID)
+
+% Notes:
+% - Uses binomial distribution with logit link
+% - Success = correct trials
+% - Failure = incorrect trials + omissions
+% - One row per participant × condition in long format
+
+clear; clc;
+
+%% 1. Load behavioural data
+behav = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\behavioural_overview_master.csv');
+
+%% Keep correct session if needed
+% behav = behav(behav.session == 1, :);
+
+%% 2. Load sleep data
+sleep = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_measures_for_analysis.csv');
+
+%% 3. Make sure ID names match
+if ismember('participantID', behav.Properties.VariableNames)
+    behav.Properties.VariableNames{'participantID'} = 'ID';
+end
+
+%% 4. Define successes and failures per condition
+succ_rp_con = behav.n_cC_rp_con;
+succ_rp_inc = behav.n_cC_rp_inc;
+succ_sw_con = behav.n_cC_sw_con;
+succ_sw_inc = behav.n_cC_sw_inc;
+
+fail_rp_con = behav.n_cE_rp_con + behav.n_om_rp_con;
+fail_rp_inc = behav.n_cE_rp_inc + behav.n_om_rp_inc;
+fail_sw_con = behav.n_cE_sw_con + behav.n_om_sw_con;
+fail_sw_inc = behav.n_cE_sw_inc + behav.n_om_sw_inc;
+
+%% 5. Create long format
+ID = [behav.ID; behav.ID; behav.ID; behav.ID];
+
+Success = [
+    succ_rp_con
+    succ_rp_inc
+    succ_sw_con
+    succ_sw_inc
+];
+
+Fail = [
+    fail_rp_con
+    fail_rp_inc
+    fail_sw_con
+    fail_sw_inc
+];
+
+Switch = categorical([
+    repmat("repeat", height(behav), 1)
+    repmat("repeat", height(behav), 1)
+    repmat("switch", height(behav), 1)
+    repmat("switch", height(behav), 1)
+]);
+
+Congruency = categorical([
+    repmat("congruent", height(behav), 1)
+    repmat("incongruent", height(behav), 1)
+    repmat("congruent", height(behav), 1)
+    repmat("incongruent", height(behav), 1)
+]);
+
+data_long = table(ID, Success, Fail, Switch, Congruency);
+
+%% 6. Merge sleep onto long data
+data_long = innerjoin(data_long, sleep, 'Keys', 'ID');
+
+%% 7. Remove missing sleep variability values
+keep = ~isnan(data_long.TST_sd_h);
+data_long = data_long(keep, :);
+
+fprintf('Merged N (accuracy + TST_sd_h): %d\n', numel(unique(data_long.ID)));
+
+%% 8. Set reference levels explicitly
+data_long.Switch = reordercats(data_long.Switch, {'repeat','switch'});
+data_long.Congruency = reordercats(data_long.Congruency, {'congruent','incongruent'});
+
+%% 9. Run logistic mixed model
+glme = fitglme(data_long, ...
+    'Success ~ 1 + Switch*Congruency + Switch*TST_sd_h + Congruency*TST_sd_h + Switch:Congruency:TST_sd_h + (1|ID)', ...
+    'Distribution', 'Binomial', ...
+    'Link', 'logit', ...
+    'BinomialSize', data_long.Success + data_long.Fail);
+
+disp('Mixed model (accuracy ~ TST_sd_h) complete.')
+disp(glme)
+
+%% 9.5 Create rounded results table and write .txt file
+outTbl = table( ...
+    string(glme.Coefficients.Name), ...
+    round(glme.Coefficients.Estimate, 3), ...
+    round(glme.Coefficients.SE, 3), ...
+    round(glme.Coefficients.tStat, 3), ...
+    round(glme.Coefficients.pValue, 4), ...
+    'VariableNames', {'Effect','Estimate','SE','z_or_t','p'});
+
+txtFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_tstsd_accuracy_results.txt';
+writetable(outTbl, txtFile, 'Delimiter', '\t', 'FileType', 'text');
+
+%% 10. Save
+save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_tstsd_accuracy_logistic.mat', ...
+    'glme', 'data_long', 'outTbl');
+
+disp('Logistic mixed model saved.')
+disp('Results table saved as .txt')
