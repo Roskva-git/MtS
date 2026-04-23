@@ -1,8 +1,8 @@
-%% Script: ANOVA_THETA
+%% Script: ANOVA_THETA_FINAL
 
 % Author: Røskva
 % Created: 06.04.2026
-% Modified: 06.04.2026
+% Modified: 23.04.2026
 
 % Purpose:
 % Run a 2×2 repeated-measures ANOVA on midfrontal theta power
@@ -10,45 +10,51 @@
 % and Congruency (congruent vs incongruent).
 
 % Input:
-% theta_measures.csv
-% (one row per participant, theta values per condition:
-% repeat–congruent, repeat–incongruent,
-% switch–congruent, switch–incongruent)
+% theta_measures_cycles_3_0p8_winsize1s_3to25.csv
 
 % Output:
-% anova_theta_results.mat (ANOVA table)
+% anova_theta_results_3to25.mat
 
 % Notes:
-% Theta values represent mean power in the 4–8 Hz range
+% Theta values represent mean ERSP power in the 4–8 Hz range
 % within a 200–500 ms post-stimulus window, averaged across
 % electrodes Fz, FCz, and Cz.
 
 clear; clc;
 
 %% 1. Paths
-inFile  = '\\hypatia.uio.no\...\theta_measures.csv';
-outFile = '\\hypatia.uio.no\...\anova_theta_results.mat';
+inFile  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\theta_measures_cycles_3_0p8_winsize1s_3to25.csv';
+outFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\anova_theta_results_3to25.mat';
 
 %% 2. Load data
 T = readtable(inFile);
 
-%% 3. Create matrix (RC, RI, SC, SI)
+%% 3. Keep only columns needed for ANOVA
 Y = table(T.participant, ...
     T.theta_RC, T.theta_RI, T.theta_SC, T.theta_SI, ...
     'VariableNames', {'ID','RC','RI','SC','SI'});
 
-%% 4. Factors
+%% 4. Remove participants with missing theta in any condition
+keep = all(~ismissing(Y(:,2:end)), 2);
+Y = Y(keep,:);
+
+fprintf('N included in theta ANOVA: %d\n', height(Y));
+
+%% 5. Within-subject design
 Switch = categorical({'Repeat';'Repeat';'Switch';'Switch'});
 Congruency = categorical({'Congruent';'Incongruent';'Congruent';'Incongruent'});
 
 within = table(Switch, Congruency);
 
-%% 5. ANOVA
+%% 6. Repeated-measures ANOVA
 rm = fitrm(Y, 'RC-SI ~ 1', 'WithinDesign', within);
 ranovatbl = ranova(rm, 'WithinModel', 'Switch*Congruency');
 
-%% 6. Output
+%% 7. Display results
 disp('Theta ANOVA results:')
 disp(ranovatbl)
 
-save(outFile, 'ranovatbl')
+%% 8. Save output
+save(outFile, 'rm', 'ranovatbl', 'Y', 'within');
+
+disp('Theta ANOVA saved.')
