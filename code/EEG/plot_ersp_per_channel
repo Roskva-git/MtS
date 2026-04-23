@@ -1,0 +1,33 @@
+%% PLOT THIS MOTHERFUCKING ERSP PER CHANNEL
+
+
+clear; clc;
+
+load('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\ersp_cycles_3_0p8_winsize1s_BYCHANNEL.mat');
+
+channel_labels = {'Fz','FCz','Cz'};
+condition_titles = {'Repeat congruent','Repeat incongruent','Switch congruent','Switch incongruent'};
+
+for ch = 1:3
+    figure('Color','w','Name',['ERSP - ' channel_labels{ch}]);
+
+    for cond = 1:4
+        grand_ersp = mean(all_ersp(:,:,:,cond,ch), 3);
+
+        subplot(2,2,cond)
+        imagesc(times, freqs, grand_ersp)
+        axis xy
+        xline(0,'--k')
+        yline(4,':k')
+        yline(8,':k')
+        xlim([-500 1000])
+        ylim([3 25])
+        caxis([-2 2])
+        colorbar
+        xlabel('Time (ms)')
+        ylabel('Frequency (Hz)')
+        title(condition_titles{cond})
+    end
+
+    sgtitle(['Grand-average ERSPs at ' channel_labels{ch}])
+end
