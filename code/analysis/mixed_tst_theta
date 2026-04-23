@@ -1,0 +1,98 @@
+%% Script: MIXED_MODEL_MEANTST_THETA_FINAL
+
+% Author: Røskva
+% Created: 07.04.2026
+% Modified: 23.04.2026
+%
+% Purpose:
+% Examine whether habitual sleep duration (mean TST) predicts theta activity
+% across task conditions using a linear mixed-effects model.
+%
+% Input:
+% theta_measures_cycles_3_0p8_winsize1s_3to25.csv
+% sleep_measures_for_analysis.csv
+%
+% Output:
+% mixed_model_tst_theta_3to25.mat
+%
+% Notes:
+% Theta values are the ROI-averaged values across Fz, FCz, and Cz.
+% Data are reshaped into long format (one row per participant x condition).
+% The model tests whether habitual sleep predicts theta, and whether this
+% depends on Switch and/or Congruency.
+
+clear; clc;
+
+%% 1. Paths
+thetaFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\theta_measures_cycles_3_0p8_winsize1s_3to25.csv';
+sleepFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_measures_for_analysis.csv';
+outFile   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_tst_theta_3to25.mat';
+
+%% 2. Load data
+theta = readtable(thetaFile);
+sleep = readtable(sleepFile);
+
+%% 3. Harmonize ID column names
+if ismember('participant', theta.Properties.VariableNames)
+    theta = renamevars(theta, 'participant', 'ID');
+end
+
+%% 4. Keep only columns needed from theta
+theta = theta(:, {'ID','theta_RC','theta_RI','theta_SC','theta_SI'});
+
+%% 5. Merge theta + sleep
+data = innerjoin(theta, sleep, 'Keys', 'ID');
+
+%% 6. Remove missing TST or theta values
+keep = ~isnan(data.TST) & ...
+       ~isnan(data.theta_RC) & ~isnan(data.theta_RI) & ...
+       ~isnan(data.theta_SC) & ~isnan(data.theta_SI);
+
+data = data(keep,:);
+
+fprintf('Merged N (theta + TST): %d\n', height(data));
+
+%% 7. Create long format
+ID = [data.ID; data.ID; data.ID; data.ID];
+
+theta_vals = [
+    data.theta_RC
+    data.theta_RI
+    data.theta_SC
+    data.theta_SI
+];
+
+Switch = categorical([
+    repmat("repeat", height(data), 1)
+    repmat("repeat", height(data), 1)
+    repmat("switch", height(data), 1)
+    repmat("switch", height(data), 1)
+]);
+
+Congruency = categorical([
+    repmat("congruent", height(data), 1)
+    repmat("incongruent", height(data), 1)
+    repmat("congruent", height(data), 1)
+    repmat("incongruent", height(data), 1)
+]);
+
+TST = [data.TST; data.TST; data.TST; data.TST];
+
+data_long = table(ID, theta_vals, Switch, Congruency, TST);
+
+%% 8. Set reference levels explicitly
+data_long.Switch = reordercats(data_long.Switch, {'repeat','switch'});
+data_long.Congruency = reordercats(data_long.Congruency, {'congruent','incongruent'});
+
+%% 9. Mixed model
+lme = fitlme(data_long, ...
+    'theta_vals ~ 1 + Switch*Congruency + Switch*TST + Congruency*TST + Switch:Congruency:TST + (1|ID)');
+
+%% 10. Output
+disp('Mixed model (theta ~ TST) complete.')
+disp(lme)
+
+%% 11. Save
+save(outFile, 'lme', 'data', 'data_long');
+
+disp('Mixed model saved.')
