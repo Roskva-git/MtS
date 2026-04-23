@@ -1,0 +1,63 @@
+%% OVERLAID GRAND-AVERAGE ERPs FOR ALL ELECTRODES IN ONE FIGURE
+
+clear; clc;
+
+load('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\ERPs\ERP_struct_cleaned_by_electrode.mat');
+
+condition_names  = {'rep_con','rep_inc','switch_con','switch_inc'};
+condition_titles = {'Repeat congruent','Repeat incongruent','Switch congruent','Switch incongruent'};
+electrodes = {'FCz','Fz','Cz'};
+
+figure('Name','Overlay ERPs - all electrodes','Color','w');
+
+for e = 1:length(electrodes)
+
+    thisElec = electrodes{e};
+    subplot(length(electrodes),1,e)
+    hold on
+
+    legend_entries = {};
+
+    for c = 1:length(condition_names)
+
+        idx = strcmp({ERP_all.condition}, condition_names{c}) & ...
+              strcmp({ERP_all.electrode}, thisElec);
+
+        ERP_cond = ERP_all(idx);
+
+        if isempty(ERP_cond)
+            fprintf('No data for %s, %s\n', thisElec, condition_names{c});
+            continue
+        end
+
+        ERPs = zeros(length(ERP_cond), length(ERP_cond(1).ERP));
+        for i = 1:length(ERP_cond)
+            ERPs(i,:) = ERP_cond(i).ERP;
+        end
+
+        grand_ERP = mean(ERPs, 1);
+        times = ERP_cond(1).times;
+
+        plot(times, grand_ERP, 'LineWidth', 2)
+        legend_entries{end+1} = condition_titles{c};
+    end
+
+    xline(0, '--k')
+    yline(0, '--k')
+    xlim([-200 800])
+    ylabel('Amplitude (\muV)')
+    title(thisElec)
+    box off
+
+    if e == length(electrodes)
+        xlabel('Time (ms)')
+    end
+
+    if e == 1
+        legend(legend_entries, 'Location', 'best')
+    end
+
+    hold off
+end
+
+sgtitle('Grand-average ERPs by condition at FCz, Fz, and Cz')
