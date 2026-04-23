@@ -1,0 +1,187 @@
+%% Script: EXTRACT_THETA_FINAL_3to25_BYCHANNEL
+
+% Author: Røskva
+% Created: 06.04.2026
+% Modified: 23.04.2026
+
+% Input:
+% Epoched EEG datasets (.set files) organized by condition in:
+% \TST\6_subsets\
+% (rep_con, rep_inc, switch_con, switch_inc)
+
+% Purpose:
+% % Extract midfrontal theta power for each participant and condition.
+% Theta is defined as 4–8 Hz activity in the 200–500 ms post-stimulus window,
+% ERSPs are saved separately for each electrode (Fz, FCz, Cz).
+% Theta is extracted per channel and also averaged across channels
+% to create the final ROI values used in the analyses.
+
+% Output:
+% 1) theta_measures_cycles_3_0p8_winsize1s_3to25.csv
+%    - includes both ROI-averaged theta and per-channel theta
+% 2) ersp_cycles_3_0p8_winsize1s_3to25_BYCHANNEL.mat
+%    - saves full ERSPs as freq x time x subject x condition x channel
+
+clear; clc;
+
+%% 1. PATHS
+addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\eeglab2025.1.0')
+
+basePath = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets';
+outTheta = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\theta_measures_cycles_3_0p8_winsize1s_3to25.csv';
+outERSP  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\ersp_cycles_3_0p8_winsize1s_3to25_BYCHANNEL.mat';
+
+folders = {'rep_con','rep_inc','switch_con','switch_inc'};
+condition_labels = {'RC','RI','SC','SI'};
+channel_labels = {'Fz','FCz','Cz'};
+
+%% 2. SETTINGS
+channels  = [5 30 14];   % Fz, FCz, Cz
+freqRange = [4 8];
+timeRange = [200 500];
+
+cycles = [3 0.8];
+plotFreqs = [3 25];
+baselineWindow = [-500 -100];
+padratio = 4;
+
+%% 3. BUILD MASTER PARTICIPANT LIST ACROSS ALL CONDITIONS
+all_ids = [];
+
+for cond = 1:length(folders)
+    files = dir(fullfile(basePath, folders{cond}, '*.set'));
+    [~, idx] = sort({files.name});
+    files = files(idx);
+
+    for i = 1:length(files)
+        tokens = regexp(files(i).name, '^TST_(\d+)', 'tokens');
+        if ~isempty(tokens)
+            all_ids(end+1,1) = str2double(tokens{1}{1});
+        end
+    end
+end
+
+participant_ids = unique(all_ids);
+nSub = length(participant_ids);
+nCond = length(folders);
+nChan = length(channels);
+
+%% 4. INITIALISE
+theta_by_ch = nan(nSub, nCond, nChan);   % subject x condition x channel
+theta_roi   = nan(nSub, nCond);          % subject x condition
+all_ersp    = [];                        % freq x time x subject x condition x channel
+
+times = [];
+freqs = [];
+
+%% 5. MAIN LOOP
+for cond = 1:nCond
+    
+    files = dir(fullfile(basePath, folders{cond}, '*.set'));
+    [~, idx] = sort({files.name});
+    files = files(idx);
+    
+    for i = 1:length(files)
+        
+        EEG = pop_loadset(files(i).name, fullfile(basePath, folders{cond}));
+        
+        % Extract participant ID
+        tokens = regexp(files(i).name, '^TST_(\d+)', 'tokens');
+        if isempty(tokens)
+            fprintf('Skipping file with unrecognized name: %s\n', files(i).name);
+            continue
+        end
+        pid = str2double(tokens{1}{1});
+        subjIdx = find(participant_ids == pid);
+        
+        theta_channels = nan(nChan,1);
+        
+        for ch = 1:nChan
+            
+            % compute ERSP for one electrode
+            [ersp,~,~,times_tmp,freqs_tmp] = newtimef( ...
+                EEG.data(channels(ch),:,:), ...
+                EEG.pnts, ...
+                [EEG.xmin EEG.xmax]*1000, ...
+                EEG.srate, ...
+                cycles, ...
+                'baseline', baselineWindow, ...
+                'winsize', EEG.srate, ...
+                'freqs', plotFreqs, ...
+                'padratio', padratio, ...
+                'plotersp','off', ...
+                'plotitc','off');
+            
+            % allocate ERSP matrix once
+            if isempty(all_ersp)
+                all_ersp = nan(size(ersp,1), size(ersp,2), nSub, nCond, nChan);
+                times = times_tmp;
+                freqs = freqs_tmp;
+            end
+            
+            % store full ERSP for this subject, condition, channel
+            all_ersp(:,:,subjIdx,cond,ch) = ersp;
+            
+            % theta extraction for this channel
+            f_idx = freqs_tmp >= freqRange(1) & freqs_tmp <= freqRange(2);
+            t_idx = times_tmp >= timeRange(1) & times_tmp <= timeRange(2);
+            
+            theta_channels(ch) = mean(ersp(f_idx, t_idx), 'all');
+        end
+        
+        % store per-channel theta
+        theta_by_ch(subjIdx,cond,:) = theta_channels;
+        
+        % final ROI theta = mean across Fz, FCz, Cz
+        theta_roi(subjIdx,cond) = mean(theta_channels, 'omitnan');
+    end
+end
+
+%% 6. CREATE FINAL THETA TABLE
+% ROI values for analyses
+theta_RC = theta_roi(:,1);
+theta_RI = theta_roi(:,2);
+theta_SC = theta_roi(:,3);
+theta_SI = theta_roi(:,4);
+
+% Per-channel values for documentation
+theta_Fz_RC  = theta_by_ch(:,1,1);
+theta_Fz_RI  = theta_by_ch(:,2,1);
+theta_Fz_SC  = theta_by_ch(:,3,1);
+theta_Fz_SI  = theta_by_ch(:,4,1);
+
+theta_FCz_RC = theta_by_ch(:,1,2);
+theta_FCz_RI = theta_by_ch(:,2,2);
+theta_FCz_SC = theta_by_ch(:,3,2);
+theta_FCz_SI = theta_by_ch(:,4,2);
+
+theta_Cz_RC  = theta_by_ch(:,1,3);
+theta_Cz_RI  = theta_by_ch(:,2,3);
+theta_Cz_SC  = theta_by_ch(:,3,3);
+theta_Cz_SI  = theta_by_ch(:,4,3);
+
+T_theta = table( ...
+    participant_ids, ...
+    theta_RC, theta_RI, theta_SC, theta_SI, ...
+    theta_Fz_RC, theta_Fz_RI, theta_Fz_SC, theta_Fz_SI, ...
+    theta_FCz_RC, theta_FCz_RI, theta_FCz_SC, theta_FCz_SI, ...
+    theta_Cz_RC, theta_Cz_RI, theta_Cz_SC, theta_Cz_SI, ...
+    'VariableNames', { ...
+    'participant', ...
+    'theta_RC','theta_RI','theta_SC','theta_SI', ...
+    'theta_Fz_RC','theta_Fz_RI','theta_Fz_SC','theta_Fz_SI', ...
+    'theta_FCz_RC','theta_FCz_RI','theta_FCz_SC','theta_FCz_SI', ...
+    'theta_Cz_RC','theta_Cz_RI','theta_Cz_SC','theta_Cz_SI'});
+
+writetable(T_theta, outTheta);
+
+%% 7. SAVE ERSP DATA
+save(outERSP, ...
+    'all_ersp', 'times', 'freqs', 'participant_ids', ...
+    'theta_by_ch', 'theta_roi', ...
+    'cycles', 'plotFreqs', 'baselineWindow', 'padratio', ...
+    'channels', 'channel_labels', 'folders', 'condition_labels');
+
+disp('Final theta + ERSP extraction complete.');
+disp('Size of all_ersp:');
+disp(size(all_ersp));
