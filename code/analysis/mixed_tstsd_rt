@@ -19,6 +19,8 @@
 % Data are reshaped into long format (one row per participant x condition).
 % The model tests whether sleep variability (TST_sd_h) predicts RT,
 % and whether this depends on Switch and/or Congruency.
+% TST_sd_h is grand-mean centered so that main effects are interpreted
+% at the sample's average sleep variability.
 
 clear; clc;
 
@@ -33,6 +35,12 @@ keep = ~isnan(data.TST_sd_h) & ...
 data = data(keep,:);
 
 fprintf('Merged N (RT + TST_sd_h): %d\n', height(data));
+
+%% 2.5 Grand-mean center TST_sd_h
+grandMean_TSTsd = mean(data.TST_sd_h, 'omitnan');
+data.TST_sd_h_c = data.TST_sd_h - grandMean_TSTsd;
+
+fprintf('Grand mean used for centering TST_sd_h: %.4f\n', grandMean_TSTsd);
 
 %% 3. Create long format
 ID = [data.ID; data.ID; data.ID; data.ID];
@@ -58,9 +66,9 @@ Congruency = categorical([
     repmat("incongruent", height(data),1)
 ]);
 
-TST_sd_h = [data.TST_sd_h; data.TST_sd_h; data.TST_sd_h; data.TST_sd_h];
+TST_sd_h_c = [data.TST_sd_h_c; data.TST_sd_h_c; data.TST_sd_h_c; data.TST_sd_h_c];
 
-data_long = table(ID, RT, Switch, Congruency, TST_sd_h);
+data_long = table(ID, RT, Switch, Congruency, TST_sd_h_c);
 
 %% 4. Set reference levels explicitly
 data_long.Switch = reordercats(data_long.Switch, {'repeat','switch'});
@@ -68,10 +76,10 @@ data_long.Congruency = reordercats(data_long.Congruency, {'congruent','incongrue
 
 %% 5. Run mixed model
 lme = fitlme(data_long, ...
-    'RT ~ 1 + Switch*Congruency + Switch*TST_sd_h + Congruency*TST_sd_h + Switch:Congruency:TST_sd_h + (1|ID)');
+    'RT ~ 1 + Switch*Congruency + Switch*TST_sd_h_c + Congruency*TST_sd_h_c + Switch:Congruency:TST_sd_h_c + (1|ID)');
 
 %% 6. Output
-disp('Mixed model (RT ~ TST_sd_h) complete.')
+disp('Mixed model (RT ~ TST_sd_h_c) complete.')
 disp(lme)
 
 %% 6.5 Create rounded results table and write .txt file
@@ -88,7 +96,7 @@ writetable(outTbl, txtFile, 'Delimiter', '\t', 'FileType', 'text');
 
 %% 7. Save
 save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_tstsd_RT.mat', ...
-    'lme', 'data', 'data_long', 'outTbl');
+    'lme', 'data', 'data_long', 'outTbl', 'grandMean_TSTsd');
 
 disp('Mixed model saved.')
 disp('Results table saved as .txt')
