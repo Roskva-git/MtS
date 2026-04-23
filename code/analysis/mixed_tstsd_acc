@@ -21,13 +21,15 @@
 % mixed_model_tstsd_accuracy_results.txt
 
 % Model:
-% Success ~ TST_sd_h * Switch * Congruency + (1 | ID)
+% Success ~ TST_sd_h_c * Switch * Congruency + (1 | ID)
 
 % Notes:
 % - Uses binomial distribution with logit link
 % - Success = correct trials
 % - Failure = incorrect trials + omissions
 % - One row per participant × condition in long format
+% - TST_sd_h is grand-mean centered so that main effects are interpreted
+%   at the sample's average sleep variability
 
 clear; clc;
 
@@ -98,18 +100,24 @@ data_long = data_long(keep, :);
 
 fprintf('Merged N (accuracy + TST_sd_h): %d\n', numel(unique(data_long.ID)));
 
+%% 7.5 Grand-mean center TST_sd_h
+grandMean_TSTsd = mean(data_long.TST_sd_h, 'omitnan');
+data_long.TST_sd_h_c = data_long.TST_sd_h - grandMean_TSTsd;
+
+fprintf('Grand mean used for centering TST_sd_h: %.4f\n', grandMean_TSTsd);
+
 %% 8. Set reference levels explicitly
 data_long.Switch = reordercats(data_long.Switch, {'repeat','switch'});
 data_long.Congruency = reordercats(data_long.Congruency, {'congruent','incongruent'});
 
 %% 9. Run logistic mixed model
 glme = fitglme(data_long, ...
-    'Success ~ 1 + Switch*Congruency + Switch*TST_sd_h + Congruency*TST_sd_h + Switch:Congruency:TST_sd_h + (1|ID)', ...
+    'Success ~ 1 + Switch*Congruency + Switch*TST_sd_h_c + Congruency*TST_sd_h_c + Switch:Congruency:TST_sd_h_c + (1|ID)', ...
     'Distribution', 'Binomial', ...
     'Link', 'logit', ...
     'BinomialSize', data_long.Success + data_long.Fail);
 
-disp('Mixed model (accuracy ~ TST_sd_h) complete.')
+disp('Mixed model (accuracy ~ TST_sd_h_c) complete.')
 disp(glme)
 
 %% 9.5 Create rounded results table and write .txt file
@@ -126,7 +134,7 @@ writetable(outTbl, txtFile, 'Delimiter', '\t', 'FileType', 'text');
 
 %% 10. Save
 save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_tstsd_accuracy_logistic.mat', ...
-    'glme', 'data_long', 'outTbl');
+    'glme', 'data_long', 'outTbl', 'grandMean_TSTsd');
 
 disp('Logistic mixed model saved.')
 disp('Results table saved as .txt')
