@@ -2,7 +2,7 @@
 
 % Author: Røskva
 % Created: 07.04.2026
-% Modified: 23.04.2026
+% Modified: 24.04.2026
 %
 % Purpose:
 % Examine whether habitual sleep duration (mean TST) predicts theta activity
@@ -21,6 +21,8 @@
 % Data are reshaped into long format (one row per participant x condition).
 % The model tests whether habitual sleep predicts theta, and whether this
 % depends on Switch and/or Congruency.
+% TST_mean_h is grand-mean centered so that main effects are interpreted
+% at the sample's average habitual sleep duration.
 
 clear; clc;
 
@@ -53,6 +55,12 @@ data = data(keep,:);
 
 fprintf('Merged N (theta + TST_mean_h): %d\n', height(data));
 
+%% 6.5 Grand-mean center TST_mean_h
+grandMean_TSTmean = mean(data.TST_mean_h, 'omitnan');
+data.TST_mean_h_c = data.TST_mean_h - grandMean_TSTmean;
+
+fprintf('Grand mean used for centering TST_mean_h: %.4f\n', grandMean_TSTmean);
+
 %% 7. Create long format
 ID = [data.ID; data.ID; data.ID; data.ID];
 
@@ -77,9 +85,9 @@ Congruency = categorical([
     repmat("incongruent", height(data), 1)
 ]);
 
-TST_mean_h = [data.TST_mean_h; data.TST_mean_h; data.TST_mean_h; data.TST_mean_h];
+TST_mean_h_c = [data.TST_mean_h_c; data.TST_mean_h_c; data.TST_mean_h_c; data.TST_mean_h_c];
 
-data_long = table(ID, theta_vals, Switch, Congruency, TST_mean_h);
+data_long = table(ID, theta_vals, Switch, Congruency, TST_mean_h_c);
 
 %% 8. Set reference levels explicitly
 data_long.Switch = reordercats(data_long.Switch, {'repeat','switch'});
@@ -87,10 +95,10 @@ data_long.Congruency = reordercats(data_long.Congruency, {'congruent','incongrue
 
 %% 9. Mixed model
 lme = fitlme(data_long, ...
-    'theta_vals ~ 1 + Switch*Congruency + Switch*TST_mean_h + Congruency*TST_mean_h + Switch:Congruency:TST_mean_h + (1|ID)');
+    'theta_vals ~ 1 + Switch*Congruency + Switch*TST_mean_h_c + Congruency*TST_mean_h_c + Switch:Congruency:TST_mean_h_c + (1|ID)');
 
 %% 10. Output
-disp('Mixed model (theta ~ TST_mean_h) complete.')
+disp('Mixed model (theta ~ TST_mean_h_c) complete.')
 disp(lme)
 
 %% 10.5 Create rounded results table and write .txt file
@@ -106,7 +114,7 @@ txtFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskv
 writetable(outTbl, txtFile, 'Delimiter', '\t', 'FileType', 'text');
 
 %% 11. Save
-save(outFile, 'lme', 'data', 'data_long', 'outTbl');
+save(outFile, 'lme', 'data', 'data_long', 'outTbl', 'grandMean_TSTmean');
 
 disp('Mixed model saved.')
 disp('Results table saved as .txt')
