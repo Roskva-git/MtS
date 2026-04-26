@@ -224,13 +224,13 @@ This study examines whether variation in sleep is associated with variation in c
 
 The study asks whether stable sleep patterns and short-term fluctuations are associated with behavioural performance and neural activity during cognitive control, and whether these associations differ between stability and flexibility. It is expected that poorer sleep, reflected in lower habitual sleep time or greater variability, will be associated with reduced cognitive control. These are my hypotheses:
 
-\paragraph{Hypothesis 1:}
+\paragraph{}
 Since previous studies have shown that sleep deprivation disproportionately affects sustained attention and goal maintenance, poorer sleep is expected to be associated with larger congruency effects, reflecting reduced cognitive stability. 
 
-\paragraph{Hypothesis 2:}
+\paragraph{}
 Sleep deprivation studies have shown that basic processes such as response inhibition and conflict detection appear relatively preserved. Associations between sleep and switch costs are expected to be weaker or less consistent, reflecting a smaller effect on cognitive flexibility.
 
-\paragraph{Hypothesis 3:}
+\paragraph{}
 Frontal midline theta is expected to increase with task demands, with higher theta in incongruent and switch trials. Poorer sleep is expected to be associated with lower theta overall, reflecting diminished capacity to recruit control despite increased demands. Poorer sleep is expected to be associated with lower theta overall and with lower accuracy in incongruent trials. Associations with reaction time are expected to be weaker or absent \newline
 
 
@@ -332,6 +332,9 @@ Associations between sleep and task performance were examined using mixed-effect
 
 \chapter{Results}
 
+This chapter presents the sample characteristics, sleep descriptives, task-related behavioural and neural effects, and sleep-related mixed-effects models. Task effects were examined for reaction time, accuracy, and midfrontal theta power. Mixed-effects models were then used to test whether habitual sleep duration, sleep variability, and night-before sleep deviation predicted behavioural and neural task outcomes.
+
+
 \section{Sample characteristics}
 
 The full sample consisted of 50 participants (\(M_{age} = 39.62\), \(SD = 10.18\)). 10 were men and 40 were women. Behavioural and EEG task-effect analyses were based on the full sample. Sleep descriptives were based on the 48 participants with usable sleep diary data, and sleep-related mixed-effects models were based on participants with complete sleep and outcome data (\(N = 46\)).
@@ -345,7 +348,7 @@ The full sample consisted of 50 participants (\(M_{age} = 39.62\), \(SD = 10.18\
 
 \section{Sleep descriptives}
 
-Across the 48 participants who handed in their sleep diaries, mean total sleep time was 7.52 h (\(SD = 1.07\)), mean sleep onset latency was 26.26 min (\(SD = 21.16\)), mean wake after sleep onset was 17.87 min (\(SD = 17.98\)), mean sleep efficiency was 87.29\% (\(SD = 7.64\)), and the mean number of awakenings was 1.66 (\(SD = 1.43\)). These descriptives indicate moderate variation in sleep duration and continuity across participants (Table  \ref{tab:sleep_overview}.)
+Across the 48 participants who handed in their sleep diaries, mean total sleep time was 7.52 h (\(SD = 1.07\)), mean sleep onset latency was 26.26 min (\(SD = 21.16\)), mean wake after sleep onset was 17.87 min (\(SD = 17.98\)), mean sleep efficiency was 87.29\% (\(SD = 7.64\)), and the mean number of awakenings was 1.66 (\(SD = 1.43\)). The variation in sleep duration and continuity across participants was moderate overall (Table~\ref{tab:sleep_overview}).
 
 \begin{table}[ht]
 \centering
@@ -370,14 +373,12 @@ Participants were accurate overall (\(\sim 71.94\%\) correct), with lower perfor
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{Master thesis/figures/results/Accuracy by condition.png}
+    \includegraphics[width=0.8\linewidth]{Master thesis/figures/results/Accuracy by condition ALT colour.png}
     \caption{Accuracy by condition.}
     \label{fig:barchart_accuracy}
 \end{figure}
 
-Reaction times were longer on switch trials (\(M = 866.72\) ms, \(SD = 194.07\)) than on repeat trials (\(M = 729.71\) ms, \(SD = 53.59\)). Mean reaction times were also slightly longer on incongruent trials (\(M = 776.36\) ms, \(SD = 46.54\)) than on congruent trials (\(M = 766.34\) ms, \(SD = 51.16\)). Condition-wise means showed the slowest correct responses in switch--incongruent trials (\(M = 911.09\) ms, \(SD = 60.03\)) and the fastest in repeat--congruent trials (\(M = 724.67\) ms, \(SD = 57.50\)).
-
-A 2 \(\times\) 2 repeated-measures ANOVA on reaction time revealed a significant main effect of Switch, \(F(1,49) = 394.50\), \(p < .001\), a significant main effect of Congruency, \(F(1,49) = 24.77\), \(p < .001\), and a significant Switch \(\times\) Congruency interaction, \(F(1,49) = 10.19\), \(p = .002\). Together, these results indicate robust behavioural costs associated with both switching and incongruency. A corresponding ANOVA on accuracy also revealed a significant main effect of Switch, \(F(1,49) = 296.79\), \(p < .001\), a significant main effect of Congruency, \(F(1,49) = 68.08\), \(p < .001\), and a significant Switch \(\times\) Congruency interaction, \(F(1,49) = 13.66\), \(p < .001\). Accuracy was therefore lower in switch than repeat trials and lower in incongruent than congruent trials.
+Reaction times were longer on switch trials (\(M = 866.72\) ms, \(SD = 194.07\)) than on repeat trials (\(M = 729.71\) ms, \(SD = 53.59\)). Mean reaction times were of comparable length on incongruent trials (\(M = 776.36\) ms, \(SD = 46.54\)) and congruent trials (\(M = 766.34\) ms, \(SD = 51.16\)). Condition-wise means showed the slowest correct responses in switch--incongruent trials (\(M = 911.09\) ms, \(SD = 60.03\)) and the fastest in repeat--congruent trials (\(M = 724.67\) ms, \(SD = 57.50\)).
 
 \begin{figure}[H]
     \centering
@@ -386,36 +387,73 @@ A 2 \(\times\) 2 repeated-measures ANOVA on reaction time revealed a significant
     \label{fig:rt_accuracy_condition_plots}
 \end{figure}
 
+A 2 \(\times\) 2 repeated-measures ANOVA on reaction time showed a significant main effect of switch, \(F(1,49) = 394.50\), \(p < .001\), a significant main effect of congruency, \(F(1,49) = 24.77\), \(p < .001\), and a significant switch \(\times\) congruency interaction, \(F(1,49) = 10.19\), \(p = .002\). These results show that there are behavioural costs associated with both switching and incongruency. A corresponding ANOVA on accuracy also revealed a significant main effect of switch, \(F(1,49) = 296.79\), \(p < .001\), a significant main effect of congruency, \(F(1,49) = 68.08\), \(p < .001\), and a significant switch \(\times\) congruency interaction, \(F(1,49) = 13.66\), \(p < .001\). Accuracy was lower in switch than repeat trials and lower in incongruent than congruent trials.
+
+\begin{table}[H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Master thesis/figures/results/anova_table.png}
+    \caption{Results from repeated-measures ANOVAs testing the effects of switch and congruency on reaction time, accuracy, and theta power.}
+    \label{fig:combined_anova}
+\end{table}
+
+
+
 \subsection{Theta power}
 
-Mean theta power differed modestly across conditions. Descriptively, theta was highest in the switch--congruent condition (\(M = 1.134\), \(SD = 1.633\)), whereas repeat--congruent, repeat--incongruent, and switch--incongruent conditions showed similar mean levels (\(M = 0.948\), \(0.885\), and \(0.869\), respectively). Variability was relatively high, especially in the switch conditions, and the distributions overlapped across all four conditions. :contentReference[oaicite:8]{index=8}
+Mean theta power differed modestly across conditions. Descriptively, theta was highest in the switch--congruent condition (\(M = 1.134\), \(SD = 1.633\)), whereas repeat--congruent, repeat--incongruent, and switch--incongruent conditions showed similar mean levels (\(M = 0.948\), \(0.885\), and \(0.869\), respectively). Variability was relatively high, especially in the switch conditions, and the distributions overlapped across all four conditions (See figure in Appendix~\ref{fig:spaghettitheta}). A 2 \(\times\) 2 repeated-measures ANOVA on theta power showed no significant main effect of switch, \(F(1,49) = 0.548\), \(p = .463\), no significant main effect of congruency, \(F(1,49) = 2.036\), \(p = .160\), and no significant switch \(\times\) congruency interaction, \(F(1,49) = 0.721\), \(p = .399\). Figure~\ref{fig:ersp} shows the grand-average ERSPs for the four task conditions, averaged across Fz, FCz, and Cz. The plots show baseline-corrected changes in spectral power relative to the pre-stimulus period, with the 4--8 Hz theta band marked by horizontal lines. Across conditions, there was visible post-stimulus theta-band activity, but the overall pattern was similar across the four conditions. This visual pattern fits the ANOVA results, which did not show reliable modulation of theta power by switch, congruency, or their interaction. As a descriptive sanity check, stimulus-locked ERPs were also inspected across conditions. The ERP waveforms are shown in Appendix~\ref{fig:erp}. The ERP-analysis was exploratory and was not used as primary outcome measure.
 
-A 2 \(\times\) 2 repeated-measures ANOVA on theta power revealed no significant main effect of Switch, \(F(1,49) = 0.548\), \(p = .463\), no significant main effect of Congruency, \(F(1,49) = 2.036\), \(p = .160\), and no significant Switch \(\times\) Congruency interaction, \(F(1,49) = 0.721\), \(p = .399\). Thus, unlike the behavioural measures, theta did not show reliable task-related modulation in the present data. 
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Master thesis/figures/results/Grand-average ERSP averaged across Fz, FCz, Cz.png}
+    \caption{Grand-average event-related spectral perturbations (ERSPs) for the four task conditions, averaged across participants and across the midfrontal electrodes Fz, FCz, and Cz. Dashed vertical lines indicate stimulus onset, and dotted horizontal lines mark the 4--8 Hz theta band. Colours indicate baseline-corrected power change.}
+    \label{fig:ersp}
+\end{figure}
 
-% Insert Table: condition descriptives
-% Insert Table: ANOVA summary
-% Insert Figure: ERSP or ERP figure
+
 
 \section{Sleep-related mixed-effects models}
 
-Sleep-related analyses were conducted with the sample of 46 participants with complete sleep data. Separate mixed-effects models were fitted for reaction time, accuracy, and theta, with one sleep predictor entered at a time (TST dev, Mean TST, or TST SD), together with Switch, Congruency, and their interactions.
+Sleep-related mixed-effects models were used to test whether sleep variables predicted overall task performance or modulated the effects of switch and congruency. Separate mixed-effects models were fitted for reaction time, accuracy, and theta, with one sleep predictor entered at a time (TST dev, Mean TST, or TST SD), together with switch, congruency, and their interactions. This resulted in nine different models. Fixed-effect outputs from the mixed-effects models are provided in the appendix. Sleep-related effects were observed primarily in interactions with task switching. Congruency-related sleep interactions and three-way interactions between switch, congruency, and sleep were not significant. Sleep predictors were not consistently associated with overall performance or theta power, and there was little evidence that sleep modulated congruency effects or switch $\times$ congruency interactions. Sleep variables appeared to be more closely related to switch-related processes than to congruency-related processes in the present analyses. The interaction effects in the mixed models indicate that sleep variables were associated with the size of the switch effect, rather than with overall performance or theta power. For reaction time, longer-than-usual sleep before testing was associated with a smaller switch cost, corresponding to approximately 22 ms less switch-related slowing per additional hour of sleep relative to the participant's own mean. Higher sleep variability was also associated with a smaller switch cost, corresponding to approximately 46 ms less switch-related slowing per additional hour of variability. For accuracy, higher habitual sleep duration was associated with a stronger switch-related reduction in accuracy, whereas higher sleep variability was associated with a weaker switch-related reduction in accuracy. For theta, higher habitual sleep duration was associated with a more positive switch--repeat theta difference, whereas higher sleep variability was associated with a less positive switch--repeat theta difference.
+
+Sleep-related mixed-effects models were used to test whether sleep variables predicted overall task outcomes or modulated the effects of switch and congruency. Separate models were fitted for reaction time, accuracy, and theta, with one sleep predictor entered at a time: night-before TST deviation, Mean TST, or TST SD. This resulted in nine models. Fixed-effect outputs are provided in Appendix~\ref{app:mixed_models}.
+
+Across outcomes, sleep-related effects were observed primarily as interactions with switch. Congruency-related sleep interactions and three-way interactions between switch, congruency, and sleep were not significant. This indicates that sleep variables were more consistently associated with switch-related modulation than with congruency-related effects.
 
 \subsection{Reaction time}
 
-In the model including night-before sleep deviation (TST dev), there was a significant Switch \(\times\) TST dev interaction, \(b = -0.022\), \(SE = 0.010\), \(t = -2.123\), \(p = .035\). This indicates that night-to-night deviations in sleep were associated with changes in switch-related reaction time costs. The main effect of TST dev was not significant, nor were the Congruency-related sleep interactions. In the model including habitual sleep duration (Mean TST), the main effect of Mean TST was not significant, and there was no significant interaction between Mean TST and Switch. In other words, there was no reliable association between habitual mean sleep duration and reaction time in this sample. In the model including sleep variability (TST SD), there was a significant Switch \(\times\) TST SD interaction, \(b = -0.046\), \(SE = 0.022\), \(t = -2.083\), \(p = .039\). The main effect of TST SD was not significant, and no Congruency-related sleep interactions reached significance. This pattern suggests that greater sleep variability was associated with changes in switch-related reaction time costs.
+Three mixed-effects models were fitted for reaction time, with TST deviation, Mean TST, and TST SD entered in separate models. In the TST night before EEG-deviation model, the switch $\times$ TST deviation interaction was significant, $b = -0.022$, $SE = 0.010$, $t = -2.123$, $p = .035$. This indicates that longer-than-usual sleep before testing was associated with reduced switch-related slowing. The main effect of TST deviation was not significant, $p = .074$, and neither the congruency $\times$ TST deviation interaction nor the three-way interaction was significant.
+In the model including habitual sleep duration (Mean TST), the main effect of Mean TST was not significant, and there was no significant interaction between Mean TST and switch. In other words, there was no reliable association between habitual mean sleep duration and reaction time in this sample. 
+In the model including sleep variability (TST SD), there was a significant switch \(\times\) TST SD interaction, \(b = -0.046\), \(SE = 0.022\), \(t = -2.083\), \(p = .039\). The main effect of TST SD was not significant. 
+No congruency-related sleep interactions reached significance for any of the reaction time models. Greater sleep variability was associated with reduced switch-related slowing in this model.
+
+
+In the night-before TST deviation model, the switch $\times$ TST deviation interaction was significant, $b = -0.022$, $SE = 0.010$, $t = -2.123$, $p = .035$. Because reaction time was modelled in seconds, this corresponds to approximately 22 ms less switch-related slowing per additional hour of sleep relative to the participant's own mean. The main effect of TST deviation was not significant, $p = .074$, and neither the congruency $\times$ TST deviation interaction nor the three-way interaction was significant.
+
+In the Mean TST model, Mean TST did not significantly predict reaction time and did not significantly interact with switch or congruency.
+
+In the TST SD model, the switch $\times$ TST SD interaction was significant, $b = -0.046$, $SE = 0.022$, $t = -2.083$, $p = .039$. This corresponds to approximately 46 ms less switch-related slowing per additional hour of sleep variability. The main effect of TST SD was not significant, and no congruency-related sleep interactions were significant.
+
 
 \subsection{Accuracy}
 
-In the model including TST dev, there were no significant interactions between sleep deviation and Switch or Congruency, indicating that night-before sleep deviation did not reliably predict accuracy across task conditions. The only significant task-related effects were the expected main effects of Switch and Congruency and their interaction. In the model including Mean TST, there was a significant Switch \(\times\) Mean TST interaction, \(b = -0.190\), \(SE = 0.078\), \(p = .016\). The main effect of Mean TST was not significant. This suggests that habitual sleep duration was associated with differences in switch-related accuracy costs rather than with overall accuracy. In the model including TST SD, there was a significant Switch \(\times\) TST SD interaction, \(b = 0.402\), \(SE = 0.171\), \(p = .020\). The main effect of TST SD was not significant, and no Congruency-related sleep interactions were significant. Thus, sleep variability was associated with differences in accuracy specifically under switching demands.
+Three logistic mixed-effects models were fitted for accuracy, with TST dev, Mean TST, and TST SD entered in separate models. In the model investigating sleep deviation the night before the EEG-session, TST dev, there were no significant interactions between sleep deviation and switch or congruency, indicating that night-before sleep deviation did not reliably predict accuracy across task conditions. The only significant task-related effects were the expected main effects of switch and congruency and their interaction. 
+In the model investigating the effect of habitual sleep, Mean TST, there was a significant switch \(\times\) Mean TST interaction, \(b = -0.190\), \(SE = 0.078\), \(p = .016\). The main effect of Mean TST was not significant. This suggests that habitual sleep duration was associated with differences in switch-related accuracy costs rather than with overall accuracy. 
+In the model examining sleep variability, TST SD, there was a significant switch \(\times\) TST SD interaction, \(b = 0.402\), \(SE = 0.171\), \(p = .020\). The main effect of TST SD was not significant, and no congruency-related sleep interactions were significant. Thus, sleep variability was associated with differences in accuracy specifically under switching demands. No congruency-related sleep interactions were significant for any of the models.
+
+In the Mean TST model, the switch $\times$ Mean TST interaction was significant, $b = -0.190$, $SE = 0.078$, $p = .016$. Because accuracy was modelled using a logistic mixed-effects model, this estimate is on the log-odds scale. The negative interaction indicates that higher habitual sleep duration was associated with a stronger switch-related reduction in accuracy. The main effect of Mean TST was not significant, and no congruency-related sleep interactions were significant.
+
+In the TST SD model, the switch $\times$ TST SD interaction was significant, $b = 0.402$, $SE = 0.171$, $p = .020$. The positive interaction indicates that higher sleep variability was associated with a weaker switch-related reduction in accuracy. The main effect of TST SD was not significant, and no congruency-related sleep interactions were significant.
 
 \subsection{Theta}
 
-In the model including TST dev, there were no significant interactions between sleep deviation and Switch or Congruency, and the main effect of TST dev was not significant. Thus, night-before sleep deviation did not reliably predict theta power. In the model including Mean TST, there was a significant Switch \(\times\) Mean TST interaction, \(b = 0.417\), \(SE = 0.189\), \(t = 2.203\), \(p = .029\). The main effect of Mean TST was not significant. Habitual sleep duration was therefore associated with differences in switch-related theta power rather than with overall theta power. In the model including TST SD, there was a significant Switch \(\times\) TST SD interaction, \(b = -0.918\), \(SE = 0.420\), \(t = -2.186\), \(p = .030\). Again, the main effect of TST SD was not significant, and no Congruency-related sleep interactions were significant. This suggests that sleep variability was associated with differences in theta specifically during switching demands.
+Three mixed-effects models were fitted for theta power, with TST deviation, Mean TST, and TST SD. In the model analyzing sleep deviation the night before EEG, TST dev, there were no significant interactions between sleep deviation and switch or congruency, and the main effect of TST dev was not significant. Night-before sleep deviation did not reliably predict theta power. 
+In the model investigating habitual sleep, Mean TST, there was a significant switch \(\times\) Mean TST interaction, \(b = 0.417\), \(SE = 0.189\), \(t = 2.203\), \(p = .029\). The main effect of Mean TST was not significant. Habitual sleep duration was therefore associated with differences in switch-related theta power and not with overall theta power. 
+In the model including sleep variability, TST SD, there was a significant switch \(\times\) TST SD interaction, \(b = -0.918\), \(SE = 0.420\), \(t = -2.186\), \(p = .030\). Again, the main effect of TST SD was not significant, and no congruency-related sleep interactions were significant. This suggests that sleep variability was associated with differences in theta specifically during switching demands.
 
-% Insert Table: mixed models RT
-% Insert Table: mixed models accuracy
-% Insert Table: mixed models theta
-% Optional Figure: simple interaction plots for the significant Switch × sleep effects
+In the Mean TST model, the switch $\times$ Mean TST interaction was significant, $b = 0.417$, $SE = 0.189$, $t = 2.203$, $p = .029$. This indicates that higher habitual sleep duration was associated with a more positive switch--repeat difference in theta power. The main effect of Mean TST was not significant.
+
+In the TST SD model, the switch $\times$ TST SD interaction was significant, $b = -0.918$, $SE = 0.420$, $t = -2.186$, $p = .030$. This indicates that higher sleep variability was associated with a less positive switch--repeat difference in theta power. The main effect of TST SD was not significant, and no congruency-related sleep interactions were significant.
+
 
 
 \chapter{Discussion}
@@ -437,10 +475,6 @@ test-retest reliability of executive functions overall, maybe discuss thunberg's
 
 The present analysis used only one EEG session per participant, which means that both mean total sleep time and the night-before deviation in sleep time entered the models as participant-level predictors attached to a single session. As a result, the deviation variable was conceptually derived from within-person fluctuation, but it could not be tested as a true repeated within-person neural effect in the current thesis. If both EEG sessions had been included, it would have been possible to model session-specific night-before sleep deviation against session-specific behavioural and neural outcomes within participants. That would have allowed a stronger test of whether changes in sleep relative to a person’s own usual pattern were associated with corresponding changes in task performance or theta.
 
-\section{Future Research}
-\paragraph{Good ideas}
-\paragraph{Come in buckets}
-
 \chapter{Conclusion}
 What did we learn from all of this
 
@@ -450,69 +484,232 @@ What did we learn from all of this
 % ============= APPENDICES =============
 \begin{appendices}
 \chapter{Supplementary Tables and Figures}
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Master thesis/figures/results/spaghetti theta per condition.png}
+    \caption{Participant-level condition plots for midfrontal theta across the four task conditions. Grey lines show individual participants, coloured points show condition-level observations, and black lines indicate condition means with within-subject error bars.}
+    \label{fig:spaghettitheta}
+\end{figure}
+
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Master thesis/figures/results/Overlay ERPs - all electrodes.png}
+    \caption{Overlay of grand average ERPs from the four conditions.}
+    \label{fig:erp}
+\end{figure}
+
+
+\section{Mixed-effects model outputs}
+\label{app:mixed_models}
+
+All models included 184 observations from 46 participants, corresponding to four task conditions per participant. Models included random intercepts for participant. Reaction time and theta were analysed using linear mixed-effects models. Accuracy was analysed using a generalized linear mixed-effects model with binomial distribution and logit link.
+
+\subsection{Reaction time models}
+\label{app:mixed_models_rt}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Linear mixed-effects model predicting reaction time from TST deviation, switch, congruency, and their interactions.}
+\label{tab:app_rt_tstdev}
+\begin{tabularx}{\textwidth}{Xrrrr}
+\toprule
+Effect & Estimate & SE & $t$ & $p$ \\
+\midrule
+Intercept & 0.720 & 0.009 & 78.503 & $< .001$ \\
+Switch & 0.155 & 0.009 & 17.050 & $< .001$ \\
+Congruency & 0.012 & 0.009 & 1.368 & .173 \\
+TST deviation & 0.019 & 0.010 & 1.797 & .074 \\
+Switch $\times$ congruency & 0.027 & 0.013 & 2.135 & .034 \\
+Switch $\times$ TST deviation & \textbf{-0.022} & \textbf{0.010} & \textbf{-2.123} & \textbf{.035} \\
+Congruency $\times$ TST deviation & -0.010 & 0.010 & -0.930 & .354 \\
+Switch $\times$ congruency $\times$ TST deviation & 0.012 & 0.015 & 0.840 & .402 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Linear mixed-effects model predicting reaction time from Mean TST, switch, congruency, and their interactions.}
+\label{tab:app_rt_meantst}
+\begin{tabularx}{\textwidth}{Xrrrr}
+\toprule
+Effect & Estimate & SE & $t$ & $p$ \\
+\midrule
+Intercept & 0.726 & 0.009 & 84.158 & $< .001$ \\
+Switch & 0.148 & 0.009 & 17.220 & $< .001$ \\
+Congruency & 0.010 & 0.009 & 1.119 & .265 \\
+Mean TST & -0.013 & 0.010 & -1.320 & .189 \\
+Switch $\times$ congruency & 0.031 & 0.012 & 2.539 & .012 \\
+Switch $\times$ Mean TST & 0.008 & 0.010 & 0.786 & .433 \\
+Congruency $\times$ Mean TST & -0.007 & 0.010 & -0.668 & .505 \\
+Switch $\times$ congruency $\times$ Mean TST & 0.011 & 0.014 & 0.754 & .452 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Linear mixed-effects model predicting reaction time from TST SD, switch, congruency, and their interactions.}
+\label{tab:app_rt_tstsd}
+\begin{tabularx}{\textwidth}{Xrrrr}
+\toprule
+Effect & Estimate & SE & $t$ & $p$ \\
+\midrule
+Intercept & 0.726 & 0.009 & 84.066 & $< .001$ \\
+Switch & 0.148 & 0.009 & 17.292 & $< .001$ \\
+Congruency & 0.010 & 0.009 & 1.124 & .263 \\
+TST SD & 0.039 & 0.022 & 1.760 & .080 \\
+Switch $\times$ congruency & 0.031 & 0.012 & 2.550 & .012 \\
+Switch $\times$ TST SD & \textbf{-0.046} & \textbf{0.022} & \textbf{-2.083} & \textbf{.039} \\
+Congruency $\times$ TST SD & -0.007 & 0.022 & -0.323 & .747 \\
+Switch $\times$ congruency $\times$ TST SD & 0.026 & 0.031 & 0.847 & .398 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\subsection{Accuracy models}
+\label{app:mixed_models_accuracy}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Logistic mixed-effects model predicting accuracy from TST deviation, switch, congruency, and their interactions. Estimates are on the log-odds scale.}
+\label{tab:app_acc_tstdev}
+\begin{tabularx}{\textwidth}{Xrrrr}
+\toprule
+Effect & Estimate & SE & $z/t$ & $p$ \\
+\midrule
+Intercept & 1.639 & 0.099 & 16.564 & $< .001$ \\
+Switch & -1.070 & 0.072 & -14.928 & $< .001$ \\
+Congruency & -0.337 & 0.064 & -5.288 & $< .001$ \\
+TST deviation & -0.030 & 0.112 & -0.271 & .787 \\
+Switch $\times$ congruency & -0.206 & 0.098 & -2.107 & .037 \\
+Switch $\times$ TST deviation & 0.026 & 0.081 & 0.325 & .746 \\
+Congruency $\times$ TST deviation & -0.099 & 0.071 & -1.404 & .162 \\
+Switch $\times$ congruency $\times$ TST deviation & 0.132 & 0.110 & 1.206 & .229 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Logistic mixed-effects model predicting accuracy from Mean TST, switch, congruency, and their interactions. Estimates are on the log-odds scale.}
+\label{tab:app_acc_meantst}
+\begin{tabularx}{\textwidth}{Xrrrr}
+\toprule
+Effect & Estimate & SE & $z/t$ & $p$ \\
+\midrule
+Intercept & 1.630 & 0.093 & 17.443 & $< .001$ \\
+Switch & -1.061 & 0.068 & -15.692 & $< .001$ \\
+Congruency & -0.368 & 0.060 & -6.153 & $< .001$ \\
+Mean TST & -0.001 & 0.108 & -0.012 & .990 \\
+Switch $\times$ congruency & -0.166 & 0.092 & -1.801 & .073 \\
+Switch $\times$ Mean TST & \textbf{-0.190} & \textbf{0.078} & \textbf{-2.440} & \textbf{.016} \\
+Congruency $\times$ Mean TST & 0.063 & 0.068 & 0.924 & .357 \\
+Switch $\times$ congruency $\times$ Mean TST & 0.064 & 0.106 & 0.602 & .548 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Logistic mixed-effects model predicting accuracy from TST SD, switch, congruency, and their interactions. Estimates are on the log-odds scale.}
+\label{tab:app_acc_tstsd}
+\begin{tabularx}{\textwidth}{Xrrrr}
+\toprule
+Effect & Estimate & SE & $z/t$ & $p$ \\
+\midrule
+Intercept & 1.631 & 0.094 & 17.394 & $< .001$ \\
+Switch & -1.063 & 0.068 & -15.723 & $< .001$ \\
+Congruency & -0.369 & 0.060 & -6.170 & $< .001$ \\
+TST SD & -0.009 & 0.238 & -0.038 & .969 \\
+Switch $\times$ congruency & -0.164 & 0.092 & -1.786 & .076 \\
+Switch $\times$ TST SD & \textbf{0.402} & \textbf{0.171} & \textbf{2.353} & \textbf{.020} \\
+Congruency $\times$ TST SD & -0.114 & 0.147 & -0.775 & .439 \\
+Switch $\times$ congruency $\times$ TST SD & -0.125 & 0.231 & -0.539 & .591 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\subsection{Theta models}
+\label{app:mixed_models_theta}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Linear mixed-effects model predicting theta power from TST deviation, switch, congruency, and their interactions.}
+\label{tab:app_theta_tstdev}
+\begin{tabularx}{\textwidth}{Xrrrr}
+\toprule
+Effect & Estimate & SE & $t$ & $p$ \\
+\midrule
+Intercept & 0.913 & 0.211 & 4.338 & $< .001$ \\
+Switch & 0.280 & 0.176 & 1.587 & .114 \\
+Congruency & -0.076 & 0.176 & -0.431 & .667 \\
+TST deviation & -0.121 & 0.240 & -0.506 & .614 \\
+Switch $\times$ congruency & -0.280 & 0.250 & -1.122 & .263 \\
+Switch $\times$ TST deviation & -0.093 & 0.201 & -0.462 & .645 \\
+Congruency $\times$ TST deviation & 0.150 & 0.201 & 0.746 & .457 \\
+Switch $\times$ congruency $\times$ TST deviation & -0.091 & 0.285 & -0.320 & .749 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Linear mixed-effects model predicting theta power from Mean TST, switch, congruency, and their interactions.}
+\label{tab:app_theta_meantst}
+\begin{tabularx}{\textwidth}{Xrrrr}
+\toprule
+Effect & Estimate & SE & $t$ & $p$ \\
+\midrule
+Intercept & 0.878 & 0.198 & 4.425 & $< .001$ \\
+Switch & 0.253 & 0.165 & 1.539 & .126 \\
+Congruency & -0.033 & 0.165 & -0.200 & .842 \\
+Mean TST & -0.097 & 0.228 & -0.426 & .671 \\
+Switch $\times$ congruency & -0.306 & 0.233 & -1.316 & .190 \\
+Switch $\times$ Mean TST & \textbf{0.417} & \textbf{0.189} & \textbf{2.203} & \textbf{.029} \\
+Congruency $\times$ Mean TST & 0.111 & 0.189 & 0.588 & .557 \\
+Switch $\times$ congruency $\times$ Mean TST & -0.404 & 0.268 & -1.509 & .133 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Linear mixed-effects model predicting theta power from TST SD, switch, congruency, and their interactions.}
+\label{tab:app_theta_tstsd}
+\begin{tabularx}{\textwidth}{Xrrrr}
+\toprule
+Effect & Estimate & SE & $t$ & $p$ \\
+\midrule
+Intercept & 0.878 & 0.198 & 4.428 & $< .001$ \\
+Switch & 0.253 & 0.164 & 1.546 & .124 \\
+Congruency & -0.033 & 0.164 & -0.201 & .841 \\
+TST SD & 0.259 & 0.508 & 0.510 & .611 \\
+Switch $\times$ congruency & -0.306 & 0.232 & -1.321 & .188 \\
+Switch $\times$ TST SD & \textbf{-0.918} & \textbf{0.420} & \textbf{-2.186} & \textbf{.030} \\
+Congruency $\times$ TST SD & -0.056 & 0.420 & -0.134 & .894 \\
+Switch $\times$ congruency $\times$ TST SD & 0.406 & 0.594 & 0.683 & .496 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
 \section{Additional Statistical Analyses}
 
-\subsection{Linear Mixed-Effects Model: Sleep and Theta}
 
-\subsubsection{Model specification}
-
-A linear mixed-effects model was fitted using maximum likelihood estimation:
-
-\begin{equation}
-\text{Theta} \sim \text{Switch} \times \text{Congruency} \times \text{TST}_{\text{dev}} + (1 \mid \text{ID})
-\end{equation}
-
-The model included 184 observations (46 participants $\times$ 4 conditions), with a random intercept for participant.
-
-\vspace{0.5em}
-
-\subsubsection{Model fit statistics}
-
-\begin{center}
-\begin{tabular}{lcccc}
-\hline
- & AIC & BIC & LogLikelihood & Deviance \\
-\hline
-Model & 489.90 & 522.05 & -234.95 & 469.90 \\
-\hline
-\end{tabular}
-\end{center}
-
-\vspace{0.5em}
-
-\subsubsection{Fixed effects}
-
-\begin{center}
-\begin{tabular}{lcccc}
-\hline
-Effect & Estimate ($\beta$) & SE & t & p \\
-\hline
-Intercept & 0.286 & 0.191 & 1.50 & .137 \\
-Switch & 0.246 & 0.141 & 1.75 & .082 \\
-Congruency & -0.006 & 0.141 & -0.04 & .965 \\
-TST deviation & -0.003 & 0.218 & -0.02 & .988 \\
-Switch $\times$ Congruency & -0.320 & 0.199 & -1.61 & .109 \\
-Switch $\times$ TST deviation & -0.088 & 0.161 & -0.55 & .585 \\
-Congruency $\times$ TST deviation & 0.074 & 0.161 & 0.46 & .644 \\
-Switch $\times$ Congruency $\times$ TST deviation & -0.034 & 0.227 & -0.15 & .880 \\
-\hline
-\end{tabular}
-\end{center}
-
-\vspace{0.5em}
-
-\subsubsection{Random effects}
-
-\begin{center}
-\begin{tabular}{lccc}
-\hline
-Component & Estimate & Lower & Upper \\
-\hline
-Participant intercept (SD) & 1.048 & 0.838 & 1.310 \\
-Residual (SD) & 0.637 & 0.566 & 0.717 \\
-\hline
-\end{tabular}
-\end{center}
 
 \section{DALL-E prompt for image generation}
 2x2 grid illustration in expressive manga style, clean line art, high contrast, subtle screentones. Same female protagonist with brown hair, same outfit, same kitchen, identical camera angle and framing in all four panels. Clear panel borders, equal size, minimal background clutter. Visual storytelling through posture, gaze, and motion lines. No text inside panels. Facial expressions subtle and controlled, showing cognitive states (focused, strained, calm, disengaged), not anger or distress.
@@ -532,24 +729,6 @@ Subtle visual encoding: sharp lines = attention, wavy lines = distraction, clean
 \chapter{Code and Implementation}
 
 All my code (with anonymized paths) is openly available at https://github.com/Roskva-git/MtS. EEGLAB in MATLAB was used for EEG preprocessing and analysis. For some of the sleep data, Python was used to structure and analyze the dataset.
-
-\section{Data preprocessing pipeline}
-
-\begin{lstlisting}[style=Matlab-editor]
-\end{lstlisting}
-
-
-\section{Data cleaning scripts}
-
-\begin{lstlisting}[language=Python]
-def hello():
-    print("Hello, LaTeX!")
-\end{lstlisting}
-
-\section{Analyzing scripts}
-
-\begin{lstlisting}[style=Matlab-editor]
-\end{lstlisting}
 
 
 \end{appendices}
