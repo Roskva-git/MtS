@@ -187,7 +187,7 @@ Time–frequency analyses have shown that theta-band power can persist after rem
 
 Frontal midline theta (FM-theta) is a non-phase-locked rhythmic power change typically observed over medial frontal scalp sites. Converging evidence from EEG and intracranial recordings suggests that FM-theta is primarily generated in the anterior cingulate cortex (ACC) and adjacent medial prefrontal cortex (mPFC), regions implicated in performance monitoring and the dynamic allocation of control \parencite{cavanagh2014theta,depestele2023thetadriving}. FM-theta is thought to index a domain-general control signal that increases when ongoing behaviour requires adjustment. Accordingly, FM-theta power is enhanced under conditions that place elevated demands on control, including response conflict, error commission, and task switching. Switch trials and incongruent trials often elicit stronger theta activity than low-conflict conditions, suggesting that medial frontal systems register the need for increased control when competing task sets or response tendencies are activated \parencite{cohen2013thetaconflict, cavanagh2014theta}. In this sense, FM-theta can be understood as a neural signature of control engagement during flexible behaviour.
 
-NEED TO ADD ARGUMENT FOR DISENTANGLEMENT
+NEED TO ADD ARGUMENT FOR DISENTANGLEMENT?
 
 
 \section{Stable ability or context-sensitive?}
@@ -208,6 +208,17 @@ Taken together, these findings suggest that while stable individual differences 
 - independent effects on stability and flexibility and/or neural correlates etc?
 - clarify the main remaining gap that your study can address
 
+Sleep architecture and its potential differential effects on cognitive processes
+More detailed discussion of naturalistic vs. experimental sleep research
+Clearer hypotheses linking specific sleep dimensions to flexibility vs. stability
+Proper justification of using sleep diary rather than actigraph
+
+Have sleep recommendations and show how people normally sleep, compare sample with these. \parencite{oyahon2017recommendations}
+\paragraph{Actigraphy or sleep diaries?} INCLUDE JUSTIFICATION FOR SLEEP DIARIES HERE. There are some limitations related to the use of actigraphy for sleep measurement. Polysomnography (PSG) remains the gold standard for assessing sleep because it provides a direct physiological measurement of sleep stages through simultaneous recording of brain activity (EEG), eye movements (EOG), and muscle tone (EMG), allowing precise differentiation between sleep and wakefulness (ADD A REFERENCE). PSG requires an extensive set-up, which makes it more suitable for lab studies. Wrist actigraphy is a practical and validated alternative for field studies where we are interested in habitual sleep. In the present study, only the accelerometer function of the ActiGraph devices was used, with all other sensors disabled to preserve battery life and participants’ privacy. Because actigraphy infers sleep and wake from movement alone, it may misclassify periods of quiet wakefulness as sleep, and can underestimate wake after sleep onset (WASO) compared with PSG (SOURCES, FOR GOD'S SAKE!!!). To ensure accuracy, actigraphy data were cross-checked against participants’ sleep diaries. Any apparent sleep periods not confirmed in the diary were excluded from analyses. Sources of errors here could be when participants take the actigraph off and leave it on the counter for periods of the day. The stillness will sometimes be registered as sleep.
+
+
+
+
 \paragraph{What is sleep and why is it a plausible source of variation?}
 
 Sleep is a fundamental biological process that supports cognitive and emotional functioning. Even in healthy adults, sleep varies both between individuals and across time, reflecting the joint influence of circadian rhythms, homeostatic regulation, and environmental demands \parencite{foster2020sleep}. Sleep emerges from coordinated activity across large-scale neural networks. It is divided into stages that are characterized by different patterns of neural oscillatory activity, which is believed to support processes including synaptic plasticity and memory processing \parencite{adamantidis2019oscillating}. Insufficient or disrupted sleep has been related to a host of negative outcomes for both mental and physical health \parencite{foster2020sleep}.
@@ -222,7 +233,10 @@ Despite extensive evidence linking sleep to executive functioning, it remains un
 
 This study examines whether variation in sleep is associated with variation in cognitive control. Prior work has largely relied on acute sleep deprivation paradigms, making it unclear whether similar patterns are observed under naturalistic conditions. In addition, cognitive control is not a unitary construct, and it remains unresolved whether sleep relates similarly to different components such as stability and flexibility, or whether these are differentially affected. The present study addresses these gaps by linking longitudinal sleep measures to behavioural and neural indices of cognitive control within the same task. Sleep is characterized along two dimensions: habitual sleep level, reflecting average sleep over time, and sleep variability, reflecting night-to-night fluctuations. Cognitive control is assessed using a task-switching paradigm that allows simultaneous measurement of flexibility (switch costs) and stability (congruency effects), alongside frontal midline theta as a neural marker of control engagement.
 
-The study asks whether stable sleep patterns and short-term fluctuations are associated with behavioural performance and neural activity during cognitive control, and whether these associations differ between stability and flexibility. It is expected that poorer sleep, reflected in lower habitual sleep time or greater variability, will be associated with reduced cognitive control. These are my hypotheses:
+The study asks whether stable sleep patterns and short-term fluctuations are associated with behavioural performance and neural activity during cognitive control, and whether these associations differ between stability and flexibility. It is expected that poorer sleep, reflected in lower habitual sleep time or greater variability, will be associated with reduced cognitive control. \newline
+
+\paragraph{}
+These are my hypotheses:
 
 \paragraph{}
 Since previous studies have shown that sleep deprivation disproportionately affects sustained attention and goal maintenance, poorer sleep is expected to be associated with larger congruency effects, reflecting reduced cognitive stability. 
@@ -232,9 +246,6 @@ Sleep deprivation studies have shown that basic processes such as response inhib
 
 \paragraph{}
 Frontal midline theta is expected to increase with task demands, with higher theta in incongruent and switch trials. Poorer sleep is expected to be associated with lower theta overall, reflecting diminished capacity to recruit control despite increased demands. Poorer sleep is expected to be associated with lower theta overall and with lower accuracy in incongruent trials. Associations with reaction time are expected to be weaker or absent \newline
-
-
-Methodologically, the study combines four weeks of sleep assessment with EEG-based measurement of task performance, allowing both between-subject differences (habitual sleep) and within-subject variation (nightly deviations) to be examined in relation to cognitive control.
 
 
 
@@ -304,6 +315,8 @@ The task consisted of four blocks, with each block consisting of 60 trials. Part
 
 \subsubsection{EEG data processing}
 
+Do I need more detail about ICA component rejection criteria?
+
 For the preprocessing pipeline, I applied a low-pass filter at 40 Hz, resampled the data to 500 Hz, then applied a high-pass filter at 0.1 Hz and removed EMG channels. I then mapped electrode names and added FCz as the empty reference electrode, before re-referencing to the average of the earlobes. After that I ran an independent component analysis (ICA), and removed noisy components by manual inspection. Then I created an event list based on the logfiles, and renamed the triggers for epoching. 
 Epochs from -1500 to 1500 ms around stimulus onset were extracted to prepare the data for time–frequency analysis. A longer window gives more stable estimates at lower frequencies, reduces edge problems, and leaves enough pre-stimulus data for baseline correction and normalization. As theta is a low frequency oscillation, it requires a longer temporal window to be estimated reliably. Time-frequency estimates depend on having enough data around the event because edge artifacts can affect wavelet-based analysis \parencite{herrmann2014timefrequencytutorial}. I marked trials for rejection after epoching if electrodes exceeded physiological limits of ($\pm 200\,\mu V$), as recommended by \textcite{luck2014erp}. Midfrontal electrodes Fz, FCz, and Cz were chosen as the region of analysis (ROI) because frontal midline theta in cognitive-control paradigms is typically maximal over the medial frontal scalp. I then inspected the ROI channels visually. Restricting the rejection criterion to the electrodes of interest prevented noisy channels outside the ROI from causing unnecessary trial loss. Rejection was done only after the visual inspection.
 
@@ -314,7 +327,7 @@ For descriptive comparison with the time-frequency results, stimulus-locked ERPs
 
 
 \subsection{Sleep diaries}
-Sleep was assessed using daily entries in the Bergen Sleep Diary, completed continuously across four weeks between the first and subsequent laboratory sessions. The diaries were used as the primary source of sleep data in all analyses. Participants reported bedtime, time they attempted to fall asleep, sleep onset latency, nocturnal awakenings, and final morning awakening. From the diary entries, nightly total sleep time (TST), sleep onset latency (SOL), wake after sleep onset (WASO), sleep efficiency (SE), and number of awakenings were derived. TST was calculated as the interval between attempted sleep time and final morning awakening, minus reported sleep onset latency and nocturnal wake time. When participants did not report any awakenings, WASO was coded as zero. If bedtime and attempted sleep time were not reported separately, they were treated as identical.
+Sleep was assessed using daily entries in the Bergen Sleep Diary, completed continuously across four weeks between the first and subsequent laboratory sessions. The diaries were used as the primary source of sleep data in all analyses. Participants reported bedtime, time they attempted to fall asleep, sleep onset latency, nocturnal awakenings, and final morning awakening. From the diary entries, nightly total sleep time (TST), sleep onset latency (SOL), wake after sleep onset (WASO), sleep efficiency (SE), and number of awakenings were derived. TST was calculated as the interval between attempted sleep time and final morning awakening, minus reported sleep onset latency and nocturnal wake time, measured in hours. When participants did not report any awakenings, WASO was coded as zero. WASO comprises both the time it took participants to fall asleep as well as how long they were awake during nightly awakenings, measured in minutes. Sleep onset latency is how long it took participants to fall asleep, measured in minutes. Sleep efficiency is the percentage of time from the participants went to bed until their final awakening, in other words it is the proportion of wake after sleep onset out of the total sleep time.
 
 The primary sleep variable used in the present analyses was diary-based total sleep time (TST). Habitual sleep was operationalized as each participant's mean TST across the recording period. Nightly sleep deviation was calculated by centering each night's TST relative to the participant's own mean TST, so positive values reflected longer-than-usual sleep and negative values reflected shorter-than-usual sleep. For analyses of behavioural and EEG outcomes, the relevant within-person predictor was the TST deviation from the night immediately preceding each EEG session. These measures were used to capture both between-person differences in habitual sleep and within-person variation in sleep prior to testing.
 Actigraphy was collected in parallel with the sleep diaries, but was not used as a primary analytic measure in the present thesis. I used the actigraphy reports to verify diary entries and identify implausible sleep periods. Any apparent sleep periods not supported by the actigraphs were excluded from further consideration. The sleep analyses reported here reflect diary-based sleep estimates and not actigraphy-derived sleep parameters.
@@ -329,15 +342,27 @@ Sleep was operationalised along three dimensions derived from the sleep diaries.
 
 Associations between sleep and task performance were examined using mixed-effects models with random intercepts for each participant. Mixed-effects models, sometimes called multi-level or hierarchical models, allow us to model both fixed effects (experimental conditions, sleep predictors) that apply to the whole sample, and random effects (participant-level intercepts and slopes) that capture individual baseline differences. Since the data in the current thesis contain repeated observations per participant, mixed models can account for within-subject correlation and use all available observations without aggregating to condition means. Separate models were fitted for reaction time, accuracy, and theta. For reaction time and theta, I used linear mixed-effects models. For accuracy, I used a generalized linear mixed-effects model with binomial distribution and logit link. Correct trials were coded as successes and incorrect responses plus omissions were coded as failures. In all models, Switch, Congruency, and one sleep predictor were entered together with their interactions. Separate models were fitted for Mean TST, TST SD, and TST dev. For the models using habitual sleep duration and sleep variability, predictors were grand-mean centred prior to analysis. Night-before deviation scores were already centred relative to each participant's own mean by definition. The repeated-measures ANOVAs were based on the available behavioural and EEG samples (N = 50), and sleep-related mixed-effects models were restricted to participants with complete data for sleep predictors and task outcomes (N = 46). Statistical significance was evaluated at $\alpha = .05$.
 
+Given the modest sample size of N=46 for sleep-related analyses and the use of multiple models, a post-hoc power analysis was conducted to assess the adequacy of our sample size for detecting clinically meaningful differences in sleep parameters
+
+
+\subsection{TODO:}
+Redo the power analysis
+
+Refit mixed models: (a) include Mean TST and TST SD together (check VIF), (b) Bayesian mixed models to obtain posterior estimates and credibility intervals, (c) leave one out / influence diagnostics to check whether results driven by single participants.
+
+Multiple comparison control: report which interactions survive FDR or report effect sizes + CIs (provided in Appendix) and treat results as hypothesis driven (as done), noting exploratory nature of other contrasts.
+
+Report simple slopes / predicted probabilities for logistic models (accuracy) to aid interpretation (convert log odds to \% accuracy for ±1 SD of predictors).
+
 
 \chapter{Results}
 
-This chapter presents the sample characteristics, sleep descriptives, task-related behavioural and neural effects, and sleep-related mixed-effects models. Task effects were examined for reaction time, accuracy, and midfrontal theta power. Mixed-effects models were then used to test whether habitual sleep duration, sleep variability, and night-before sleep deviation predicted behavioural and neural task outcomes.
+This chapter presents the sample characteristics, sleep descriptives, task-related behavioural and neural effects, and sleep-related mixed-effects models. Task effects were examined for reaction time, accuracy, and midfrontal theta power. Mixed-effects models were then used to test whether habitual sleep duration, sleep variability, and night-before-testing sleep deviation predicted behavioural and neural task outcomes. All tests used \(\alpha = .05\). Because the analyses comprised a small set of \textit{a priori} mixed models (three outcomes \(\times\) three sleep predictors = nine models), focused on theoretically motivated contrasts (switch and congruency interactions), results are reported without adjustment for multiple comparisons. Descriptive reaction time means are reported in milliseconds (ms) for readability, but the reaction time mixed-effects models were fitted on reaction time in seconds (s).
 
 
 \section{Sample characteristics}
 
-The full sample consisted of 50 participants (\(M_{age} = 39.62\), \(SD = 10.18\)). 10 were men and 40 were women. Behavioural and EEG task-effect analyses were based on the full sample. Sleep descriptives were based on the 48 participants with usable sleep diary data, and sleep-related mixed-effects models were based on participants with complete sleep and outcome data (\(N = 46\)).
+The full sample consisted of 50 participants (\(M_{age} = 39.62\), \(SD = 10.18\)). 10 were men and 40 were women. Behavioural and EEG task-effect analyses were based on the full sample. Sleep descriptives and ANOVAs were based on the 48 participants with usable sleep diary data, and sleep-related mixed-effects models were based on participants with complete sleep and outcome data (\(N = 46\)).
 
 \begin{figure} [H]
     \centering
@@ -348,7 +373,7 @@ The full sample consisted of 50 participants (\(M_{age} = 39.62\), \(SD = 10.18\
 
 \section{Sleep descriptives}
 
-Across the 48 participants who handed in their sleep diaries, mean total sleep time was 7.52 h (\(SD = 1.07\)), mean sleep onset latency was 26.26 min (\(SD = 21.16\)), mean wake after sleep onset was 17.87 min (\(SD = 17.98\)), mean sleep efficiency was 87.29\% (\(SD = 7.64\)), and the mean number of awakenings was 1.66 (\(SD = 1.43\)). The variation in sleep duration and continuity across participants was moderate overall (Table~\ref{tab:sleep_overview}).
+Across the 48 participants who handed in their sleep diaries, mean total sleep time was 7.52 h (\(SD = 1.07\) h), mean sleep onset latency was 26.26 min (\(SD = 21.16\) min), mean wake after sleep onset was 17.87 min (\(SD = 17.98\) min), mean sleep efficiency was 87.29\% (\(SD = 7.64\)\%), and the mean number of awakenings was 1.66 (\(SD = 1.43\)). The variation in sleep duration and continuity across participants was moderate overall (Table~\ref{tab:sleep_overview}).
 
 \begin{table}[ht]
 \centering
@@ -367,16 +392,16 @@ SD    & $1.07\,h$ & $21.16\,min$ & $17.98\,min$ & $7.64\%$  & $1.43$ \\
 
 \section{Task effects}
 
-\subsection{Behavioural performance}
-
-Participants were accurate overall (\(\sim 71.94\%\) correct), with lower performance on switch than repeat trials, and on incongruent than congruent trials. Accuracy by condition showed that correct responses were highest in repeat--congruent trials (82.41\%) and lowest in switch--incongruent trials (51.08\%). Omissions were more frequent in switch than repeat trials (Figure \ref{fig:barchart_accuracy}).
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{Master thesis/figures/results/Accuracy by condition ALT colour.png}
+    \includegraphics[width=0.8\linewidth]{Master thesis/figures/results/Accuracy by condition.png}
     \caption{Accuracy by condition.}
     \label{fig:barchart_accuracy}
 \end{figure}
+
+\subsection{Behavioural performance}
+
+Participants were accurate overall (\(\sim 71.94\%\) correct), with lower performance on switch than repeat trials, and on incongruent than congruent trials. Accuracy by condition showed that correct responses were highest in repeat--congruent trials (82.41\%) and lowest in switch--incongruent trials (51.08\%). Omissions were more frequent in switch than repeat trials (Figure \ref{fig:barchart_accuracy}).
 
 Reaction times were longer on switch trials (\(M = 866.72\) ms, \(SD = 194.07\)) than on repeat trials (\(M = 729.71\) ms, \(SD = 53.59\)). Mean reaction times were of comparable length on incongruent trials (\(M = 776.36\) ms, \(SD = 46.54\)) and congruent trials (\(M = 766.34\) ms, \(SD = 51.16\)). Condition-wise means showed the slowest correct responses in switch--incongruent trials (\(M = 911.09\) ms, \(SD = 60.03\)) and the fastest in repeat--congruent trials (\(M = 724.67\) ms, \(SD = 57.50\)).
 
@@ -400,7 +425,8 @@ A 2 \(\times\) 2 repeated-measures ANOVA on reaction time showed a significant m
 
 \subsection{Theta power}
 
-Mean theta power differed modestly across conditions. Descriptively, theta was highest in the switch--congruent condition (\(M = 1.134\), \(SD = 1.633\)), whereas repeat--congruent, repeat--incongruent, and switch--incongruent conditions showed similar mean levels (\(M = 0.948\), \(0.885\), and \(0.869\), respectively). Variability was relatively high, especially in the switch conditions, and the distributions overlapped across all four conditions (See figure in Appendix~\ref{fig:spaghettitheta}). A 2 \(\times\) 2 repeated-measures ANOVA on theta power showed no significant main effect of switch, \(F(1,49) = 0.548\), \(p = .463\), no significant main effect of congruency, \(F(1,49) = 2.036\), \(p = .160\), and no significant switch \(\times\) congruency interaction, \(F(1,49) = 0.721\), \(p = .399\). Figure~\ref{fig:ersp} shows the grand-average ERSPs for the four task conditions, averaged across Fz, FCz, and Cz. The plots show baseline-corrected changes in spectral power relative to the pre-stimulus period, with the 4--8 Hz theta band marked by horizontal lines. Across conditions, there was visible post-stimulus theta-band activity, but the overall pattern was similar across the four conditions. This visual pattern fits the ANOVA results, which did not show reliable modulation of theta power by switch, congruency, or their interaction. As a descriptive sanity check, stimulus-locked ERPs were also inspected across conditions. The ERP waveforms are shown in Appendix~\ref{fig:erp}. The ERP-analysis was exploratory and was not used as primary outcome measure.
+Mean theta power differed modestly across conditions. Descriptively, theta was highest in the switch--congruent condition (\(M = 1.134\), \(SD = 1.633\)), whereas repeat--congruent, repeat--incongruent, and switch--incongruent conditions showed similar mean levels (\(M = 0.948\), \(0.885\), and \(0.869\), respectively). Variability was relatively high, especially in the switch conditions, and the distributions overlapped across all four conditions (See figure in Appendix~\ref{fig:spaghettitheta}). The switch-condition also had relatively few usable trials for some participants, so the ANOVA for theta may have limited power to detect small condition differences. The 2 \(\times\) 2 repeated-measures ANOVA on theta power showed no significant main effect of switch, \(F(1,49) = 0.548\), \(p = .463\), no significant main effect of congruency, \(F(1,49) = 2.036\), \(p = .160\), and no significant switch \(\times\) congruency interaction, \(F(1,49) = 0.721\), \(p = .399\).
+Figure~\ref{fig:ersp} shows the grand-average ERSPs for the four task conditions, averaged across Fz, FCz, and Cz. The plots show baseline-corrected changes in spectral power relative to the pre-stimulus period, with the 4--8 Hz theta band marked by horizontal lines. Across conditions, there was visible post-stimulus theta-band activity, but the overall pattern was similar across the four conditions. This visual pattern fits the ANOVA results, which did not show reliable modulation of theta power by switch, congruency, or their interaction. As a descriptive sanity check, stimulus-locked ERPs were also inspected across conditions. The ERP waveforms are shown in Appendix~\ref{fig:erp}. The ERP-analysis was exploratory and was not used as primary outcome measure.
 
 \begin{figure} [H]
     \centering
@@ -413,7 +439,7 @@ Mean theta power differed modestly across conditions. Descriptively, theta was h
 
 \section{Sleep-related mixed-effects models}
 
-For each outcome (RT, accuracy and theta) I fitted mixed-effects models with Switch, Congruency, one sleep predictor, and their interactions. Each mixed model tested whether sleep predicted overall performance (main effect) and whether sleep modulated switching and/or congruency effects (interactions). Models included a random intercept for participant to account for between-subject baseline differences and the repeated-measures structure (four condition observations per participant). Full model formulas and outputs are provided in the Appendix. This approach resulted in nine different models. Sleep-related effects appeared primarily as interactions with Switch (i.e., modulation of switch-related effects) and not with Congruency or overall performance/theta. Night-before deviations (TST dev) predicted RT switch cost, with longer sleep being relsted to smaller cost, but it not predict accuracy or theta. Habitual Mean TST and TST SD produced opposite-direction interactions on accuracy and theta, with longer mean TST being associated with larger accuracy switch-costs but a more positive switch-related theta difference. Greater TST variability was associated with smaller accuracy switch-costs and a reduced switch-related theta difference. Effect sizes and confidence intervals are reported in the Appendix mixed-model tables.
+For each outcome (RT, accuracy and theta) I fitted mixed-effects models with Switch, Congruency, one sleep predictor, and their interactions. Each mixed model tested whether sleep predicted overall performance (main effect) and whether sleep modulated switching and/or congruency effects (interactions). Models included a random intercept for participant to account for between-subject baseline differences and the repeated-measures structure (four condition observations per participant). Full model formulas and outputs are provided in the Appendix. Since all the mixed models are sleep-related, I used N = 46 participants, to limit the sample to participants with full usable sleep data and to make the models comparable. Sleep-related effects appeared primarily as interactions with switching (i.e., modulation of switch-related effects) and not with congruency or theta. Night-before deviations (TST dev) predicted reaction time switch cost, with longer sleep being related to smaller cost, but it not predict accuracy or theta. Habitual mean total sleep time and sleep variability produced opposite-direction interactions on accuracy and theta, with longer mean total sleep time being associated with larger accuracy switch-costs, but a more positive switch-related theta difference. Greater total sleep time variability was associated with smaller accuracy switch-costs and a reduced switch-related theta difference. Model estimates reported below are given in seconds but converted to ms where helpful for interpretation. Effect sizes and confidence intervals are reported in the Appendix mixed-model tables.
 
 
 \subsection{Reaction time}
@@ -435,29 +461,116 @@ No congruency-related sleep interactions were significant for theta. Habitual sl
 
 
 \chapter{Discussion}
-\section{Main Findings}
+The purpose of the present study was to investigate the relationship between sleep and executive functions, and more specifically whether habitual or nightly sleep influences cognitive flexibility. The thesis also investigates whether these sleep mechanisms differentiate between a unidimensional or a dual dimensions view of set shifting, by trying to tease cognitive flexibility and stability apart. To shed light on these questions, we collected daily sleep diary data from our participants, as well as inviting them to EEG sessions. Cognitive flexibility and stability operationalized through a task-switching paradigm that separated two within the same task. Stability was operationalized as congruency effects, meaning poorer performance on incongruent than congruent trials. Flexibility was operationalized as switch costs, meaning poorer performance on switch than repeat trials. Habitual sleep was measured in total sleep time, and daily sleep was measured in sleep deviation the night before testing and sleep variability from individual mean sleep time. Sleep was used as predictors and were entered into mixed-effects models for reaction time, accuracy, and theta activity.
+
+Based on previous studies showing that sleep deprivation disproportionately affects sustained attention and goal maintenance, I hypothesized that poorer sleep would be associated with larger congruency effects, reflecting reduced cognitive stability. The task itself produced clear congruency effects, with incongruent trials being slower and less accurate than congruent trials. However, none of the models reached statistical significance for any of the congruency-related sleep interactions. In other words, the study found evidence that the congruency manipulation worked behaviourally, but not that poorer sleep amplified congruency costs.
+The second hypothesis was that association between sleep and switch costs should be weaker or less consistent than the sleep-congruency effects, because previous studies have shown that basic processes such as response inhibition and conflict detection appear relatively preserved after sleep deprivation. This would reflect a smaller effect of sleep on cognitive flexibility. This was partly contradicted by the results. The task produced very clear switch costs in both reaction time and accuracy, and the sleep-related effects appeared more often for switch-related outcomes than for congruency-related outcomes. Longer-than-usual sleep before EEG was associated with reduced switch-related slowing in reaction time, and greater sleep variability was also associated with reduced switch-related slowing. In accuracy, both habitual sleep duration and sleep variability interacted with switch condition. Rather than sleep effects being mainly tied to stability, the thesis found that sleep was more consistently related to switch-related processes.
+
+Frontal midline theta was expected to increase with task demands, with higher theta in incongruent and switch trials, and poorer sleep was expected to be associated with lower theta overall. This hypothesis was not supported. Descriptively, theta was highest in the switch-congruent condition, but the ANOVA showed no significant main effect of switch, no significant main effect of congruency, and no switch × congruency interaction. Unlike the behavioural outcomes, theta did not show reliable task-related modulation. None of the sleep parameters predicted theta in the current study. Mean total sleep time and sleep variability did not show significant main effects on theta, but both showed switch-related interactions. No congruency-related theta interactions were significant. As such, theta did not behave as the expected general marker of reduced control recruitment under poorer sleep, and the only sleep-theta associations were tied to switching.
+
+The present thesis found behavioural evidence that the task captured both flexibility and stability demands, but the sleep hypotheses were not supported in the expected direction. Sleep did not mainly affect congruency effects, and theta did not reliably increase under higher task demands. The most coherent pattern was that naturalistic sleep variables were more closely associated with switch-related performance and switch-related theta variation than with congruency-related stability. In this sample, sleep was not a clear predictor of cognitive stability, and frontal midline theta did not provide strong evidence for the proposed neural mechanism.
+
+\section{Stability and flexibility}
+Interpretation: flexibility vs stability
+
+Argue that sleep effects were primarily on switch-related metrics → relates to cognitive flexibility / task‑set reconfiguration (cite Monsell 2003; Rogers \& Monsell 1995; Kiesel et al., 2010 for switching frameworks). Pattern of results points to sleep variation primarily affecting switching (flexibility / task‑set reconfiguration) rather than interference control (stability). None of the sleep predictors produced reliable congruency × sleep interactions; sleep effects were almost entirely Switch × sleep.
 
 
-\section{Theta}
-Theta did not differ between conditions, and it did not help differentiate between flexibility and stability. Maybe this is an argument in favour of the unidimensional view. 
-\section{Sleep}
-Have sleep recommendations and show how people normally sleep, compare sample with these. \parencite{oyahon2017recommendations}
-\paragraph{Actigraphy or sleep diaries?} INCLUDE JUSTIFICATION FOR SLEEP DIARIES HERE. There are some limitations related to the use of actigraphy for sleep measurement. Polysomnography (PSG) remains the gold standard for assessing sleep because it provides a direct physiological measurement of sleep stages through simultaneous recording of brain activity (EEG), eye movements (EOG), and muscle tone (EMG), allowing precise differentiation between sleep and wakefulness (ADD A REFERENCE). PSG requires an extensive set-up, which makes it more suitable for lab studies. Wrist actigraphy is a practical and validated alternative for field studies where we are interested in habitual sleep. In the present study, only the accelerometer function of the ActiGraph devices was used, with all other sensors disabled to preserve battery life and participants’ privacy. Because actigraphy infers sleep and wake from movement alone, it may misclassify periods of quiet wakefulness as sleep, and can underestimate wake after sleep onset (WASO) compared with PSG (SOURCES, FOR GOD'S SAKE!!!). To ensure accuracy, actigraphy data were cross-checked against participants’ sleep diaries. Any apparent sleep periods not confirmed in the diary were excluded from analyses. Sources of errors here could be when participants take the actigraph off and leave it on the counter for periods of the day. The stillness will sometimes be registered as sleep.
+Note lack of congruency modulation - stability (interference control) less sensitive to the observed sleep variation; link to prior sleep literature that finds sustained attention/goal maintenance vulnerable to sleep loss (Lim \& Dinges 2010; Kusztor et al. 2019; Wilckens et al. 2014). This suggests that (in this sample and task) sleep operates more on processes engaged when updating or reconfiguring task sets (transient gating/reconfiguration) than on the processes that maintain/ shield a set from distractors. That fits models where switching relies on phasic control/gating (striatal + PFC mechanisms) that may be more sensitive to arousal and recent sleep history.
+
+Suggest mechanistic interpretation: switching recruits transient control and gating processes (striatal + PFC) that may be sensitive to arousal/energy levels; congruency may rely more on robust stimulus–response mappings.
 
 
-\section{Limitations}
-\paragraph{Sample Size and Generalizability}
-\paragraph{Measurement Limitations}
-The present analyses used only a single EEG session per participant. Although TST dev was computed as a within-person deviation, the analysis did not include repeated EEG sessions per participant to model session-specific within-person neural change. Consequently, inferences about within-person neural changes across nights are limited; future work with repeated EEG sessions would strengthen causal inferences about night-to-night sleep effects on neural dynamics.
+\section{Habitual sleep and variability}
 
+Habitual sleep and sleep variability both had significant effects, but why did they point in different directions?
+
+\paragraph{Trait vs state, the strategic account}
+
+Mean TST may index habitual/trait features (sleep need, lifestyle) that correlate with stable individual differences (e.g., baseline arousal, cognitive style). Individual sleep needs are  flexible \parencite{fjell2024sleep}, and unity/diversity \parencite{friedman2017unity}. TST SD reflects variability/instability — possibly indexing adaptability, circadian irregularity, or engagement strategies.
+
+Mean TST (habitual sleep) may index stable individual differences (baseline arousal, sleep need, strategic caution). Longer habitual sleepers showed larger accuracy switch costs but larger switch related theta — this could reflect a more cautious/accuracy focused strategy (more theta recruitment) that nevertheless produces a larger accuracy drop on switches.
+
+TST SD (habitual variability) may index lifestyle/chronobiological flexibility or tolerance for irregular sleep. Greater variability associated with smaller switch costs and reduced switch related theta could reflect a behavioural pattern of accepting speed over accuracy or reduced tonic control engagement (less theta) while still preserving switching performance.
+
+
+
+\paragraph{Speed vs. accuracy, the motivational account}
+
+Longer habitual sleepers could adopt a more cautious strategy (more theta recruitment, larger accuracy cost, demand avoidance \textcite{kool2010cognitivecost}), while variable sleepers may accept speed for accuracy \parencite{bogacz2010speedaccuracy}
+
+Habitual longer sleepers may adopt conservative thresholds (higher accuracy bias) so they recruit more theta during switch trials but pay an accuracy cost under switching demands. Conversely, variable sleepers may operate with lower thresholds or different motivational set, producing smaller measured switch costs. This could be tested with a drift diffusion model (hierarchical DDM) to individual RT + accuracy data to estimate threshold (caution), drift (evidence rate), and nondecision time; test associations of Mean TST and TST SD with threshold and drift. If Mean TST links to higher threshold and TST SD to lower threshold, that supports strategic/caution account.
+
+\paragraph{Measurement and sample considerations}
 Reliability and validity of measures. 
 How do researchers operationalize flexibility? Appropriate level of explanation/reduction.
 test-retest reliability of executive functions overall, maybe discuss thunberg's paper on stop signal task. 
 
-The present analysis used only one EEG session per participant, which means that both mean total sleep time and the night-before deviation in sleep time entered the models as participant-level predictors attached to a single session. As a result, the deviation variable was conceptually derived from within-person fluctuation, but it could not be tested as a true repeated within-person neural effect in the current thesis. If both EEG sessions had been included, it would have been possible to model session-specific night-before sleep deviation against session-specific behavioural and neural outcomes within participants. That would have allowed a stronger test of whether changes in sleep relative to a person’s own usual pattern were associated with corresponding changes in task performance or theta.
+Diary based Mean TST may reflect different constructs than objective measures; unmeasured third variables (e.g., occupational schedule, caffeine, mood) could drive opposing associations. Cross sectional design precludes causal direction.
+
+Diary-based TST may reflect different constructs (self-report bias) vs. actigraphy/PSG; reverse causality (poorer functioning affects sleep) or third variables (depression/anxiety).
+Reliability concerns of behavioral measures \parencite{thunberg2024unreliability}.
+Sleep flexibility \parencite{fjell2024sleep}.
+
+
+\section{Midfrontal theta}
+Interpretation and nulls. Theta behaved like an engagement signal for switching (Mean TST up → larger switch–repeat theta), consistent with literature linking FM theta to control recruitment. Habitual sleep and variability modulated switch related theta but not congruency related theta.
+
+Summarize theta pattern: no reliable main condition effects, but habitual sleep/variability modulated switch‑related theta.
+Interpret theta as control engagement signal \parencite{cavanagh2014theta, cohen2013thetaconflict}. Discuss why theta ANOVA was null (low power) but interactions emerged in mixed models.
+Consider compensatory vs resource‑failure accounts: increased theta with longer habitual sleep during switching could reflect greater capacity to recruit control (compensatory), or increased effort due to difficulty \parencite{cavanagh2015metatheta, depestele2023thetadriving}.
+
+\paragraph{}
+The omnibus theta ANOVA was null (no main switch or congruency effects). Possible reasons could include: 
+
+\begin{itemize}
+  \item High between subject variability and limited trial counts in some conditions (esp. switch incongruent) reduced power for condition effects.
+  \item Theta summary choice (4–8 Hz, 200–500 ms) is a coarse index; individual differences in latency/frequency could blur condition averages.
+  \item Mixed models, by leveraging within person structure and including sleep predictors, were more sensitive to detecting interactions than the ANOVA.
+\end{itemize}
+
+\paragraph{Mechanistic interpretations}
+Increased switch related theta with higher Mean TST could reflect greater capacity/engagement (compensatory engagement) or greater effort because these individuals adopt strategies that recruit medial frontal control more strongly.
+
+Reduced switch related theta with greater TST SD could reflect reduced capacity to mount phasic control or a shift to alternative, non theta supported strategies.
+
+\section{Practical implications}
+How does this study contribute to how we understand cognitive control and everyday cognitive performance?
+
+
+\section{Limitations and future research}
+
+Sample and power: modest sample (N = 46 for sleep models); small effects should be interpreted cautiously and need replication.
+
+Single EEG session: TST dev is a within person measure but neural outcome was measured only once — this limits causal inference about night to night neural change. The present analysis used only one EEG session per participant, which means that both mean total sleep time and the night-before deviation in sleep time entered the models as participant-level predictors attached to a single session. As a result, the deviation variable was conceptually derived from within-person fluctuation, but it could not be tested as a true repeated within-person neural effect in the current thesis. If both EEG sessions had been included, it would have been possible to model session-specific night-before sleep deviation against session-specific behavioural and neural outcomes within participants. That would have allowed a stronger test of whether changes in sleep relative to a person’s own usual pattern were associated with corresponding changes in task performance or theta.
+
+Sleep measures: primary sleep predictor is diary based TST (validated against actigraphy but actigraphy was used only for spot checks). Diaries can be biased and timing of actigraphy/EEG may not align perfectly.
+
+Trial counts and EEG: limited usable trials in some conditions (switch incongruent) and single trial variability reduce sensitivity for theta.
+
+Generalizability: sample demographics (age, sex balance) and exclusion criteria limit generalizability.
+
+Confounders/moderators: 
+Could mood / MADRS, age, sex, trial counts per condition, caffeine, time of day be covariates?
+Do the effects hold when using actigraphy derived TST (rather than diary) and when both Mean TST and TST SD are entered together to see independent contributions?
+
+
+\paragraph{Future research}
+Use the longitudinal repeated EEG sessions to test within‑person causal effects (multiple EEG sessions across nights with differing TST).
+
+Combine diary + actigraphy + PSG (subsample) to validate sleep metrics and specifically test associations with sleep stages (SWS/REM) and theta.
+
+Use computational modelling (drift‑diffusion) and hierarchical Bayesian models to link sleep to latent decision parameters. Use computational modelling (hierarchical DDM) to clarify whether sleep relates to decision threshold vs information processing rate.
+
+Experimental manipulation: partial sleep restriction vs. extension in a within‑subject design to test causality for switching and theta.
+
+Larger samples and multi site replication to confirm directionality of Mean TST vs TST SD associations.
+
 
 \chapter{Conclusion}
-What did we learn from all of this
+In this sample, naturalistic sleep variation was associated mainly with switch‑specific effects (flexibility) rather than congruency (stability). Habitual mean sleep and habitual variability showed opposite associations with switch accuracy and switch‑related theta, while night‑before deviations mainly related to RT switch cost. Midfrontal theta was modulated by habitual sleep and variability specifically for switching, consistent with its role as a control engagement signal, but overall theta condition effects were modest. The pattern highlights a complex picture in which trait‑like habitual sleep and state‑like nightly deviations produce different behavioural and neural signatures; these findings require replication with larger samples, repeated EEG sessions, and more detailed sleep measurement and modelling to unpack mechanisms.
+
+Practical implications or what these findings mean for understanding everyday cognitive performance.
 
 % ============= REFERENCES =============
 \printbibliography[heading=bibintoc,title={References}]
