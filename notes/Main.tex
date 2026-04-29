@@ -105,6 +105,16 @@
     René Huster\par}
 \end{titlepage}
 
+% ============= FRONT MATTER PAGE NUMBERING =============
+\pagenumbering{roman}
+\setcounter{page}{2}
+
+% Abstract
+\newpage
+\thispagestyle{plain}
+\begin{center}
+    
+\end{center}
 
 
 
@@ -169,7 +179,12 @@ The conceptual illustration in Figure~\ref{fig:controlstates} was generated usin
 %\listoffigures
 %\listoftables
 
-% ============= MAIN CONTENT =============
+
+% ============= MAIN CONTENT PAGE NUMBERING =============
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
 \chapter{Introduction}
 
 Sleep is a fundamental biological process that supports cognitive and emotional functioning. Even in healthy adults, sleep duration and quality will differ across individuals and across time, shaped by circadian rhythms, lifestyle factors, and environmental demands \parencite{foster2020sleep}. Habitual sleep patterns may reflect relatively stable individual differences, whereas nightly deviations can reflect transient changes in arousal, fatigue, and regulatory capacity \parencite{fjell2024sleep}. Understanding how these different aspects of sleep relate to cognition is important because everyday performance often depends on long-term sleep habits as well as sleep quality in the days leading up to a demanding situation.
