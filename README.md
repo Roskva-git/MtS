@@ -15,7 +15,7 @@ This is the project description for my master thesis in cognitive neuroscience.
 
 For my master’s thesis, I use data from the *Mind the Sleep* project initiated by Margrethe Hansen and René Huster. The broader study examines how sleep relates to cognition and mental health. The current project focuses on **cognitive control in a task-switching paradigm**, and how it varies as a function of sleep.
 
-A central challenge in cognitive neuroscience is determining whether cognitive measures reflect stable individual differences (traits) or fluctuate depending on situational factors (states). Evidence suggests that many commonly used measures of cognitive control show low reliability across time, indicating substantial variability that is not well understood.
+A central challenge in cognitive neuroscience is determining whether cognitive measures reflect stable individual differences (traits) or fluctuate depending on situational factors (states). Evidence suggests that many commonly used measures of cognitive control show low reliability across time, indicating variability that is not well understood.
 
 Sleep is a strong candidate for explaining this variability. It operates across multiple timescales, from relatively stable individual patterns (habitual sleep) to short-term fluctuations (sleep the night before testing). These different aspects of sleep may differentially influence cognitive control.
 
