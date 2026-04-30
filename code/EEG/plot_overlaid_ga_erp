@@ -2,7 +2,7 @@
 
 clear; clc;
 
-load('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\ERPs\ERP_struct_cleaned_by_electrode.mat');
+load('\\hypatia.uio.no\...\ERP_struct_cleaned_by_electrode.mat');
 
 condition_names  = {'rep_con','rep_inc','switch_con','switch_inc'};
 condition_titles = {'Repeat congruent','Repeat incongruent','Switch congruent','Switch incongruent'};
