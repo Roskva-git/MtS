@@ -1,29 +1,26 @@
-%% ========================================================================
 %  BEHAVIOURAL DATA – FINAL ANALYSIS TABLE CREATION
-%
+
 %  PURPOSE:
 %  Create ONE clean behavioural dataset that contains ALL variables needed for:
 %   - 2x2 ANOVAs (Switch x Congruency)
 %   - Linear regressions (sleep → behaviour)
 %   - Mixed models (trial-condition level)
 %   - Descriptive statistics for reporting
-%
+
 %  INPUT:
 %   behavioural_overview_master.csv
 %   (one row per participant per session)
-%
+
 %  OUTPUT:
 %   1. behavioural_analysis_master.csv  (MAIN DATASET – USE THIS EVERYWHERE)
 %   2. behavioural_long.csv             (FOR ANOVA + MIXED MODELS)
-%
+
 %  IMPORTANT:
 %   - Uses ONLY correct RTs (standard practice)
 %   - Keeps accuracy INCLUDING omissions (consistent definition)
 %   - Adds explicit switch and congruency cost variables
 %   - No need to ever go back to the big 83-column table again
-%
-%  AUTHOR: ChatGPT <3 
-%  ========================================================================
+
 
 clear; clc;
 
