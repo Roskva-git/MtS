@@ -24,13 +24,13 @@
 %   - behavioural_overview_master.mat
 
 %% 0. Initialize EEGLAB and Set Paths
-addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Code\tools\eeglab2025.0.0\', ...
-        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\', ...
-        '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\');
+addpath('\\hypatia.uio.no\...\eeglab2025.0.0\', ...
+        '\\hypatia.uio.no\l...\Røskva\', ...
+        '\\hypatia.uio.no\...\Code\');
 eeglab;  % Start EEGLAB
 
-mapped_folder = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\3_mapped\';
-out_folder    = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\';
+mapped_folder = '\\hypatia.uio.no\...\3_mapped\';
+out_folder    = '\\hypatia.uio.no\...\4_behavioural\';
 
 if ~exist(out_folder, 'dir')
     mkdir(out_folder);
@@ -502,7 +502,7 @@ disp('Behavioural extraction complete.');
 %% Check the table for sanity %%
 
 % Navigate to the output folder
-% cd('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural')
+% cd('\\hypatia.uio.no\...\4_behavioural')
 
 % Open the MAT file
 % load('behavioural_overview_master.mat')
