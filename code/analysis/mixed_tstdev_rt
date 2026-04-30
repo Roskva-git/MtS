@@ -3,32 +3,32 @@
 % Author: Røskva 
 % Created: 07.04.2026
 % Modified: 23.04.2026
-%
+
 % Purpose:
 % Examine whether night-to-night sleep deviation predicts reaction times
 % across task conditions using a linear mixed-effects model.
-%
+
 % Input:
 % data_merged_sleep_behaviour.csv
 % (participant-level dataset containing behavioural measures and sleep variables)
-%
+
 % Output:
 % mixed_model_sleep_RT.mat
 % mixed_model_sleep_RT_results.txt
-%
+
 % Variables:
 % Dependent variable:
 % - RT (reaction time per condition, correct trials)
-%
+
 % Fixed effects:
 % - TST_dev (night-before deviation from mean sleep)
 % - Switch (repeat vs switch)
 % - Congruency (congruent vs incongruent)
 % - Interactions between sleep deviation and task factors
-%
+
 % Random effects:
 % - Random intercept for participant (ID)
-%
+
 % Notes:
 % Data are reshaped into long format (one row per participant × condition).
 % This model tests whether night-before sleep deviation is associated
@@ -38,7 +38,7 @@
 clear; clc;
 
 %% 1. Load data
-data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+data = readtable('\\hypatia.uio.no\...\data_merged_sleep_behaviour.csv');
 
 %% 2. Remove missing values
 keep = ~isnan(data.TST_dev) & ...
@@ -98,11 +98,11 @@ outTbl = table( ...
     round(lme.Coefficients.pValue, 4), ...
     'VariableNames', {'Effect','Estimate','SE','t','p'});
 
-txtFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_sleep_RT_results.txt';
+txtFile = '\\hypatia.uio.no\...\mixed_model_sleep_RT_results.txt';
 writetable(outTbl, txtFile, 'Delimiter', '\t', 'FileType', 'text');
 
 %% 7. Save
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_sleep_RT.mat', ...
+save('\\hypatia.uio.no\...\mixed_model_sleep_RT.mat', ...
     'lme', 'data', 'data_long', 'outTbl');
 
 disp('Mixed model complete.')
