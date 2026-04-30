@@ -34,7 +34,7 @@
 clear; clc;
 
 %% 1. Load merged dataset
-data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+data = readtable('\\hypatia.uio.no\...\data_merged_sleep_behaviour.csv');
 
 %% 2. Create behavioural outcome (switch cost)
 data.switch_cost_RT = data.rt_cC_sw_con - data.rt_cC_rp_con;
@@ -58,7 +58,7 @@ disp('Model 3: Full model (including deviation)')
 disp(mdl3)
 
 %% 6. Save models
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\regression_sleep_behaviour.mat', ...
+save('\\hypatia.uio.no\...\regression_sleep_behaviour.mat', ...
     'mdl1','mdl2','mdl3');
 
 disp('Regression complete.')
