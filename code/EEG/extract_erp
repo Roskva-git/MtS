@@ -31,8 +31,8 @@ clear; clc;
 
 %% 0. Initialize paths
 
-basePath = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\';
-outPath  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\ERPs\';
+basePath = '\\hypatia.uio.no\...\6_subsets\';
+outPath  = '\\hypatia.uio.no\...\ERPs\';
 
 % Define condition folders
 folders = {'rep_con','rep_inc','switch_con','switch_inc'};
