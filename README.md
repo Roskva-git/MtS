@@ -25,7 +25,7 @@ The project asked whether:
 
 ## Data
 
-The repository does **not** contain raw EEG data, sleep diary data, actigraphy data, questionnaire data, or identifiable participant information.
+The repository does not contain raw EEG data, sleep diary data, actigraphy data, questionnaire data, or identifiable participant information.
 
 Data were collected as part of the *Mind the Sleep* project and stored on the University of Oslo’s secure TSD platform. Any paths in the public code have been anonymized or replaced with placeholders.
 
