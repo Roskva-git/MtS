@@ -23,8 +23,8 @@
 clear; clc;
 
 %% 1. Load data
-behaviour = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
-theta = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\theta\theta_measures.csv');
+behaviour = readtable('\\hypatia.uio.no\...\data_merged_sleep_behaviour.csv');
+theta = readtable('\\hypatia.uio.no\...\theta_measures.csv');
 
 % 1.1 Rename partipants to ID in theta_measures
 theta.Properties.VariableNames{'participant'} = 'ID';
@@ -46,9 +46,9 @@ fprintf('r = %.3f, p = %.3f\n', r, p);
 %% 5. Save results
 results = table(r, p);
 writetable(results, ...
-'\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\correlation_theta_behaviour.csv');
+'\\hypatia.uio.no\...\correlation_theta_behaviour.csv');
 
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\correlation_theta_behaviour.mat', ...
+save('\\hypatia.uio.no\...\correlation_theta_behaviour.mat', ...
     'r','p');
 
 disp('Correlation complete.')
