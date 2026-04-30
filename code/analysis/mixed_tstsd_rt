@@ -25,7 +25,7 @@
 clear; clc;
 
 %% 1. Load data
-data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+data = readtable('\\hypatia.uio.no\...\data_merged_sleep_behaviour.csv');
 
 %% 2. Remove missing values
 keep = ~isnan(data.TST_sd_h) & ...
@@ -91,11 +91,11 @@ outTbl = table( ...
     round(lme.Coefficients.pValue, 4), ...
     'VariableNames', {'Effect','Estimate','SE','t','p'});
 
-txtFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_tstsd_RT_results.txt';
+txtFile = '\\hypatia.uio.no\...\mixed_model_tstsd_RT_results.txt';
 writetable(outTbl, txtFile, 'Delimiter', '\t', 'FileType', 'text');
 
 %% 7. Save
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_tstsd_RT.mat', ...
+save('\\hypatia.uio.no\...\mixed_model_tstsd_RT.mat', ...
     'lme', 'data', 'data_long', 'outTbl', 'grandMean_TSTsd');
 
 disp('Mixed model saved.')
