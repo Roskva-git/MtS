@@ -53,7 +53,7 @@ Analyses included:
 - Benjamini–Hochberg false discovery rate correction for sleep-related fixed effects
 
 ## Repository structure
-The repository contains analysis scripts for behavioural data, sleep data, and EEG/theta extraction. File paths have been anonymized, and scripts may require local adaptation before they can be run.
+The repository contains analysis scripts for behavioural data, sleep data, and EEG/theta extraction. File paths have been anonymized, and scripts may require local adaptation before they can be run. The "Structure"-folder contains a playground for SQL and ER databases, and "Notes" contains earlier ideas as well as the LaTex code for the thesis and bibtex-file for references.
 
 
 **Milestones**
