@@ -17,12 +17,12 @@
 %     - Accuracy by switch/repeat
 %     - Accuracy by congruency
 %     - Accuracy by switch × congruency (2×2 design)
-%
+
 %   Uses full trial counts per condition:
 %     - Correct trials (cC)
 %     - Incorrect trials (cE)
 %     - Omissions (OM)
-%
+
 %   All accuracy measures are defined as:
 %     correct / total trials (including omissions)
 
@@ -43,7 +43,7 @@
 clear; clc;
 
 %% LOAD
-T = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\behavioural_overview_master.csv');
+T = readtable('\\hypatia.uio.no\...\behavioural_overview_master.csv');
 
 %% ===== SWITCH / REPEAT (CORRECT) =====
 
