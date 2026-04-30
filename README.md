@@ -77,10 +77,6 @@ Same as the parent project (“Mind the sleep”) on ForskPro.
 ## Ethical approval
 The project was approved by the Regional Committees for Medical and Health Research Ethics (REK #197760).
 
-## References
-- Hox, J.J. & Bechger, T.M. (1998). An Introduction to Structural Equation Modeling. Family Science Review, 11, 354-373. 
-- Kusztor, A., Raud, L., Juel, B. E., Nilsen, A. S., Storm, J. F., & Huster, R. J. (2019). Sleep deprivation differentially affects subcomponents of cognitive control. Sleep, 42(4), zsz016. https://doi.org/10.1093/sleep/zsz016
-- Steyer, R., Schmitt, M. & Eid, M. (1999). Latent State-Trait Theory and Research in Personality and Individual Differences. European Journal of Personality, 13, 389-408.
 
 ## References
 
