@@ -41,8 +41,8 @@
 clear; clc;
 
 %% 1. Load data
-sleep = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_measures_for_analysis.csv');
-theta = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\theta_measures_for_analysis.csv');
+sleep = readtable('\\hypatia.uio.no\...\sleep_measures_for_analysis.csv');
+theta = readtable('\\hypatia.uio.no\...\theta_measures_for_analysis.csv');
 
 %% 2. Merge
 data = innerjoin(theta, sleep, 'Keys','ID');
@@ -66,7 +66,7 @@ disp('Model 3')
 disp(mdl3)
 
 %% 7. Save models
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\regression_sleep_theta.mat', ...
+save('\\hypatia.uio.no\...\regression_sleep_theta.mat', ...
     'mdl1','mdl2','mdl3');
 
 %% 8. Save coefficients
