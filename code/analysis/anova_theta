@@ -23,8 +23,8 @@
 clear; clc;
 
 %% 1. Paths
-inFile  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\theta_measures_cycles_3_0p8_winsize1s_3to25.csv';
-outFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\anova_theta_results_3to25.mat';
+inFile  = '\\hypatia.uio.no\...\theta_measures_cycles_3_0p8_winsize1s_3to25.csv';
+outFile = '\\hypatia.uio.no\...\anova_theta_results_3to25.mat';
 
 %% 2. Load data
 T = readtable(inFile);
