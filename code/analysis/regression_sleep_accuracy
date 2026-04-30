@@ -1,34 +1,33 @@
-%% ========================================================================
 %  REGRESSION: SLEEP → OVERALL ACCURACY
-%
+
 %  AUTHOR: Røskva
 %  DATE: 16.04.26
-%
+
 %  PURPOSE:
 %   Test whether sleep predicts general task performance (overall accuracy),
 %   independent of task condition (switch/congruency).
-%
+
 %  MODELS:
 %   Model 1: Mean sleep (TST_mean_h)
 %   Model 2: + Sleep variability (TST_sd_h)
 %   Model 3: + Night-before deviation (TST_dev)
-%
+
 %  INPUT:
 %   sleep_behav_merged.csv
-%
+
 %  OUTPUT:
 %   regression_sleep_overall_accuracy.mat
-%
+
 %  NOTES:
 %   - Accuracy includes omissions (correct / all trials)
 %   - Overall accuracy is computed as the mean across 4 conditions
 %   - N ≈ 46 (participants with complete sleep data)
-%  ========================================================================
+
 
 clear; clc;
 
 %% LOAD DATA
-data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_behav_merged.csv');
+data = readtable('\\hypatia.uio.no\...\sleep_behav_merged.csv');
 
 %% CREATE OVERALL ACCURACY
 data.acc_overall = mean([ ...
@@ -51,7 +50,7 @@ mdl3 = fitlm(data, 'acc_overall ~ TST_mean_h + TST_sd_h + TST_dev');
 disp(mdl3)
 
 %% SAVE RESULTS
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\regression_sleep_overall_accuracy.mat', ...
+save('\\hypatia.uio.no\...\regression_sleep_overall_accuracy.mat', ...
     'mdl1','mdl2','mdl3');
 
 disp('Overall accuracy regression complete.');
