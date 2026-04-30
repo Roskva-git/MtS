@@ -25,9 +25,9 @@
 clear; clc;
 
 %% 1. Paths
-thetaFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\theta_measures_cycles_3_0p8_winsize1s_3to25.csv';
-sleepFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_measures_for_analysis.csv';
-outFile   = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_tstsd_theta_3to25.mat';
+thetaFile = '\\hypatia.uio.no\...\theta_measures_cycles_3_0p8_winsize1s_3to25.csv';
+sleepFile = '\\hypatia.uio.no\...\sleep_measures_for_analysis.csv';
+outFile   = '\\hypatia.uio.no\...\mixed_model_tstsd_theta_3to25.mat';
 
 %% 2. Load data
 theta = readtable(thetaFile);
@@ -102,7 +102,7 @@ outTbl = table( ...
     round(lme.Coefficients.pValue, 4), ...
     'VariableNames', {'Effect','Estimate','SE','t','p'});
 
-txtFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_tstsd_theta_3to25_results.txt';
+txtFile = '\\hypatia.uio.no\...\mixed_model_tstsd_theta_3to25_results.txt';
 writetable(outTbl, txtFile, 'Delimiter', '\t', 'FileType', 'text');
 
 %% 11. Save
