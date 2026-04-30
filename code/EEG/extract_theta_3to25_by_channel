@@ -25,11 +25,11 @@
 clear; clc;
 
 %% 1. PATHS
-addpath('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Code\eeglab2025.1.0')
+addpath('\\hypatia.uio.no\...\eeglab2025.1.0')
 
-basePath = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets';
-outTheta = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\theta_measures_cycles_3_0p8_winsize1s_3to25.csv';
-outERSP  = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\ersp_cycles_3_0p8_winsize1s_3to25_BYCHANNEL.mat';
+basePath = '\\hypatia.uio.no\...\6_subsets';
+outTheta = '\\hypatia.uio.no\...\theta_measures_cycles_3_0p8_winsize1s_3to25.csv';
+outERSP  = '\\hypatia.uio.no\...\ersp_cycles_3_0p8_winsize1s_3to25_BYCHANNEL.mat';
 
 folders = {'rep_con','rep_inc','switch_con','switch_inc'};
 condition_labels = {'RC','RI','SC','SI'};
