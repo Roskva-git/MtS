@@ -2,7 +2,7 @@
 
 clear; clc;
 
-load('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\6_subsets\theta\ersp_cycles_3_0p8_winsize1s_3to25_BYCHANNEL.mat');
+load('\\hypatia.uio.no\...\ersp_cycles_3_0p8_winsize1s_3to25_BYCHANNEL.mat');
 
 channel_labels = {'Fz','FCz','Cz'};
 condition_titles = {'Repeat congruent','Repeat incongruent','Switch congruent','Switch incongruent'};
