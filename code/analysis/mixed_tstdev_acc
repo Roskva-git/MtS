@@ -32,14 +32,14 @@
 clear; clc;
 
 %% 1. Load behavioural data
-behav = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\behavioural_overview_master.csv');
+behav = readtable('\\hypatia.uio.no\...\behavioural_overview_master.csv');
 
 %% Keep correct session if needed
 % Uncomment and adjust if necessary
 % behav = behav(behav.session == 1, :);
 
 %% 2. Load sleep data
-sleep = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_measures_for_analysis.csv');
+sleep = readtable('\\hypatia.uio.no\...\sleep_measures_for_analysis.csv');
 
 %% Make sure ID names match
 if ismember('participantID', behav.Properties.VariableNames)
@@ -125,11 +125,11 @@ outTbl = table( ...
     round(glme.Coefficients.pValue, 4), ...
     'VariableNames', {'Effect','Estimate','SE','z_or_t','p'});
 
-txtFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_sleep_accuracy_results.txt';
+txtFile = '\\hypatia.uio.no\...\mixed_model_sleep_accuracy_results.txt';
 writetable(outTbl, txtFile, 'Delimiter', '\t', 'FileType', 'text');
 
 %% 9. Save
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_sleep_accuracy_logistic.mat', ...
+save('\\hypatia.uio.no\...\mixed_model_sleep_accuracy_logistic.mat', ...
     'glme', 'data_long', 'outTbl');
 
 disp('Logistic mixed model complete.')
