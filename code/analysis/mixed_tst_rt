@@ -3,18 +3,18 @@
 % Author: Røskva 
 % Created: 07.04.2026
 % Modified: 23.04.2026
-%
+
 % Purpose:
 % Examine whether habitual sleep duration predicts reaction times
 % across task conditions using a linear mixed-effects model.
-%
+
 % Input:
 % data_merged_sleep_behaviour.csv
-%
+
 % Output:
 % mixed_model_meantst_RT.mat
 % mixed_model_meantst_RT_results.txt
-%
+
 % Notes:
 % Data are reshaped into long format (one row per participant x condition).
 % The model tests whether habitual sleep (TST_mean_h) predicts RT,
@@ -25,7 +25,7 @@
 clear; clc;
 
 %% 1. Load data
-data = readtable('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\data_merged_sleep_behaviour.csv');
+data = readtable('\\hypatia.uio.no\...\data_merged_sleep_behaviour.csv');
 
 %% 2. Remove missing values
 keep = ~isnan(data.TST_mean_h) & ...
@@ -91,11 +91,11 @@ outTbl = table( ...
     round(lme.Coefficients.pValue, 4), ...
     'VariableNames', {'Effect','Estimate','SE','t','p'});
 
-txtFile = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_meantst_RT_results.txt';
+txtFile = '\\hypatia.uio.no\...\mixed_model_meantst_RT_results.txt';
 writetable(outTbl, txtFile, 'Delimiter', '\t', 'FileType', 'text');
 
 %% 7. Save
-save('\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\mixed_model_meantst_RT.mat', ...
+save('\\hypatia.uio.no\...\mixed_model_meantst_RT.mat', ...
     'lme', 'data', 'data_long', 'outTbl', 'grandMean_TSTmean');
 
 disp('Mixed model saved.')
