@@ -1,6 +1,6 @@
 # Mind the Sleep: sleep and cognitive control
 
-This repository contains code and project documentation for my master’s thesis in cognitive neuroscience at the University of Oslo.
+This repository contains code and project documentation for my master’s thesis in cognitive neuroscience at the University of Oslo, as well as exploratory work from before the scope of the thesis was narrowed down to its present form.
 
 The thesis used data from the *Mind the Sleep* project, initiated by Margrethe Hansen and René Huster. The broader project examines how sleep relates to cognition and mental health. The present thesis focused on whether naturalistic variation in sleep is associated with behavioural and neural indices of cognitive control in a task-switching paradigm.
 
