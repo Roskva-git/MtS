@@ -1,0 +1,359 @@
+%% Predicted probabilities for accuracy logistic mixed models
+% Author: Røskva
+% Created: 01.05.2026
+% Modified: 01.05.2026
+
+% Purpose:
+% Convert nominal sleep x switch interactions from logistic mixed models
+% into model-predicted accuracy percentages.
+
+% Input:
+% behavioural_overview_master.csv
+% sleep_measures_for_analysis.csv
+
+% Required sleep columns:
+% ID, TST_mean_h, TST_sd_h
+
+% Output:
+% predicted_accuracy_summary_switch_costs.csv
+% predicted_accuracy_by_condition.csv
+
+% Models:
+% Success ~ Switch * Congruency * TST_mean_h_c + (1 | ID)
+% Success ~ Switch * Congruency * TST_sd_h_c   + (1 | ID)
+
+clear; clc;
+
+
+%  1. Paths
+
+behav_file = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Data\TST\4_behavioural\behavioural_overview_master.csv';
+sleep_file = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\sleep_measures_for_analysis.csv';
+out_dir = '\\hypatia.uio.no\lh-sv-psi\MICC\Projects\MindTheSleep\Projects\Røskva\Final analysis folder\';
+
+
+%  2. Load data
+
+behav = readtable(behav_file);
+sleep = readtable(sleep_file);
+
+%% Make sure ID names match
+if ismember('participantID', behav.Properties.VariableNames)
+    behav.Properties.VariableNames{'participantID'} = 'ID';
+end
+
+if ismember('participantID', sleep.Properties.VariableNames)
+    sleep.Properties.VariableNames{'participantID'} = 'ID';
+end
+
+
+%  3. Define sleep-variable names
+
+meanTST_var = 'TST_mean_h';
+tstSD_var   = 'TST_sd_h';
+
+fprintf('Using Mean TST variable: %s\n', meanTST_var);
+fprintf('Using TST SD variable:   %s\n\n', tstSD_var);
+
+%% Check that required sleep columns exist
+required_sleep_vars = {'ID', meanTST_var, tstSD_var};
+
+for i = 1:numel(required_sleep_vars)
+    if ~ismember(required_sleep_vars{i}, sleep.Properties.VariableNames)
+        error('Missing required variable in sleep table: %s', required_sleep_vars{i});
+    end
+end
+
+
+%  4. Create long-format accuracy table
+
+% Successes: correct trials
+succ_rp_con = behav.n_cC_rp_con;
+succ_rp_inc = behav.n_cC_rp_inc;
+succ_sw_con = behav.n_cC_sw_con;
+succ_sw_inc = behav.n_cC_sw_inc;
+
+% Failures: incorrect responses + omissions
+fail_rp_con = behav.n_cE_rp_con + behav.n_om_rp_con;
+fail_rp_inc = behav.n_cE_rp_inc + behav.n_om_rp_inc;
+fail_sw_con = behav.n_cE_sw_con + behav.n_om_sw_con;
+fail_sw_inc = behav.n_cE_sw_inc + behav.n_om_sw_inc;
+
+ID = [behav.ID; behav.ID; behav.ID; behav.ID];
+
+Success = [
+    succ_rp_con
+    succ_rp_inc
+    succ_sw_con
+    succ_sw_inc
+];
+
+Fail = [
+    fail_rp_con
+    fail_rp_inc
+    fail_sw_con
+    fail_sw_inc
+];
+
+Switch = categorical([
+    repmat("repeat", height(behav), 1)
+    repmat("repeat", height(behav), 1)
+    repmat("switch", height(behav), 1)
+    repmat("switch", height(behav), 1)
+]);
+
+Congruency = categorical([
+    repmat("congruent", height(behav), 1)
+    repmat("incongruent", height(behav), 1)
+    repmat("congruent", height(behav), 1)
+    repmat("incongruent", height(behav), 1)
+]);
+
+data_long = table(ID, Success, Fail, Switch, Congruency);
+
+%% Merge sleep onto long data
+data_long = innerjoin(data_long, sleep, 'Keys', 'ID');
+
+%% Set categorical reference levels explicitly
+data_long.Switch = reordercats(data_long.Switch, {'repeat','switch'});
+data_long.Congruency = reordercats(data_long.Congruency, {'congruent','incongruent'});
+
+
+%  5. Prepare Mean TST model data
+
+data_mean = data_long;
+
+keep_mean = ~isnan(data_mean.(meanTST_var));
+data_mean = data_mean(keep_mean, :);
+
+% Compute grand mean and SD at participant level, not condition-row level
+[~, idx_mean] = unique(data_mean.ID);
+participant_meanTST = data_mean.(meanTST_var)(idx_mean);
+
+grandMean_TSTmean = mean(participant_meanTST, 'omitnan');
+sd_meanTST = std(participant_meanTST, 'omitnan');
+
+data_mean.TST_mean_h_c = data_mean.(meanTST_var) - grandMean_TSTmean;
+
+fprintf('Mean TST model N: %d participants\n', numel(unique(data_mean.ID)));
+fprintf('Grand mean TST_mean_h: %.4f h\n', grandMean_TSTmean);
+fprintf('Participant-level SD TST_mean_h: %.4f h\n\n', sd_meanTST);
+
+
+%  6. Prepare TST SD model data
+
+data_sd = data_long;
+
+keep_sd = ~isnan(data_sd.(tstSD_var));
+data_sd = data_sd(keep_sd, :);
+
+% Compute grand mean and SD at participant level, not condition-row level
+[~, idx_sd] = unique(data_sd.ID);
+participant_tstSD = data_sd.(tstSD_var)(idx_sd);
+
+grandMean_TSTSD = mean(participant_tstSD, 'omitnan');
+sd_tstSD = std(participant_tstSD, 'omitnan');
+
+data_sd.TST_sd_h_c = data_sd.(tstSD_var) - grandMean_TSTSD;
+
+fprintf('TST SD model N: %d participants\n', numel(unique(data_sd.ID)));
+fprintf('Grand mean TST_sd_h: %.4f h\n', grandMean_TSTSD);
+fprintf('Participant-level SD TST_sd_h: %.4f h\n\n', sd_tstSD);
+
+
+
+%  7. Fit logistic mixed models
+
+glme_mean = fitglme(data_mean, ...
+    ['Success ~ 1 + Switch*Congruency + Switch*TST_mean_h_c + ' ...
+     'Congruency*TST_mean_h_c + Switch:Congruency:TST_mean_h_c + (1|ID)'], ...
+    'Distribution', 'Binomial', ...
+    'Link', 'logit', ...
+    'BinomialSize', data_mean.Success + data_mean.Fail);
+
+disp('Accuracy model with Mean TST complete.');
+disp(glme_mean);
+
+glme_sd = fitglme(data_sd, ...
+    ['Success ~ 1 + Switch*Congruency + Switch*TST_sd_h_c + ' ...
+     'Congruency*TST_sd_h_c + Switch:Congruency:TST_sd_h_c + (1|ID)'], ...
+    'Distribution', 'Binomial', ...
+    'Link', 'logit', ...
+    'BinomialSize', data_sd.Success + data_sd.Fail);
+
+disp('Accuracy model with TST SD complete.');
+disp(glme_sd);
+
+
+%  8. Extract fixed effects without local functions
+
+% Helper as anonymous function
+getb_mean = @(name) glme_mean.Coefficients.Estimate( ...
+    strcmp(string(glme_mean.Coefficients.Name), string(name)));
+
+getb_sd = @(name) glme_sd.Coefficients.Estimate( ...
+    strcmp(string(glme_sd.Coefficients.Name), string(name)));
+
+%% Coefficients: Mean TST model
+b_mean.Intercept = getb_mean("(Intercept)");
+b_mean.Switch = getb_mean("Switch_switch");
+b_mean.Congruency = getb_mean("Congruency_incongruent");
+b_mean.Sleep = getb_mean("TST_mean_h_c");
+b_mean.SwitchCongruency = getb_mean("Switch_switch:Congruency_incongruent");
+b_mean.SwitchSleep = getb_mean("Switch_switch:TST_mean_h_c");
+b_mean.CongruencySleep = getb_mean("Congruency_incongruent:TST_mean_h_c");
+b_mean.SwitchCongruencySleep = getb_mean("Switch_switch:Congruency_incongruent:TST_mean_h_c");
+
+%% Coefficients: TST SD model
+b_sd.Intercept = getb_sd("(Intercept)");
+b_sd.Switch = getb_sd("Switch_switch");
+b_sd.Congruency = getb_sd("Congruency_incongruent");
+b_sd.Sleep = getb_sd("TST_sd_h_c");
+b_sd.SwitchCongruency = getb_sd("Switch_switch:Congruency_incongruent");
+b_sd.SwitchSleep = getb_sd("Switch_switch:TST_sd_h_c");
+b_sd.CongruencySleep = getb_sd("Congruency_incongruent:TST_sd_h_c");
+b_sd.SwitchCongruencySleep = getb_sd("Switch_switch:Congruency_incongruent:TST_sd_h_c");
+
+disp('Extracted Mean TST coefficients:');
+disp(struct2table(b_mean));
+
+disp('Extracted TST SD coefficients:');
+disp(struct2table(b_sd));
+
+
+%  9. Predicted probabilities
+
+% Logistic inverse-link function
+invlogit = @(eta) 1 ./ (1 + exp(-eta));
+
+% Prediction function
+% S = 0 repeat, 1 switch
+% C = 0 congruent, 1 incongruent
+% x = centered sleep value, here +/- 1 SD
+predict_acc = @(b, S, C, x) invlogit( ...
+    b.Intercept + ...
+    b.Switch .* S + ...
+    b.Congruency .* C + ...
+    b.Sleep .* x + ...
+    b.SwitchCongruency .* S .* C + ...
+    b.SwitchSleep .* S .* x + ...
+    b.CongruencySleep .* C .* x + ...
+    b.SwitchCongruencySleep .* S .* C .* x);
+
+model_names = {'Mean TST'; 'Mean TST'; 'TST SD'; 'TST SD'};
+sleep_levels = {'-1 SD'; '+1 SD'; '-1 SD'; '+1 SD'};
+sleep_values = [-sd_meanTST; sd_meanTST; -sd_tstSD; sd_tstSD];
+
+repeat_congruent = nan(4,1);
+repeat_incongruent = nan(4,1);
+switch_congruent = nan(4,1);
+switch_incongruent = nan(4,1);
+
+repeat_avg = nan(4,1);
+switch_avg = nan(4,1);
+switch_cost_pp = nan(4,1);
+
+for i = 1:4
+
+    if i <= 2
+        b = b_mean;
+    else
+        b = b_sd;
+    end
+
+    x = sleep_values(i);
+
+    % Condition-specific predicted probabilities
+    p_RC = predict_acc(b, 0, 0, x); % repeat-congruent
+    p_RI = predict_acc(b, 0, 1, x); % repeat-incongruent
+    p_SC = predict_acc(b, 1, 0, x); % switch-congruent
+    p_SI = predict_acc(b, 1, 1, x); % switch-incongruent
+
+    % Store as percentages
+    repeat_congruent(i) = p_RC * 100;
+    repeat_incongruent(i) = p_RI * 100;
+    switch_congruent(i) = p_SC * 100;
+    switch_incongruent(i) = p_SI * 100;
+
+    % Average across congruency levels for simpler switch-cost interpretation
+    repeat_avg(i) = mean([p_RC, p_RI]) * 100;
+    switch_avg(i) = mean([p_SC, p_SI]) * 100;
+
+    % Switch cost in percentage points
+    switch_cost_pp(i) = repeat_avg(i) - switch_avg(i);
+end
+
+
+
+%  10. Output tables
+
+predicted_accuracy_summary = table( ...
+    model_names, ...
+    sleep_levels, ...
+    sleep_values, ...
+    repeat_avg, ...
+    switch_avg, ...
+    switch_cost_pp, ...
+    'VariableNames', { ...
+        'Model', ...
+        'SleepLevel', ...
+        'SleepValue_hours', ...
+        'RepeatAccuracy_percent', ...
+        'SwitchAccuracy_percent', ...
+        'SwitchCost_pp'});
+
+predicted_accuracy_by_condition = table( ...
+    model_names, ...
+    sleep_levels, ...
+    sleep_values, ...
+    repeat_congruent, ...
+    repeat_incongruent, ...
+    switch_congruent, ...
+    switch_incongruent, ...
+    'VariableNames', { ...
+        'Model', ...
+        'SleepLevel', ...
+        'SleepValue_hours', ...
+        'RepeatCongruent_percent', ...
+        'RepeatIncongruent_percent', ...
+        'SwitchCongruent_percent', ...
+        'SwitchIncongruent_percent'});
+
+disp('Summary table averaged across congruency:');
+disp(predicted_accuracy_summary);
+
+disp('Condition-specific predicted probabilities:');
+disp(predicted_accuracy_by_condition);
+
+
+%  11. Save output
+
+writetable(predicted_accuracy_summary, ...
+    fullfile(out_dir, 'predicted_accuracy_summary_switch_costs.csv'));
+
+writetable(predicted_accuracy_by_condition, ...
+    fullfile(out_dir, 'predicted_accuracy_by_condition.csv'));
+
+save(fullfile(out_dir, 'predicted_accuracy_logistic_probabilities.mat'), ...
+    'glme_mean', 'glme_sd', ...
+    'data_mean', 'data_sd', ...
+    'predicted_accuracy_summary', ...
+    'predicted_accuracy_by_condition', ...
+    'grandMean_TSTmean', 'sd_meanTST', ...
+    'grandMean_TSTSD', 'sd_tstSD');
+
+fprintf('\nSaved predicted probability outputs.\n');
+
+
+%  12. Print LaTeX-ready rows
+
+fprintf('\nLaTeX-ready rows for summary table:\n\n');
+
+for i = 1:height(predicted_accuracy_summary)
+    fprintf('%s & %s & %.1f\\%% & %.1f\\%% & %.1f pp \\\\\n', ...
+        predicted_accuracy_summary.Model{i}, ...
+        predicted_accuracy_summary.SleepLevel{i}, ...
+        predicted_accuracy_summary.RepeatAccuracy_percent(i), ...
+        predicted_accuracy_summary.SwitchAccuracy_percent(i), ...
+        predicted_accuracy_summary.SwitchCost_pp(i));
+end
