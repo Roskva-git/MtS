@@ -67,7 +67,7 @@ The repository contains analysis scripts for behavioural data, sleep data, and E
 - March 1st: Results section draft
 - March 15th: Discussion section draft 
 - April 23rd: Complete first draft with abstract
-- May 1st: Final draft
+- May 8th: Final draft
 - May 22nd: Final thesis submission
 
 
