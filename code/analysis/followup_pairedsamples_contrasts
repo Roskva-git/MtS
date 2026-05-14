@@ -1,0 +1,157 @@
+%% Follow-up paired-samples simple-effects contrasts for task effects
+
+% Author: Røskva
+% Created: 14.05.2026
+% Modified: 14.05.2026
+
+
+% Purpose:
+% This script follows up the significant Switch x Congruency interactions
+% from the repeated-measures ANOVAs on reaction time and accuracy. The
+% contrasts test the simple effects of switching within each congruency
+% condition and the simple effects of congruency within each switch
+% condition.
+
+% Input:
+% behavioural_overview_master.csv
+
+% Required input columns:
+% participantID
+% acc_rp_con      Accuracy, repeat-congruent trials
+% acc_rp_inc      Accuracy, repeat-incongruent trials
+% acc_sw_con      Accuracy, switch-congruent trials
+% acc_sw_inc      Accuracy, switch-incongruent trials
+% rt_cC_rp_con    Mean RT for correct repeat-congruent trials
+% rt_cC_rp_inc    Mean RT for correct repeat-incongruent trials
+% rt_cC_sw_con    Mean RT for correct switch-congruent trials
+% rt_cC_sw_inc    Mean RT for correct switch-incongruent trials
+
+% Procedure:
+% First, the script creates a simplified participant-level file containing
+% only the four condition means for accuracy and reaction time. It then runs
+% paired-samples t-tests for eight planned simple-effects contrasts:
+
+%   1. Accuracy: switch effect within congruent trials
+%   2. Accuracy: switch effect within incongruent trials
+%   3. Accuracy: congruency effect within repeat trials
+%   4. Accuracy: congruency effect within switch trials
+%   5. RT: switch effect within congruent trials
+%   6. RT: switch effect within incongruent trials
+%   7. RT: congruency effect within repeat trials
+%   8. RT: congruency effect within switch trials
+
+% Missing values are removed pairwise for each contrast. P-values are
+% Holm-corrected separately for accuracy and reaction time.
+
+% Output:
+% task_condition_means_for_contrasts.csv
+%   Participant-level condition means used as input for the contrasts.
+
+% task_followup_contrasts_results.csv
+%   Contrast results, including N, mean difference, SD of the difference,
+%   t-value, degrees of freedom, uncorrected p-value, Holm-corrected p-value,
+%   and 95% confidence interval.
+
+% Interpretation:
+% Accuracy differences are proportions. For example, -0.10 corresponds to
+% 10 percentage points lower accuracy in the first condition compared with
+% the second condition. Reaction time differences are in seconds. For
+% example, 0.100 corresponds to 100 ms slower responses in the first
+% condition compared with the second condition.
+
+
+T = readtable('behavioural_overview_master.csv');
+
+D = table();
+D.ID = T.participantID;
+
+D.acc_repeat_congruent = T.acc_rp_con;
+D.acc_repeat_incongruent = T.acc_rp_inc;
+D.acc_switch_congruent = T.acc_sw_con;
+D.acc_switch_incongruent = T.acc_sw_inc;
+
+D.rt_repeat_congruent = T.rt_cC_rp_con;
+D.rt_repeat_incongruent = T.rt_cC_rp_inc;
+D.rt_switch_congruent = T.rt_cC_sw_con;
+D.rt_switch_incongruent = T.rt_cC_sw_inc;
+
+writetable(D, 'task_condition_means_for_contrasts.csv');
+
+contrast_names = [
+    "Accuracy: switch effect in congruent trials"
+    "Accuracy: switch effect in incongruent trials"
+    "Accuracy: congruency effect in repeat trials"
+    "Accuracy: congruency effect in switch trials"
+    "RT: switch effect in congruent trials"
+    "RT: switch effect in incongruent trials"
+    "RT: congruency effect in repeat trials"
+    "RT: congruency effect in switch trials"
+];
+
+outcome = [
+    "Accuracy"
+    "Accuracy"
+    "Accuracy"
+    "Accuracy"
+    "RT"
+    "RT"
+    "RT"
+    "RT"
+];
+
+X = {
+    D.acc_switch_congruent, D.acc_switch_incongruent, D.acc_repeat_incongruent, D.acc_switch_incongruent, ...
+    D.rt_switch_congruent, D.rt_switch_incongruent, D.rt_repeat_incongruent, D.rt_switch_incongruent
+};
+
+Y = {
+    D.acc_repeat_congruent, D.acc_repeat_incongruent, D.acc_repeat_congruent, D.acc_switch_congruent, ...
+    D.rt_repeat_congruent, D.rt_repeat_incongruent, D.rt_repeat_congruent, D.rt_switch_congruent
+};
+
+results = table();
+
+for i = 1:8
+    x = X{i};
+    y = Y{i};
+
+    valid = ~isnan(x) & ~isnan(y);
+    x = x(valid);
+    y = y(valid);
+    diff = x - y;
+
+    [~, p, ci, stats] = ttest(x, y);
+
+    results.Contrast(i,1) = contrast_names(i);
+    results.Outcome(i,1) = outcome(i);
+    results.N(i,1) = numel(diff);
+    results.MeanDifference(i,1) = mean(diff);
+    results.SD_Difference(i,1) = std(diff);
+    results.t(i,1) = stats.tstat;
+    results.df(i,1) = stats.df;
+    results.p(i,1) = p;
+    results.CI_low(i,1) = ci(1);
+    results.CI_high(i,1) = ci(2);
+end
+
+results.p_Holm = NaN(height(results),1);
+
+for this_outcome = ["Accuracy", "RT"]
+    idx = results.Outcome == this_outcome;
+    pvals = results.p(idx);
+
+    [p_sorted, sort_idx] = sort(pvals);
+    m = numel(pvals);
+
+    adjusted = (m:-1:1)' .* p_sorted;
+    adjusted = cummax(adjusted);
+    adjusted(adjusted > 1) = 1;
+
+    p_holm = NaN(size(pvals));
+    p_holm(sort_idx) = adjusted;
+
+    results.p_Holm(idx) = p_holm;
+end
+
+disp(results)
+writetable(results, 'task_followup_contrasts_results.csv');
