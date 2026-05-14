@@ -4,7 +4,7 @@ Script: create_strip_plot.py
 Author: Røskva
 Project: Mind the Sleep (MtS) – Master’s Thesis
 Date created: 25.03.2026
-Date edited: 25.03.2026
+Date edited: 14.05.2026
 
 Description:
 This script creates pretty visualizations using the sleep_daily.csv.
@@ -37,6 +37,9 @@ df = pd.read_csv(
 
 # clean column names
 df.columns = df.columns.str.strip()
+
+# keep final sleep-analysis sample
+df = df[~df["ID"].isin([671, 713])].copy()
 
 # =========================
 # ANONYMIZE PARTICIPANTS
